@@ -25,7 +25,7 @@ class Role
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="role_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="role", orphanRemoval=true)
      */
     private $users;
 
@@ -63,7 +63,7 @@ class Role
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->setRoleId($this);
+            $user->setRole($this);
         }
 
         return $this;
@@ -74,8 +74,8 @@ class Role
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             // set the owning side to null (unless already changed)
-            if ($user->getRoleId() === $this) {
-                $user->setRoleId(null);
+            if ($user->getRole() === $this) {
+                $user->setRole(null);
             }
         }
 

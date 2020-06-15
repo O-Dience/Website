@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnnouncementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,6 +54,22 @@ class Announcement
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=SocialNetwork::class, inversedBy="announcements")
+     */
+    private $socialNetworks;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="announcements")
+     */
+    private $categories;
+
+    public function __construct()
+    {
+        $this->socialNetworks = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +156,58 @@ class Announcement
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SocialNetwork[]
+     */
+    public function getSocialNetworks(): Collection
+    {
+        return $this->socialNetworks;
+    }
+
+    public function addSocialNetwork(SocialNetwork $socialNetwork): self
+    {
+        if (!$this->socialNetworks->contains($socialNetwork)) {
+            $this->socialNetworks[] = $socialNetwork;
+        }
+
+        return $this;
+    }
+
+    public function removeSocialNetwork(SocialNetwork $socialNetwork): self
+    {
+        if ($this->socialNetworks->contains($socialNetwork)) {
+            $this->socialNetworks->removeElement($socialNetwork);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
 
         return $this;
     }

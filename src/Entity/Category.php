@@ -44,9 +44,15 @@ class Category
      */
     private $users;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Announcement::class, mappedBy="categories")
+     */
+    private $announcements;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->announcements = new ArrayCollection();
     }
 
    
@@ -127,6 +133,34 @@ class Category
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Announcement[]
+     */
+    public function getAnnouncements(): Collection
+    {
+        return $this->announcements;
+    }
+
+    public function addAnnouncement(Announcement $announcement): self
+    {
+        if (!$this->announcements->contains($announcement)) {
+            $this->announcements[] = $announcement;
+            $announcement->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnouncement(Announcement $announcement): self
+    {
+        if ($this->announcements->contains($announcement)) {
+            $this->announcements->removeElement($announcement);
+            $announcement->removeCategory($this);
         }
 
         return $this;

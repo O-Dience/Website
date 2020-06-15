@@ -44,9 +44,15 @@ class SocialNetwork
      */
     private $userSocials;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Announcement::class, mappedBy="socialNetworks")
+     */
+    private $announcements;
+
     public function __construct()
     {
         $this->userSocials = new ArrayCollection();
+        $this->announcements = new ArrayCollection();
     }
 
 
@@ -129,6 +135,34 @@ class SocialNetwork
             if ($userSocial->getSocial() === $this) {
                 $userSocial->setSocial(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Announcement[]
+     */
+    public function getAnnouncements(): Collection
+    {
+        return $this->announcements;
+    }
+
+    public function addAnnouncement(Announcement $announcement): self
+    {
+        if (!$this->announcements->contains($announcement)) {
+            $this->announcements[] = $announcement;
+            $announcement->addSocialNetwork($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnouncement(Announcement $announcement): self
+    {
+        if ($this->announcements->contains($announcement)) {
+            $this->announcements->removeElement($announcement);
+            $announcement->removeSocialNetwork($this);
         }
 
         return $this;
