@@ -50,12 +50,6 @@ class Announcement
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="announcements")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\ManyToMany(targetEntity=SocialNetwork::class, inversedBy="announcements")
      */
     private $socialNetworks;
@@ -64,6 +58,12 @@ class Announcement
      * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="announcements")
      */
     private $categories;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="announcements")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -148,18 +148,6 @@ class Announcement
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     /**
      * @return Collection|SocialNetwork[]
      */
@@ -208,6 +196,18 @@ class Announcement
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

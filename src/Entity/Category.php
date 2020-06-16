@@ -40,19 +40,19 @@ class Category
     private $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="categories")
-     */
-    private $users;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Announcement::class, mappedBy="categories")
      */
     private $announcements;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="categories")
+     */
+    private $users;
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->announcements = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
    
@@ -111,34 +111,6 @@ class Category
     }
 
     /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            $user->removeCategory($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Announcement[]
      */
     public function getAnnouncements(): Collection
@@ -161,6 +133,34 @@ class Category
         if ($this->announcements->contains($announcement)) {
             $this->announcements->removeElement($announcement);
             $announcement->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUsers(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsers(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeCategory($this);
         }
 
         return $this;

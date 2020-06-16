@@ -49,6 +49,7 @@ class SocialNetwork
      */
     private $announcements;
 
+
     public function __construct()
     {
         $this->userSocials = new ArrayCollection();
@@ -164,6 +165,18 @@ class SocialNetwork
             $this->announcements->removeElement($announcement);
             $announcement->removeSocialNetwork($this);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
