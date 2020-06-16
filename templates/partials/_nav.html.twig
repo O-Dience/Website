@@ -1,11 +1,9 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
-  <a class="navbar-brand" href="#">O'dience</a>
+  <a class="navbar-brand" href=" {{ path('homepage') }}">O'dience</a>
   {% if is_granted('IS_ANONYMOUS') %}
-  <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">
-  Login
-</button>
+  <a href="{{ path('app_login') }}"><button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Se connecter</button></a>
  {% elseif is_granted('IS_AUTHENTICATED_FULLY') %}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>

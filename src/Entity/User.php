@@ -67,12 +67,12 @@ class User implements UserInterface
     private $updated_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=SocialNetwork::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=UserSocial::class, mappedBy="user", orphanRemoval=true)
      */
     private $userSocials;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="userss")
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
      */
     private $categories;
 
