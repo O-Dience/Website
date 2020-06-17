@@ -29,12 +29,7 @@ class UserType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Adresse email'
             ])
-            // ->add('password', PasswordType::class, [
-            //     'label' => 'Mot de passe',
-            //     'required' => false,
-            //     'always_empty' => true,
-            // ])
-
+         
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux mots de passe doivent être identiques.',

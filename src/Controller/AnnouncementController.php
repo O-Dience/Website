@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AnnouncementController extends AbstractController
 {
     /**
-     * @Route("/", name="announcement_index", methods={"GET"})
+     * @Route("/", name="announcement_list", methods={"GET"})
      */
     public function index(AnnouncementRepository $announcementRepository): Response
     {
@@ -39,7 +39,7 @@ class AnnouncementController extends AbstractController
             $entityManager->persist($announcement);
             $entityManager->flush();
 
-            return $this->redirectToRoute('announcement_index');
+            return $this->redirectToRoute('announcement_list');
         }
 
         return $this->render('announcement/new.html.twig', [
