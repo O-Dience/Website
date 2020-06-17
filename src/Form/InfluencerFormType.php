@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
+use App\Entity\SocialNetwork;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -43,8 +46,13 @@ class InfluencerFormType extends AbstractType
                     ]),
                 ], 'label'=>'Mot de passe'
             ])
+            ->add('categories', EntityType::class, [
+                'multiple'=>true,
+                'class' => Category::class,
+                'choice_label' => 'label'
+            ]);
         ;
-    }
+    }  
 
     public function configureOptions(OptionsResolver $resolver)
     {
