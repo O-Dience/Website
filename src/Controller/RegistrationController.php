@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\InfluencerFormType;
-use App\Form\BrandFormType;
+use App\Form\InfluencerType;
+use App\Form\BrandType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ class RegistrationController extends AbstractController
     public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        $form = $this->createForm(InfluencerFormType::class, $user);
+        $form = $this->createForm(InfluencerType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
     public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        $form = $this->createForm(BrandFormType::class, $user);
+        $form = $this->createForm(BrandType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
