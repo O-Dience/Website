@@ -36,6 +36,19 @@ class AnnouncementRepository extends ServiceEntityRepository
     }
     */
 
+    /**
+     * @return Announcement[] Finds all announcements posted by the user represented by this id
+     */
+    public function findByUserId($id)
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.user', 'u')
+            ->where('u.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->execute();
+    }
+
     /*
     public function findOneBySomeField($value): ?Announcement
     {
