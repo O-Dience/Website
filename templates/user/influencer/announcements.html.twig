@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Annonces de {{ influencer.username }}{% endblock %}
+
+{% block body %}
+<ul>
+{% for announcement in announcements %}
+    <li>
+        <h1>
+            {{ announcement.title }}
+        </h1>
+        <p>
+            {{ announcement.content }}
+        </p>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}
