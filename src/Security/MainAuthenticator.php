@@ -98,7 +98,6 @@ class MainAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-        dump($user->getRoles());
         // Redirect user according to his role
         // TU PEUX CHANGER LE NOM DES ROUTES MON GRAND TOUT EST DEJA FONCTIONNEL :)
         if (in_array( "ROLE_ADMIN", $user->getRoles() )){
