@@ -56,4 +56,17 @@ class UserController extends AbstractController
         ]);
     }
 
+        /**
+     * @Route("/influenceur/liste", name="influencer_list", methods={"GET"})
+     */
+    public function listInfluencers()
+    {
+        
+        $influencers = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_INFLUENCER"]');
+
+        return $this->render('user/influencer/list.html.twig', [
+            "influencers" => $influencers,
+        ]);
+    }
+
 }
