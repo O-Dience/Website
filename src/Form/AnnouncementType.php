@@ -18,7 +18,7 @@ class AnnouncementType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
-            ->add('image', FileType::class)
+            ->add('image', FileType::class, ['required' => false],)
             ->add('socialNetworks', EntityType::class, [
                 'multiple'=>true,
                 'class' => SocialNetwork::class,
