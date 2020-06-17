@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Liste des annonces{% endblock %}
+
+{% block body %}
+    
+<div class="container-fluid">
+    <h1>A vous de jouer !</h1>
+        <p> Ici, vous retrouverez toutes les annonces postées par les marques</p>
+
+
+        <div>
+            <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <select name="category" id="category_label">
+                <option value="">Trier par catégorie</option>
+                 {% for category in categories %}
+                 <option value="{{category.id}}">{{category.label}}</option>
+                 {% endfor %}
+            </select>
+             <select name="socialNetwork" id="socialNetwork_name">
+                <option value="">Trier selon le réseau social</option>
+                 {% for socialNetwork in socialNetworks %}
+                 <option value="{{socialNetwork.id}}">{{socialNetwork.name}}</option>
+                 {% endfor %}
+            </select>
+            </form>
+            
+        </div>
+
+        {% for announcement in announcements %}
+           
+                
+                <td>{{ announcement.title }}</td>
+                <td>{{ announcement.content }}</td>
+                <td>{{ announcement.image }}</td>
+                <td>{{ announcement.status }}</td>
+                <td>{{ announcement.createdAt ? announcement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ announcement.updatedAt ? announcement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('announcement_show', {'id': announcement.id}) }}">Consulter l'annonce</a>
+                    <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier une annonce</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('announcement_new') }}">Créer une annonce</a>
+    </div>
+{% endblock %}
