@@ -71,14 +71,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/influenceur/{id}/annonces", name="influencer_announcements", methods={"GET"})
+     * @Route("/marque/{id}/annonces", name="brand_announcements", methods={"GET"})
      */
     public function listOfAnnouncements($id)
     {
-        $influencer = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $brand = $this->getDoctrine()->getRepository(User::class)->find($id);
         $announcements = $this->getDoctrine()->getRepository(Announcement::class)->findByUserId($id);
-        return $this->render('user/influencer/announcements.html.twig', [
-            'influencer' => $influencer,
+        return $this->render('user/brand/announcements.html.twig', [
+            'brand' => $brand,
             'announcements' => $announcements
         ]);
     }
