@@ -6,10 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -67,12 +69,12 @@ class User implements UserInterface
     private $updated_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=SocialNetwork::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=UserSocial::class, mappedBy="user", orphanRemoval=true)
      */
     private $userSocials;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="userss")
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
      */
     private $categories;
 
@@ -86,6 +88,8 @@ class User implements UserInterface
         $this->userSocials = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->announcements = new ArrayCollection();
+        $this->created_at = new \DateTime;
+        $this->status = 1; // 1 = active
     }
 
     public function getId(): ?int

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Inscription{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Ce qu'on peut faire pour toi :</h1>
+        <p>
+       Vous êtes une marque, vous souhaitez mettre en avant votre activité ou un produit en particulier? Aliquam nec metus molestie, finibus mauris sit amet, ultrices orci. Nullam scelerisque commodo orci, ac luctus lectus consequat at. Aliquam ligula risus, aliquet sed tortor porta, convallis ullamcorper nibh. Curabitur condimentum, metus nec convallis malesuada, mauris velit malesuada sem, sit amet dignissim nisl odio eu eros. Phasellus suscipit luctus vulputate. Proin et sodales ex.
+        </p>
+
+        <h3>Inscription</h3>
+
+       {{ form_start(brandForm) }}
+        {{ form_widget(brandForm) }}
+        <button type="submit" class="btn btn-primary m-3">Valider</button>
+        {{ form_end(brandForm) }}
+        
+        <a href="{{ path('app_register_influencer') }}"> Oups ! Je suis un influenceur</a> 
+{% endblock %}
+
+
+
+
+
