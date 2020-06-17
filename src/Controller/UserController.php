@@ -15,11 +15,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/{roleeee}/liste", name="user_list", requirements={"role": "^(marque|influenceur|user)", methods={"GET"})
+     * @Route("/{role}/liste", name="user_list", methods={"GET"}, requirements={"role": "^(marque|influenceur|utilisateur)"})
      */
     public function list($role): Response
     {
-        dd($role);
         if($role === "influenceur"){
             $role = "influencer";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_INFLUENCER"]');
