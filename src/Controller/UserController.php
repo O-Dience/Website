@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -25,16 +26,9 @@ class UserController extends AbstractController
     /**
      * @Route("/marque/{id}/modifier", name="brand_edit", requirements={"id": "\d+"}, methods={"GET","POST"})
      */
-    public function brandEdit($id, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function brandEdit(User $brand, Request $request, UserPasswordEncoderInterface $passwordEncoder):Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $user = $entityManager->getRepository(User::class)->find($id);
-        if (!$user) {
-            throw $this->createNotFoundException(
-                'No user found for id '.$id
-            );
-        }
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $brand);
 
         $form->handleRequest($request);
 
@@ -43,8 +37,8 @@ class UserController extends AbstractController
             $password = $form->get('password')->getData();
             if ($password != null)
             {
-                $encodedPassword = $passwordEncoder->encodePassword($user, $password);
-                $user->setPassword($encodedPassword);
+                $encodedPassword = $passwordEncoder->encodePassword($brand, $password);
+                $brand->setPassword($encodedPassword);
             }
 
             $this->getDoctrine()->getManager()->flush();
@@ -57,8 +51,8 @@ class UserController extends AbstractController
         ]);
     }
 
-        /**
-     * @Route("/influenceur/liste", name="influencer_list", requirements={"id": "\d+"}, methods={"GET"})
+    /**
+     * @Route("/influenceur/liste", name="influencer_list", methods={"GET"})
      */
     public function listInfluencers()
     {
@@ -71,13 +65,13 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/marque/{id}/annonces", name="brand_announcements", methods={"GET"})
+     * @Route("/marque/{id}", name="brand_details", methods={"GET"})
      */
-    public function listOfAnnouncements($id)
+    public function brandDetails(User $brand): Response
     {
-        $brand = $this->getDoctrine()->getRepository(User::class)->find($id);
-        $announcements = $this->getDoctrine()->getRepository(Announcement::class)->findByUserId($id);
-        return $this->render('user/brand/announcements.html.twig', [
+        
+        $announcements = $this->getDoctrine()->getRepository(Announcement::class)->findByUserId($brand->getId());
+        return $this->render('user/brand/show.html.twig', [
             'brand' => $brand,
             'announcements' => $announcements
         ]);
