@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Announcement{% endblock %}
+{% block title %} {{parent()}} - Editer une annonce {% endblock %}
 
 {% block body %}
-    <h1>Edit Announcement</h1>
+    <h1>Editer l'annonce: {{ announcement.title }}</h1>
 
     {{ include('announcement/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('announcement_index') }}">back to list</a>
+    <a href="{{ path('announcement_list') }}">Liste des annonces</a>
 
     {{ include('announcement/_delete_form.html.twig') }}
 {% endblock %}
