@@ -24,8 +24,15 @@ class UserController extends AbstractController
     /**
      * @Route("/marque/{id}/modifier", name="brand_edit", requirements={"id": "\d+"}, methods={"GET","POST"})
      */
-    public function brandEdit(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function brandEdit($id, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->find($id);
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found for id '.$id
+            );
+        }
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
@@ -41,7 +48,7 @@ class UserController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('brand');
+            return $this->redirectToRoute('user');
         }
 
         return $this->render('user/edit.html.twig', [
