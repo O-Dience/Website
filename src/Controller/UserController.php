@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
     /**
-     * @Route("/brand", name="user")
+     * @Route("/marque", name="brand")
      */
     public function brand()
     {
@@ -21,19 +23,26 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/brand/{id}/edit", name="user_edit", requirements={"id"="\d+"}, methods={"GET","POST"})
+     * @Route("/marque/{id}/modifier", name="brand_edit", requirements={"id": "\d+"}, methods={"GET","POST"})
      */
-    public function brandEdit(Request $request, User $user)
+    public function brandEdit(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $form = $this->createForm(User::class, $user);
+        $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
+            $password = $form->get('password')->getData();
+            if ($password != null)
+            {
+                $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+                $user->setPassword($encodedPassword);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user');
+            return $this->redirectToRoute('brand');
         }
 
         return $this->render('user/edit.html.twig', [
