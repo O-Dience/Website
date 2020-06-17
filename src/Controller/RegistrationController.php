@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("influenceur", name="influencer")
+     * @Route("influenceur", name="influencer", methods={"GET", "POST"})
      */
     public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -51,7 +51,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("marque", name="brand")
+     * @Route("marque", name="brand", methods={"GET", "POST"})
      */
     public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
