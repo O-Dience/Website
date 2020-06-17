@@ -1,7 +1,7 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
-  <a class="navbar-brand" href=" {{ path('homepage') }}">O'dience</a>
+  <a class="navbar-brand" href=" {{ path('homepage') }}"><span class="brand__label">O'dience</span></a>
   {% if is_granted('IS_ANONYMOUS') %}
   <a href="{{ path('app_login') }}"><button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Se connecter</button></a>
  {% elseif is_granted('IS_AUTHENTICATED_FULLY') %}
