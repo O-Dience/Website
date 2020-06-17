@@ -12,11 +12,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/marque", name="brand")
+     * @Route("/user", name="user")
      */
-    public function brand()
+    public function index()
     {
-
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
         ]);
