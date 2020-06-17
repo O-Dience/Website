@@ -20,7 +20,7 @@ class UserType extends AbstractType
             ->add('status')
             ->add('created_at')
             ->add('updated_at')
-            ->add('role')
+            ->add('roles')
             ->add('categories')
         ;
     }
