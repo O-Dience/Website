@@ -1,28 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Accueil{% endblock %}
-
-{% block body %}
-<style>
-
-</style>
-
-<div class="container-fluid d-flex flex-column align-items-center">
-    <h1>A vot' service m'sieurs, dames !</h1>
-
-<div class="card" >
-    <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <div class="d-flex justify-content-between">
-    <a href="{{ path('app_register_influencer') }}" class="btn btn-primary m-3">Je suis un influenceur</a> 
-    <a href="{{ path('app_register_brand') }}" class="btn btn-primary m-3">Je suis une entreprise</a>
-    </div>
-  </div>
-
-</div>
-    
-</div>
+{% block title %}
+	{{ parent() }}
+	- Accueil
 {% endblock %}
 
+{% block body %}
 
+	<div class="container-fluid d-flex flex-column align-items-center">
+		<div class="card main__card d-md-none">
+			<div class="card-body text-center">
+				<h1 class=>O'dience</h1>
+				<p class="card-text">O'dience propose une plateforme unique pour mettre en relation entreprises et micro-influenceurs pour centraliser l'information et rendre plus efficace  les campagnes marketing sur tous les réseaux sociaux</p>
+				<div class="d-flex justify-content-between">
+					<a href="{{ path('app_register_influencer') }}" class="btn btn-info m-3">Je suis un influenceur</a>
+					<a href="{{ path('app_register_brand') }}" class="btn btn-info m-3">Je suis une entreprise</a>
+				</div>
+			</div>
+		</div>
+		<div class="d-none d-md-block d-lg-block d-xl-block">
+				<p>TODOOOOOOO VERSION DESKTOOOOOOOOP</p>
+			</div>
+		{% endblock %}

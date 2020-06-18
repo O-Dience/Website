@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Announcement;
 use App\Entity\User;
+use App\Form\BrandType;
+use App\Form\InfluencerType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,21 +16,43 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/user", name="user")
+     * @Route("/{role}/liste", name="user_list", methods={"GET"}, requirements={"role": "^(marque|influenceur|utilisateur)"})
      */
-    public function index()
+    public function list($role): Response
     {
-        return $this->render('user/index.html.twig', [
-            'controller_name' => 'UserController',
+        if($role === "influenceur"){
+            $role = "influencer";
+            $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_INFLUENCER"]');
+        }
+        elseif($role === "marque"){
+            $role = "brand";
+            $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_BRAND"]');
+        }
+        else{
+            $role = "user";
+            $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+        }
+
+        return $this->render('user/'.$role.'/list.html.twig', [
+            "users" => $users,
         ]);
     }
 
+
     /**
-     * @Route("/marque/{id}/modifier", name="brand_edit", requirements={"id": "\d+"}, methods={"GET","POST"})
+     * @Route("/user/{id}/modifier", name="user_edit", requirements={"role": "^(marque|influenceur)", "id": "\d+"}, methods={"GET","POST"})
      */
-    public function brandEdit(User $brand, Request $request, UserPasswordEncoderInterface $passwordEncoder):Response
+    public function edit(User $user,  Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $form = $this->createForm(UserType::class, $brand);
+        if ( in_array( "ROLE_INFLUENCER", $user->getRoles() ) ){
+            $form = $this->createForm(InfluencerType::class, $user);
+        }
+        elseif ( in_array( "ROLE_BRAND", $user->getRoles() ) ){
+            $form = $this->createForm(BrandType::class, $user);
+        }
+        else{
+            $form = $this->createForm(UserType::class, $user);
+        }
 
         $form->handleRequest($request);
 
@@ -52,29 +76,33 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/influenceur/liste", name="influencer_list", methods={"GET"})
+     * @Route("/{role}/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+", "role": "^(marque|influenceur)"})
      */
-    public function listInfluencers()
+    public function show(User $user, $role): Response
     {
+
+        if ( $role === "influenceur" && in_array( "ROLE_INFLUENCER", $user->getRoles() ) )
+        {
+            $influencer = $user;
+
+            return $this->render('user/influencer/show.html.twig', [
+                'influencer' => $influencer,
+            ]);
+        }
         
-        $influencers = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_INFLUENCER"]');
+        if ( $role === "marque" && in_array( "ROLE_BRAND", $user->getRoles() ) )
+        {
+            $brand = $user;
+            
+            return $this->render('user/brand/show.html.twig', [
+                'brand' => $brand,
+            ]);
+        }
 
-        return $this->render('user/influencer/list.html.twig', [
-            "influencers" => $influencers,
-        ]);
+        else
+        {
+            throw $this->createNotFoundException( $role. ' introuvable');
+        }
+
     }
-
-    /**
-     * @Route("/marque/{id}", name="brand_details", methods={"GET"})
-     */
-    public function brandDetails(User $brand): Response
-    {
-        
-        $announcements = $this->getDoctrine()->getRepository(Announcement::class)->findByUserId($brand->getId());
-        return $this->render('user/brand/show.html.twig', [
-            'brand' => $brand,
-            'announcements' => $announcements
-        ]);
-    }
-
 }

@@ -1,4 +1,21 @@
 body{
   background-image: url('../images/background.jpg');
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
   background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.btn,
+.brand__label,
+h1,
+h2,
+h3,
+h4,
+h5{
+  font-family: 'Balsamiq Sans', cursive;
+}
+.main__card{
+  margin-top: 20vh;
 }
