@@ -105,4 +105,31 @@ class UserController extends AbstractController
         }
 
     }
+
+      /**
+     * @Route("/{role}/dashboard/{id}", name="user_dashboard", methods={"GET"}, requirements={"id": "\d+", "role": "^(marque|influenceur)"})
+     */
+    public function userDashboard(User $user, $role)
+    {
+ 
+        if ($role === "influenceur" && in_array("ROLE_INFLUENCER", $user->getRoles())) {
+            $influencer = $user;
+            $announcements = $this->getDoctrine()->getRepository(Announcement::class)->findByInfluencerId($influencer->getId());
+            return $this->render('user/influencer/dashboard.html.twig', [
+                'announcements'=>$announcements,
+                'influencer' => $influencer
+            ]);
+        }
+        
+        if ($role === "marque" && in_array("ROLE_BRAND", $user->getRoles())) {
+            $brand = $user;
+            $announcements = $this->getDoctrine()->getRepository(Announcement::class)->findByBrandId($brand->getId());
+            return $this->render('user/brand/dashboard.html.twig', ['announcements'=>$announcements, 'brand'=>$brand]);
+        }
+
+        else
+        {
+            throw $this->createNotFoundException( $role. ' introuvable');
+        }
+    }
 }
