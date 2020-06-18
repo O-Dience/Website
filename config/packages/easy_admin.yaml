@@ -1,0 +1,53 @@
+easy_admin:
+    entities:
+        Announcement:
+            class: App\Entity\Announcement
+            label: 'Annonces'
+            list:
+                fields: [{ property: 'status', label: 'Statut' }, { property: 'title', label: 'Titre' }, 'image', { property: 'socialNetwork', label: 'Réseaux sociaux' }, { property: 'created_at', label: 'Créé le' }, { property: 'updated_at', label: 'Mis à jour le' }]
+            form:
+                fields:
+                    - {property: 'title'}
+                    - {property: 'content'}
+                    - {property: 'image'}
+                    - {property: 'status'}
+        Category:
+            class: App\Entity\Category
+            label: 'Catégories'
+            list:
+                fields: ['picto', 'label', { property: 'announcements', label: 'Annonces liées' }, { property: 'users', label: 'Utilisateurs liés' }, { property: 'created_at', label: 'Créé le' }, { property: 'updated_at', label: 'Mis à jour le' }]
+            form:
+                fields:
+                    - {property: 'label'}
+                    - {property: 'picto'}
+        SocialNetwork:
+            class: App\Entity\SocialNetwork
+            label: 'Réseaux Sociaux'
+            list:
+                fields: [{ property: 'name', label: 'Nom' }, 'picto', { property: 'announcements', label: 'Annonces liés' }]
+            form:
+                fields:
+                    - {property: 'name'}
+                    - {property: 'picto'}
+        User:
+            class: App\Entity\User
+            label: Utilisateurs
+            list:
+                fields: [{ property: 'picture', label: 'Avatar' }, 'email', { property: 'username', label: 'Utilisateur' }, { property: 'roles', label: 'Rôles' }, { property: 'status', label: 'Statut' }, { property: 'created_at', label: 'Créé le' }, { property: 'updated_at', label: 'Mis à jour le' }]
+            form:
+                fields:
+                    - {property: 'username'}
+                    - {property: 'roles'}
+                    - {property: 'picture'}
+                    - {property: 'status'}
+    design:
+        menu:
+
+            - {entity: Announcement, icon: 'newspaper-o'}
+            - {entity: User, icon: 'users'}
+            - {entity: Category, icon: 'anchor'}
+            - {entity: SocialNetwork, icon: 'mobile'}
+        brand_color: '#264653'
+        assets:
+            css:
+                - 'css/admin.css'

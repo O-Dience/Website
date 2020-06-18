@@ -92,6 +92,11 @@ class User implements UserInterface
         $this->status = 1; // 1 = active
     }
 
+    public function __toString()
+    {
+        return $this->username;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

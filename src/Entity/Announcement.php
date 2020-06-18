@@ -74,6 +74,11 @@ class Announcement
         $this->status = 1; // 1 = active
     }
 
+    public function __toString()
+    {
+        return $this->title;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
