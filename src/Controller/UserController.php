@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Announcement;
 use App\Entity\User;
 use App\Form\BrandType;
 use App\Form\InfluencerType;
@@ -60,8 +61,8 @@ class UserController extends AbstractController
             $password = $form->get('password')->getData();
             if ($password != null)
             {
-                $encodedPassword = $passwordEncoder->encodePassword($user, $password);
-                $user->setPassword($encodedPassword);
+                $encodedPassword = $passwordEncoder->encodePassword($brand, $password);
+                $brand->setPassword($encodedPassword);
             }
 
             $this->getDoctrine()->getManager()->flush();
@@ -74,7 +75,6 @@ class UserController extends AbstractController
         ]);
     }
 
-   
     /**
      * @Route("/{role}/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+", "role": "^(marque|influenceur)"})
      */

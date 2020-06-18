@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AnnouncementRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -69,6 +70,8 @@ class Announcement
     {
         $this->socialNetworks = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->created_at = new \DateTime;
+        $this->status = 1; // 1 = active
     }
 
     public function getId(): ?int

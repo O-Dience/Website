@@ -3,7 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Announcement;
+use App\Entity\Category;
+use App\Entity\SocialNetwork;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,13 +18,17 @@ class AnnouncementType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
-            ->add('image')
-            ->add('status')
-            ->add('created_at')
-            ->add('updated_at')
-            ->add('user')
-            ->add('socialNetworks')
-            ->add('categories')
+            ->add('image', FileType::class, ['required' => false],)
+            ->add('socialNetworks', EntityType::class, [
+                'multiple'=>true,
+                'class' => SocialNetwork::class,
+                'choice_label' => 'name'
+            ])
+            ->add('categories', EntityType::class, [
+                'multiple'=>true,
+                'class' => Category::class,
+                'choice_label' => 'label'
+            ]);
         ;
     }
 

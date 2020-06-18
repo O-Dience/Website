@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Annonces postées par {{ brand.username }}{% endblock %}
+
+{% block body %}
+<ul>
+{% for announcement in announcements %}
+    <li>
+        <h1>
+            {{ announcement.title }} - 
+            {% for category in announcement.categories %}
+                {{ category.label }},
+            {% endfor %}
+        </h1>
+        <p>
+            {{ announcement.content }}
+        </p>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -5,28 +5,32 @@ namespace App\Controller;
 use App\Entity\Announcement;
 use App\Form\AnnouncementType;
 use App\Repository\AnnouncementRepository;
+use App\Repository\CategoryRepository;
+use App\Repository\SocialNetworkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/announcement")
+ * @Route("/annonce", name="announcement_")
  */
 class AnnouncementController extends AbstractController
 {
     /**
-     * @Route("/", name="announcement_index", methods={"GET"})
+     * @Route("/liste", name="list", methods={"GET"})
      */
-    public function index(AnnouncementRepository $announcementRepository): Response
+    public function index(AnnouncementRepository $announcementRepository, CategoryRepository $categoryRepository, SocialNetworkRepository $socialNetworkRepository): Response
     {
-        return $this->render('announcement/index.html.twig', [
-            'announcements' => $announcementRepository->findAll(),
+        $categories = $categoryRepository->findAll();
+        $socialNetworks = $socialNetworkRepository->findAll();
+        return $this->render('announcement/list.html.twig', [
+            'announcements' => $announcementRepository->findAll(), 'categories'=>$categories, 'socialNetworks'=> $socialNetworks
         ]);
     }
 
     /**
-     * @Route("/new", name="announcement_new", methods={"GET","POST"})
+     * @Route("/new", name="new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -35,11 +39,15 @@ class AnnouncementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+
+
+            $announcement->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($announcement);
             $entityManager->flush();
 
-            return $this->redirectToRoute('announcement_index');
+            return $this->redirectToRoute('announcement_list');
         }
 
         return $this->render('announcement/new.html.twig', [
@@ -49,7 +57,7 @@ class AnnouncementController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="announcement_show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(Announcement $announcement): Response
     {
@@ -59,7 +67,7 @@ class AnnouncementController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="announcement_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Announcement $announcement): Response
     {
@@ -69,7 +77,7 @@ class AnnouncementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('announcement_index');
+            return $this->redirectToRoute('announcement_list');
         }
 
         return $this->render('announcement/edit.html.twig', [
@@ -79,7 +87,7 @@ class AnnouncementController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="announcement_delete", methods={"DELETE"})
+     * @Route("/{id}", name="delete", methods={"DELETE"})
      */
     public function delete(Request $request, Announcement $announcement): Response
     {
