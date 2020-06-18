@@ -1,10 +1,16 @@
 easy_admin:
+    site_name: 'Tableau de bord O''Dience'
+    user:
+        name_property_path: 'email'
     entities:
         Announcement:
             class: App\Entity\Announcement
             label: 'Annonces'
             list:
                 fields: [{ property: 'status', label: 'Statut' }, { property: 'title', label: 'Titre' }, 'image', { property: 'socialNetwork', label: 'Réseaux sociaux' }, { property: 'created_at', label: 'Créé le' }, { property: 'updated_at', label: 'Mis à jour le' }]
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: 'modifier', css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'bin', label: 'supprimer', css_class: 'btn btn-danger'}
             form:
                 fields:
                     - {property: 'title'}
@@ -33,7 +39,17 @@ easy_admin:
             class: App\Entity\User
             label: Utilisateurs
             list:
-                fields: [{ property: 'picture', label: 'Avatar' }, 'email', { property: 'username', label: 'Utilisateur' }, { property: 'roles', label: 'Rôles' }, { property: 'status', label: 'Statut' }, { property: 'created_at', label: 'Créé le' }, { property: 'updated_at', label: 'Mis à jour le' }]
+                fields: [
+                    {property: 'picture', label: 'Avatar'}, 
+                    'email', 
+                    {property: 'username', label: 'Utilisateur' }, 
+                    {property: 'roles', label: 'Rôles'}, 
+                    { property: 'status', label: 'Statut' }, 
+                    { property: 'created_at', label: 'Créé le' }, 
+                    { property: 'updated_at', label: 'Mis à jour le' }]
+                actions:
+                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
+                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
             form:
                 fields:
                     - {property: 'username'}
