@@ -104,10 +104,10 @@ class MainAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
             return new RedirectResponse($this->urlGenerator->generate('admin'));
         }
         if (in_array( "ROLE_BRAND", $user->getRoles() )){
-            return new RedirectResponse($this->urlGenerator->generate('brand'));
+            return new RedirectResponse($this->urlGenerator->generate('ROUTE BRAND A FAIRE'));
         }
         if (in_array( "ROLE_INFLUENCER", $user->getRoles() )){
-            return new RedirectResponse($this->urlGenerator->generate('influencer'));
+            return new RedirectResponse($this->urlGenerator->generate('ROUTE INFLUENCER A FAIRE'));
         }
         else
         {

@@ -2,6 +2,7 @@ easy_admin:
     site_name: 'Tableau de bord O''Dience'
     user:
         name_property_path: 'email'
+        avatar_property_path: 'picture'
     entities:
         Announcement:
             class: App\Entity\Announcement
