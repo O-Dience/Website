@@ -61,8 +61,8 @@ class UserController extends AbstractController
             $password = $form->get('password')->getData();
             if ($password != null)
             {
-                $encodedPassword = $passwordEncoder->encodePassword($brand, $password);
-                $brand->setPassword($encodedPassword);
+                $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+                $user->setPassword($encodedPassword);
             }
 
             $this->getDoctrine()->getManager()->flush();
