@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use App\Service\ImageUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/new", name="category_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ImageUploader $imageUploader): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -36,23 +37,17 @@ class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $imageFile */
-            $imageFile = $form->get('picto')->getData();
-            if ($imageFile) {
-                $filename = uniqid() . '.' . $imageFile->guessExtension();
-                
-                $imageFile->move(
-                    $this->getParameter('category_pictos'),
-                    $filename
-                );
+            // If an image is uploaded, Image Uploader service is called to create a file name and move image to the right folder
+            $imageName = $imageUploader->getRandomFileName('jpg');
+            if($imageUploader->moveFile($form->get('picto')->getData(), "picto_categories")){
+                $category->setPicto($imageName);
+            };
 
-                $category->setPicto($filename);
-            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();
 
-            return $this->redirectToRoute('category_index');
+            return $this->redirectToRoute('category_list');
         }
 
         return $this->render('category/new.html.twig', [
