@@ -53,6 +53,7 @@ class Category
     {
         $this->announcements = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->created_at = new \DateTime;
     }
 
    
