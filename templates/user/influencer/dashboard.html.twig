@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ influencer.username }} - Tableau de bord{% endblock %}
+
+{% block body %}
+<div>
+    <h1>{{ influencer.username }}</h1>
+    {% for socialProfile in influencer.userSocials %} <span>{% if not loop.first %}, {% endif %}{{ socialProfile.social.name }} - {{ socialProfile.link }}</span> {% endfor %}
+    <h2>Mes annonces</h2>
+    {% for announcement in announcements %}
+        <div>
+            <h2><a href="{{ path('announcement_show', {id:announcement.id }) }}">{{ announcement.title }}</a></h2>
+
+            {% for category in announcement.categories %}
+                {% if not loop.first %}, {% endif %}<em>{{ category.label }}</em>
+            {% endfor %}
+            Ajoutée par {{ announcement.user.username }} le {{ announcement.createdAt|date('d/m/Y') }}
+            <a href="#">Add to favorites</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -39,14 +39,35 @@ class AnnouncementRepository extends ServiceEntityRepository
     /**
      * @return Announcement[] Finds all announcements posted by the user represented by this id
      */
-    public function findByUserId($id)
+    public function findByBrandId($id)
     {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.user', 'u')
-            ->where('u.id = :id')
+        return $this->createQueryBuilder('announcement')
+            ->where('announcement.user = :id')
             ->setParameter('id', $id)
+            ->leftJoin('announcement.categories', 'category')
+            ->addSelect('category')
+            ->leftJoin('announcement.socialNetworks', 'network')
+            ->addSelect('network')
             ->getQuery()
             ->execute();
+    }
+
+    public function findByInfluencerId($id)
+    {
+        /*return $this->createQueryBuilder('announcement')
+            ->leftJoin('announcement.likedByUsers', 'user')
+            ->where('user.favorites = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->execute();*/
+        $qb = $this->createQueryBuilder('announcement')
+        ->leftJoin('announcement.likedByUsers', 'likers')
+        ->addSelect('likers')
+        ->where('likers.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->execute();
+        return $qb;
     }
 
     /*
