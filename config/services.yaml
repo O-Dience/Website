@@ -4,7 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    category_picto: '%kernel.project_dir%/public/images/category_picto'
+    category_picto: '%kernel.project_dir%/public/assets/images/category_picto'
+    image_announcement: '%kernel.project_dir%/public/assets/images/image_announcement'
+    avatar_user: '%kernel.project_dir%/public/assets/images/avatar_user'
 
 services:
     # default configuration for services in *this* file

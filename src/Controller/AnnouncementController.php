@@ -7,6 +7,7 @@ use App\Form\AnnouncementType;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SocialNetworkRepository;
+use App\Service\ImageUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,19 +21,30 @@ class AnnouncementController extends AbstractController
     /**
      * @Route("/liste", name="list", methods={"GET"})
      */
-    public function index(AnnouncementRepository $announcementRepository, CategoryRepository $categoryRepository, SocialNetworkRepository $socialNetworkRepository): Response
+    public function list(AnnouncementRepository $announcementRepository, CategoryRepository $categoryRepository, SocialNetworkRepository $socialNetworkRepository, Request $request): Response
     {
+        $announcements = $announcementRepository->findAll();
+
+        // If search is done, we try to find a match by title, then if no match, find by content
+        $search = $request->query->get("search", null);
+        if ($search){
+            $announcements = $announcementRepository->searchByTitle($search);
+            if(!$announcements){
+                $announcements = $announcementRepository->searchByContent($search);
+            }
+        }
+
         $categories = $categoryRepository->findAll();
         $socialNetworks = $socialNetworkRepository->findAll();
         return $this->render('announcement/list.html.twig', [
-            'announcements' => $announcementRepository->findAll(), 'categories'=>$categories, 'socialNetworks'=> $socialNetworks
+            'announcements' => $announcements, 'categories'=>$categories, 'socialNetworks'=> $socialNetworks
         ]);
     }
 
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ImageUploader $imageUploader): Response
     {
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
@@ -40,7 +52,11 @@ class AnnouncementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->getRandomFileName('jpg');
+            if($imageUploader->moveFile($form->get('picto')->getData(), 'image_announcement')){
+            $announcement->setImage($imageName);
+            };
 
             $announcement->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
@@ -62,7 +78,7 @@ class AnnouncementController extends AbstractController
     public function show(Announcement $announcement): Response
     {
         return $this->render('announcement/show.html.twig', [
-            'announcement' => $announcement,
+            'announcement' => $announcement
         ]);
     }
 
@@ -71,13 +87,17 @@ class AnnouncementController extends AbstractController
      */
     public function edit(Request $request, Announcement $announcement): Response
     {
+
+        //$this->denyAccessUnlessGranted('edit', $announcement);
+
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $announcement->setUpdatedAt(new \DateTime());
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('announcement_list');
+            return $this->redirectToRoute('announcement_show', ['id'=> $announcement->getId()]);
         }
 
         return $this->render('announcement/edit.html.twig', [

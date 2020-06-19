@@ -37,9 +37,9 @@ class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // If an image is uploaded, Image Uploader service is called to create a file name and move image to the right folder
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
             $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picto')->getData(), "picto_categories")){
+            if($imageUploader->moveFile($form->get('picto')->getData(), "category_picto")){
                 $category->setPicto($imageName);
             };
 
@@ -69,12 +69,13 @@ class CategoryController extends AbstractController
     /**
      * @Route("/{id}/edit", name="category_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Category $category): Response
+    public function edit(Request $request, Category $category, ImageUploader $imageUploader): Response
     {
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('category_list');

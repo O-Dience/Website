@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Announcement;
 use App\Entity\User;
-use App\Form\BrandType;
-use App\Form\InfluencerType;
 use App\Form\UserType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\BrandType;
+use App\Entity\Announcement;
+use App\Form\InfluencerType;
+use App\Repository\AnnouncementRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
@@ -40,7 +41,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/user/{id}/modifier", name="user_edit", requirements={"role": "^(marque|influenceur)", "id": "\d+"}, methods={"GET","POST"})
+     * @Route("/profil/{id}/modifier", name="user_edit", requirements={"role": "^(marque|influenceur)", "id": "\d+"}, methods={"GET","POST"})
      */
     public function edit(User $user,  Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -58,6 +59,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
+
             $password = $form->get('password')->getData();
             if ($password != null)
             {
@@ -76,12 +78,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{role}/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+", "role": "^(marque|influenceur)"})
+     * @Route("/profil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
      */
-    public function show(User $user, $role): Response
+    public function show(User $user): Response
     {
 
-        if ( $role === "influenceur" && in_array( "ROLE_INFLUENCER", $user->getRoles() ) )
+        if (in_array("ROLE_INFLUENCER", $user->getRoles()))
         {
             $influencer = $user;
 
@@ -90,7 +92,7 @@ class UserController extends AbstractController
             ]);
         }
         
-        if ( $role === "marque" && in_array( "ROLE_BRAND", $user->getRoles() ) )
+        if (in_array("ROLE_BRAND", $user->getRoles()))
         {
             $brand = $user;
             
@@ -101,35 +103,35 @@ class UserController extends AbstractController
 
         else
         {
-            throw $this->createNotFoundException( $role. ' introuvable');
+            throw $this->createNotFoundException('Utilisateur introuvable');
         }
 
     }
 
-      /**
-     * @Route("/{role}/dashboard/{id}", name="user_dashboard", methods={"GET"}, requirements={"id": "\d+", "role": "^(marque|influenceur)"})
+    /**
+     * @Route("/dashboard/{id}", name="user_dashboard", methods={"GET"}, requirements={"id": "\d+"})
      */
-    public function userDashboard(User $user, $role)
+    public function userDashboard(User $user, AnnouncementRepository $annoucementRepo)
     {
  
-        if ($role === "influenceur" && in_array("ROLE_INFLUENCER", $user->getRoles())) {
+        if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             $influencer = $user;
-            $announcements = $this->getDoctrine()->getRepository(Announcement::class)->findByInfluencerId($influencer->getId());
+            $announcements = $annoucementRepo->findByInfluencerId($influencer->getId());
             return $this->render('user/influencer/dashboard.html.twig', [
                 'announcements'=>$announcements,
                 'influencer' => $influencer
             ]);
         }
         
-        if ($role === "marque" && in_array("ROLE_BRAND", $user->getRoles())) {
+        if (in_array("ROLE_BRAND", $user->getRoles())) {
             $brand = $user;
-            $announcements = $this->getDoctrine()->getRepository(Announcement::class)->findByBrandId($brand->getId());
+            $announcements = $annoucementRepo->findByBrandId($brand->getId());
             return $this->render('user/brand/dashboard.html.twig', ['announcements'=>$announcements, 'brand'=>$brand]);
         }
 
         else
         {
-            throw $this->createNotFoundException( $role. ' introuvable');
+            throw $this->createNotFoundException('Utilisateur introuvable');
         }
     }
 }

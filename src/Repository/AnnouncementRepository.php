@@ -70,6 +70,56 @@ class AnnouncementRepository extends ServiceEntityRepository
         return $qb;
     }
 
+   
+    public function searchByTitle($title){
+        $builder = $this->createQueryBuilder('announcement');
+        $builder->where(
+            $builder->expr()->like('announcement.title', ":title")
+        );
+        $builder->setParameter('title', "%$title%");
+        $builder->orderBy('announcement.title', 'asc');
+        $query = $builder->getQuery();
+        $result = $query->execute();
+        return $result;
+        
+    }
+
+    public function searchByContent($content){
+        $builder = $this->createQueryBuilder('announcement');
+        $builder->where(
+            $builder->expr()->like('announcement.content', ":content")
+        );
+        $builder->setParameter('content', "%$content%");
+        $builder->orderBy('announcement.title', 'asc');
+        $query = $builder->getQuery();
+        $result = $query->execute();
+        return $result;
+        
+    }
+
+
+    // /**
+    //  * @return Announcement[] Finds all announcements posted by the user represented by this id
+    //  */
+    // public function showMoreAnnouncements($id)
+    // {
+    //     return $this->createQueryBuilder('announcement')
+    //         ->where('announcement.user = :id')
+    //         ->setParameter('id', $id)
+    //         ->leftJoin('announcement.categories', 'category')
+    //         ->addSelect('category')
+    //         ->leftJoin('announcement.socialNetworks', 'network')
+    //         ->addSelect('network')
+    //         ->setMaxResults(3)
+    //         ->getQuery()
+    //         ->execute();
+    // }
+
+
+  
+
+
+
     /*
     public function findOneBySomeField($value): ?Announcement
     {
