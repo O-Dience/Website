@@ -7,63 +7,95 @@ easy_admin:
         Announcement:
             class: App\Entity\Announcement
             label: 'Annonces'
+            disabled_actions: ['new']
             list:
-                fields: [{ property: 'status', label: 'Statut' }, { property: 'title', label: 'Titre' }, 'image', { property: 'socialNetwork', label: 'Réseaux sociaux' }, { property: 'created_at', label: 'Créé le' }, { property: 'updated_at', label: 'Mis à jour le' }]
+                fields:
+                    [
+                        { 
+                            property: 'status', 
+                            label: 'Statut',
+                        },
+                        { 
+                            property: 'title', 
+                            label: 'Titre' 
+                        },
+                        'image',
+                        { property: 'socialNetwork', label: 'Réseaux sociaux' },
+                        { property: 'created_at', label: 'Créé le' },
+                        { property: 'updated_at', label: 'Mis à jour le' }
+                    ]
                 actions:
-                    - {name: 'edit', icon: 'pencil', label: 'modifier', css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'bin', label: 'supprimer', css_class: 'btn btn-danger'}
+                    - { name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary' }
+                    - { name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger' }
             form:
                 fields:
-                    - {property: 'title'}
-                    - {property: 'content'}
-                    - {property: 'image'}
-                    - {property: 'status'}
+                    - { property: 'title'}
+                    - { property: 'content'}
+                    - { property: 'status'}
         Category:
             class: App\Entity\Category
             label: 'Catégories'
             list:
-                fields: ['picto', 'label', { property: 'announcements', label: 'Annonces liées' }, { property: 'users', label: 'Utilisateurs liés' }, { property: 'created_at', label: 'Créé le' }, { property: 'updated_at', label: 'Mis à jour le' }]
+                fields: 
+                    [
+                        'picto', 
+                        'label', 
+                        { property: 'announcements', label: 'Annonces liées' },
+                        { property: 'users', label: 'Utilisateurs liés' },
+                        { property: 'created_at', label: 'Créé le' },
+                        { property: 'updated_at', label: 'Mis à jour le' }
+                    ]
+                actions:
+                    - { name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary' }
+                    - { name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger' }
             form:
                 fields:
-                    - {property: 'label'}
-                    - {property: 'picto'}
+                    - { property: 'label'}
         SocialNetwork:
             class: App\Entity\SocialNetwork
             label: 'Réseaux Sociaux'
             list:
-                fields: [{ property: 'name', label: 'Nom' }, 'picto', { property: 'announcements', label: 'Annonces liés' }]
+                fields: 
+                    [
+                        { property: 'name', label: 'Nom' },
+                        'picto',
+                        { property: 'announcements', label: 'Annonces liés' }
+                    ]
+                actions:
+                    - { name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary' }
+                    - { name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger' }
             form:
                 fields:
-                    - {property: 'name'}
-                    - {property: 'picto'}
+                    - { property: 'name' }
         User:
             class: App\Entity\User
             label: Utilisateurs
             list:
-                fields: [
-                    {property: 'picture', label: 'Avatar'}, 
-                    'email', 
-                    {property: 'username', label: 'Utilisateur' }, 
-                    {property: 'roles', label: 'Rôles'}, 
-                    { property: 'status', label: 'Statut' }, 
-                    { property: 'created_at', label: 'Créé le' }, 
-                    { property: 'updated_at', label: 'Mis à jour le' }]
+                fields: 
+                    [
+                        { property: 'picture', label: 'Avatar' }, 
+                        'email', 
+                        { property: 'username', label: 'Utilisateur' }, 
+                        { property: 'roles', label: 'Rôles' }, 
+                        { property: 'status', label: 'Statut' }, 
+                        { property: 'created_at', label: 'Créé le' }, 
+                        { property: 'updated_at', label: 'Mis à jour le' }
+                    ]
                 actions:
-                    - {name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary'}
-                    - {name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger'}
+                    - { name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary' }
+                    - { name: 'delete', icon: 'trash', label: false, css_class: 'btn btn-danger' }
             form:
                 fields:
-                    - {property: 'username'}
-                    - {property: 'roles'}
-                    - {property: 'picture'}
-                    - {property: 'status'}
+                    - { property: 'username' }
+                    - { property: 'roles' }
+                    - { property: 'status' }
     design:
         menu:
 
-            - {entity: Announcement, icon: 'newspaper-o'}
-            - {entity: User, icon: 'users'}
-            - {entity: Category, icon: 'anchor'}
-            - {entity: SocialNetwork, icon: 'mobile'}
+            - { entity: Announcement, icon: 'newspaper-o' }
+            - { entity: User, icon: 'users' }
+            - { entity: Category, icon: 'anchor' }
+            - { entity: SocialNetwork, icon: 'mobile' }
         brand_color: '#264653'
         assets:
             css:
