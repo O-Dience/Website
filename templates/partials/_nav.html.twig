@@ -2,32 +2,42 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
   <a class="navbar-brand" href=" {{ path('homepage') }}"><span class="brand__label">O'dience</span></a>
-  {% if is_granted('IS_ANONYMOUS') %}
-  <a href="{{ path('app_login') }}"><button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Se connecter</button></a>
- {% elseif is_granted('IS_AUTHENTICATED_FULLY') %}
+ {% if is_granted('IS_AUTHENTICATED_FULLY') %}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
+  <div class="collapse navbar-collapse d-lg-flex justify-content-between" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      {# <li class="nav-item active">
+        <a class="nav-link" href="#">Mes messages </a>
+      </li> #}
+      {% if 'ROLE_INFLUENCER' in app.user.roles %}
+      <li class="nav-item {{ ( app.request.get('_route') == 'announcement_list') ? 'active' : '' }}">
+        <a class="nav-link " href="{{path('user_list', {'role': 'marque'})}}">Listes des annonces</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
+      <li class="nav-item {{ ( app.request.get('_route') == 'user_list') ? 'active' : '' }}">
+        <a class="nav-link" href="{{path('user_list', {'role': 'marque'})}}">Listes des marques</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li>
-      {% if app.user %}
-      <li class="nav-item">
-        {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+      {% elseif 'ROLE_BRAND' in app.user.roles %}
+      <li class="nav-item {{ ( app.request.get('_route') == 'user_list') ? 'active' : '' }}">
+        <a class="nav-link" href="{{path('user_list', {'role': 'influenceur'})}}">Listes des influenceurs</a>
       </li>
       {% endif %}
+      {% dump(app.user) %}
+      <li class="nav-item {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : '' }}">
+        <a class="nav-link" href="{{path('user_dashboard', {'id': app.user.id})}}">Tableau de bord</a>
+      </li>
     </ul>
-  </div>
+    {% endif %}
+    <div>
+      {% if app.user %}
+        <a href="{{ path('app_logout') }}"><button type="button" class="btn btn-danger" data-toggle="button" aria-pressed="false">Se déconnecter</button></a>
+    {% endif %}
+     {% if not app.user %}
+  <a href="{{ path('app_login') }}"><button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">Se connecter</button></a>
   {% endif %}
+    </div>
+  </div>
+ 
+
 </nav>

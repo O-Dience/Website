@@ -3,34 +3,52 @@
 {% block title %}{{ parent()}} - {{announcement.title }} {% endblock %}
 
 {% block body %}
-    <h1>{{ announcement.title }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Description</th>
-                <td>{{ announcement.content }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ announcement.image }}</td>
-            </tr>
-            <tr>
-                <th>Publié le</th>
-                <td>{{ announcement.createdAt ? announcement.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-           
+ {# A METTRE DANS LA NAV: <a href="{{ path('announcement_list') }}">Liste des annonces</a> #}
+
+<div class="container-fluid w-100 col-sm-11">
+    <h1 class="text-center mt-2"> <a href="{{path('user_show', {id: announcement.user.id , role: 'marque'})}}">{{announcement.user.username }}</a> </h1>
+    <h2 class="text-center">{{ announcement.title }}</h1>
+
+        {# {{ announcement.image }}   #}
+            
+    <div class="d-flex mx-auto flex-wrap-reverse w-100 col-sm-12">
+        <div class="card col-sm-8">
+        <h3> En détail:</h3>
+        <p> {{ announcement.content }}</p>
+            {% if announcement.updatedAt  is not empty %}
+            <p class="font-italic text-black-50"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
+            {% else %}
+            <p class="font-italic text-black-50"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
+            {% endif %}
+        </div>
+        <div class="card col-sm-2">
+            <div class="d-flex">
+                {% for category in announcement.categories %}
+                <div>
+                    <p class="text-center"> {{ category.label }} </p>
+                    {% if category.picto is not null %}
+                    <img  src="{{ asset('/assets/images/category_picto/' ~ category.picto) }}">
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+                {% for socialNetwork in announcement.socialNetworks %}
+                <p> {{ socialNetwork.name }} </p>
+                {% endfor %}
+            </div>
+        </div>
            <!-- ajouter une condition: si annonce a été éditée, mettre un petit message "Modifié le: + date" -->
-            <tr>
-                <th>Updated_at</th>
-                <td>{{ announcement.updatedAt ? announcement.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('announcement_list') }}">Liste des annonces</a>
-
-    <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier l'annonce</a>
-
-    {{ include('announcement/_delete_form.html.twig') }}
+            {# {% if is_granted('edit', announcement) %}
+            <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier l'annonce</a>
+            {% endif %}
+        
+            {% if is_granted('delete', announcement) %}
+            {{ include('announcement/_delete_form.html.twig') }}
+            {% endif %} #}
+    {# <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier l'annonce</a>
+    
+    {{ include('announcement/_delete_form.html.twig') }} #}
+    </div>
+</div>
 {% endblock %}

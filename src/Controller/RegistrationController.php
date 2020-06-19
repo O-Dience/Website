@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\InfluencerType;
 use App\Form\BrandType;
+use App\Service\ImageUploader;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,13 +22,20 @@ class RegistrationController extends AbstractController
     /**
      * @Route("influenceur", name="influencer", methods={"GET", "POST"})
      */
-    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader): Response
     {
         $user = new User();
         $form = $this->createForm(InfluencerType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->getRandomFileName('jpg');
+            if($imageUploader->moveFile($form->get('picto')->getData(), "avatar_user")){
+                $user->setPicture($imageName);
+            };
+
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -53,13 +61,20 @@ class RegistrationController extends AbstractController
     /**
      * @Route("marque", name="brand", methods={"GET", "POST"})
      */
-    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader): Response
     {
         $user = new User();
         $form = $this->createForm(BrandType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->getRandomFileName('jpg');
+            if($imageUploader->moveFile($form->get('picto')->getData(), "avatar_user")){
+                $user->setPicture($imageName);
+            };
+
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
