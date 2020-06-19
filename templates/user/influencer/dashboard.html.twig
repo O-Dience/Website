@@ -5,6 +5,7 @@
 {% block body %}
 <div>
     <h1>{{ influencer.username }}</h1>
+
     {% for socialProfile in influencer.userSocials %} <span>{% if not loop.first %}, {% endif %}{{ socialProfile.social.name }} - {{ socialProfile.link }}</span> {% endfor %}
     <h2>Mes annonces</h2>
     {% for announcement in announcements %}
