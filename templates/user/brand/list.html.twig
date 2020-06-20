@@ -18,9 +18,9 @@
 <!-- Team -->
 <section id="team" class="pb-5">
     <div class="container">
-        <h5 class="section-title h1">Les Influenceurs</h5>
+        <h5 class="section-title h1">Les Marques</h5>
         <div class="row">
-        {% for influencer in users %}
+        {% for brand in users %}
             <!-- Team member -->
             <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
@@ -29,24 +29,24 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <p><img class=" img-fluid" src="{{asset('assets/images/avatar_user/' ~ brand.picture ) }}" alt="card image"></p>
-                                    <h4 class="card-title">{{influencer.username}}</h4>
+                                    <h4 class="card-title text-danger">{{brand.username}}</h4>
                                     <p class="card-text">
-                                    {% for category in influencer.categories %}
-                                    <span class="label label-info">{{ category }}</span>
+                                    {% for category in brand.categories %}
+                                    <span class="label label-info">{{ category.label }}</span>
                                     {% endfor %}
                                     </p>
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-plus"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="backside">
                             <div class="card">
                                 <div class="card-body text-center mt-4">
-                                    <h4 class="card-title">{{influencer.username}}</h4>
+                                    <h4 class="card-title">{{brand.username}}</h4>
                                     <p class="card-text">AJOUTER UNE DESCRIPTION / BIO DANS L'ENTITE USER ?</p>
-                                    <a href="{{path('user_show', {id: influencer.id, role: 'influenceur'})}}" class="btn btn-primary btn-sm"><span class="text-white">Profil</span></a>
+                                    <a href="{{path('user_show', {id: brand.id, role: 'influenceur'})}}" class="btn btn-primary btn-sm"><span class="text-white">Profil</span></a>
                                     <ul class="list-inline">
-                                        {% for social in influencer.userSocials %}
+                                        {% for social in brand.userSocials %}
                                         <li class="list-inline-item">
                                             <a class="social-icon text-xs-center" target="_blank" href="#">
                                                 <i class="fa fa-facebook"></i>
