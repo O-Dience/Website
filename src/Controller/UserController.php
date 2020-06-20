@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Announcement;
 use App\Entity\User;
 use App\Form\BrandType;
 use App\Form\InfluencerType;
