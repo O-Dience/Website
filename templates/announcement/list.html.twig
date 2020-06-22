@@ -4,64 +4,82 @@
 
 {% block body %}
 
-<div class="container-fluid  sm-w-100">
-    <h1 class="text-center">A vous de jouer !</h1>
-    <p> Ici, vous retrouverez toutes les annonces postées par les marques </p>
-    <div class="d-flex ">
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm d-none d-md-block" name="search" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0 d-none d-md-block" type="submit">Search</button>
-            <select name="category" id="category_label">
-                <option value="">Trier par catégorie</option>
-                 {% for category in categories %}
-                 <option value="{{category.id}}">{{category.label}}</option>
-                 {% endfor %}
-            </select>
-             <select name="socialNetwork" id="socialNetwork_name">
-                <option value="">Trier selon le réseau social</option>
-                 {% for socialNetwork in socialNetworks %}
-                 <option value="{{socialNetwork.id}}">{{socialNetwork.name}}</option>
-                 {% endfor %}
-            </select>
-        </form>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"/>
+<div class="container">
+  <div class="well">
+      <div class="media">
+      	<a class="pull-left" href="#">
+    		<img class="media-object" src="http://placekitten.com/150/150">
+  		</a>
+  		<div class="media-body">
+    		<h4 class="media-heading">Receta 1</h4>
+          <p class="text-right">By Francisco</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
+Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis 
+dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
+Aliquam in felis sit amet augue.</p>
+          <ul class="list-inline list-unstyled">
+  			<li><span><i class="glyphicon glyphicon-calendar"></i> 2 days, 8 hours </span></li>
+            <li>|</li>
+            <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
+            <li>|</li>
+            <li>
+               <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+            </li>
+            <li>|</li>
+            <li>
+            <!-- Use Font Awesome http://fortawesome.github.io/Font-Awesome/ -->
+              <span><i class="fa fa-facebook-square"></i></span>
+              <span><i class="fa fa-twitter-square"></i></span>
+              <span><i class="fa fa-google-plus-square"></i></span>
+            </li>
+			</ul>
+       </div>
     </div>
-    {% for announcement in announcements %}
-    <div class="card mt-4  sm-w-100">
-    {# <div class="mt-5"> #}
-    <h3 class=" col-sm"><a href="{{path('announcement_show', {id : announcement.id }) }}"> {{ announcement.title }}</a></h3>
-    {# </div> #}
-    {# <p>{{ announcement.image }}</p>  #}
-    <div class="d-flex justify-content-between">
-        <div class="col-sm row">
-            <div>
-                {% for category in announcement.categories %}
-                    
-                        <span class="badge badge-secondary"> {{category.label}}</span>
-                    
-                {% endfor %}
-                {% for network in announcement.socialNetworks %}
-                    
-                        <span class="badge badge-secondary"> {{network.name}}</span>
-                    
-                {% endfor %}
-            </div>
-                </div>
-                 {% if announcement.updatedAt  is not empty %}
-               <p class="col-sm"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
-               {% else %}
-               <p class="col-sm"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
-               {% endif %}
-        <div>
-                <a href="{{ path('announcement_show', {'id': announcement.id}) }}">Consulter l'annonce</a>
-                <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier l'annonce</a>
-            
-        </div>   
+  </div>
+   <div class="well">
+      <div class="media">
+  		<a class="pull-left" href="#">
+    		<img class="media-object" src="http://placekitten.com/150/150">
+  		</a>
+  		<div class="media-body">
+    		<h4 class="media-heading">Receta 2</h4>
+          <p class="text-right">By Anailuj</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
+Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis 
+dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
+Aliquam in felis sit amet augue.</p>
+          <ul class="list-inline list-unstyled">
+  			<li><span><i class="glyphicon glyphicon-calendar"></i> 2 days, 8 hours </span></li>
+            <li>|</li>
+            <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
+            <li>|</li>
+            <li>
+               <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star"></span>
+                        <span class="glyphicon glyphicon-star-empty"></span>
+            </li>
+            <li>|</li>
+            <li>
+            <!-- Use Font Awesome http://fortawesome.github.io/Font-Awesome/ -->
+              <span><i class="fa fa-facebook-square"></i></span>
+              <span><i class="fa fa-twitter-square"></i></span>
+              <span><i class="fa fa-google-plus-square"></i></span>
+            </li>
+			</ul>
+       </div>
     </div>
-    </div>
-    {% else %}
-            
-                <p colspan="8">no records found</p>
-    {% endfor %}
-    <a href="{{ path('announcement_new') }}">Créer une annonce</a>
+  </div>
 </div>
 {% endblock %}

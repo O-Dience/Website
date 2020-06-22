@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Liste des annonces{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid  sm-w-100">
+    <h1 class="text-center">A vous de jouer !</h1>
+    <p> Ici, vous retrouverez toutes les annonces postées par les marques </p>
+    <div class="d-flex ">
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm d-none d-md-block" name="search" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0 d-none d-md-block" type="submit">Search</button>
+            <select name="category" id="category_label">
+                <option value="">Trier par catégorie</option>
+                 {% for category in categories %}
+                 <option value="{{category.id}}">{{category.label}}</option>
+                 {% endfor %}
+            </select>
+             <select name="socialNetwork" id="socialNetwork_name">
+                <option value="">Trier selon le réseau social</option>
+                 {% for socialNetwork in socialNetworks %}
+                 <option value="{{socialNetwork.id}}">{{socialNetwork.name}}</option>
+                 {% endfor %}
+            </select>
+        </form>
+    </div>
+    {% for announcement in announcements %}
+    <div class="card mt-4  sm-w-100">
+    {# <div class="mt-5"> #}
+    <h3 class=" col-sm"><a href="{{path('announcement_show', {id : announcement.id }) }}"> {{ announcement.title }}</a></h3>
+    {# </div> #}
+    {# <p>{{ announcement.image }}</p>  #}
+    <div class="d-flex justify-content-between">
+        <div class="col-sm row">
+            <div>
+                {% for category in announcement.categories %}
+                    
+                        <span class="badge badge-secondary"> {{category.label}}</span>
+                    
+                {% endfor %}
+                {% for network in announcement.socialNetworks %}
+                    
+                        <span class="badge badge-secondary"> {{network.name}}</span>
+                    
+                {% endfor %}
+            </div>
+                </div>
+                 {% if announcement.updatedAt  is not empty %}
+               <p class="col-sm"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
+               {% else %}
+               <p class="col-sm"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
+               {% endif %}
+        <div>
+                <a href="{{ path('announcement_show', {'id': announcement.id}) }}">Consulter l'annonce</a>
+                <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier l'annonce</a>
+            
+        </div>   
+    </div>
+    </div>
+    {% else %}
+            
+                <p colspan="8">no records found</p>
+    {% endfor %}
+    <a href="{{ path('announcement_new') }}">Créer une annonce</a>
+</div>
+{% endblock %}
