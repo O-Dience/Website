@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ brand.username }} - Tableau de bord{% endblock %}
+{% block title %}{{ parent() }} - {{ user.username }} - Tableau de bord{% endblock %}
 
 {% block stylesheets %}
 <link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
@@ -16,12 +16,11 @@
     <div class="row profile">
 		<div class="col-md-3">
             {% include 'partials/_profile_sidebar.html.twig' %}
-			
 		</div>
 		<div class="col-md-9">
             <div class="profile-content">
-                <h2 class="mb-5">Bonjour {{ brand.username }}, voici la liste de vos annonces visibles par les influenceurs</h2>
-			    {% for announcement in brand.announcements %}
+                <h2 class="mb-5">Bonjour {{ user.username }}, voici la liste de vos annonces visibles par les influenceurs</h2>
+			    {% for announcement in user.announcements %}
             <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="list-group-item list-group-item-action my-1">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ announcement.title }}</h5>

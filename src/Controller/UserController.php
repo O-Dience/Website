@@ -73,7 +73,8 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 
@@ -119,14 +120,14 @@ class UserController extends AbstractController
             $announcements = $annoucementRepo->findByInfluencerId($influencer->getId());
             return $this->render('user/influencer/dashboard.html.twig', [
                 'announcements'=>$announcements,
-                'influencer' => $influencer
+                'user' => $user
             ]);
         }
         
         if (in_array("ROLE_BRAND", $user->getRoles())) {
             $brand = $user;
             $announcements = $annoucementRepo->findByBrandId($brand->getId());
-            return $this->render('user/brand/dashboard.html.twig', ['announcements'=>$announcements, 'brand'=>$brand]);
+            return $this->render('user/brand/dashboard.html.twig', ['announcements'=>$announcements, 'user'=>$user]);
         }
 
         else
