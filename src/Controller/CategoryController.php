@@ -37,9 +37,9 @@ class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // If an image is uploaded, Image Uploader service is called to create a file name and move image to the right folder
-            $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picto')->getData(), "picto_categories")){
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->moveFile($form->get('picto')->getData(), "category_picto");
+            if ($imageName) {
                 $category->setPicto($imageName);
             };
 
@@ -69,12 +69,24 @@ class CategoryController extends AbstractController
     /**
      * @Route("/{id}/edit", name="category_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Category $category): Response
+    public function edit(Request $request, Category $category, ImageUploader $imageUploader): Response
     {
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->moveFile($form->get('picto')->getData(), "category_picto");
+            if ($imageName) {
+                $category->setPicto($imageName);
+            };
+
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->getRandomFileName('jpg');
+            if ($imageUploader->moveFile($form->get('picto')->getData(), 'image_announcement')) {
+                $category->setPicto($imageName);
+            };
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('category_list');
@@ -91,7 +103,7 @@ class CategoryController extends AbstractController
      */
     public function delete(Request $request, Category $category): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();

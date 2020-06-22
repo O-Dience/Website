@@ -66,13 +66,22 @@ class Announcement
      */
     private $user;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favorites")
+     */
+    private $likedByUsers;
+
+    
+
     public function __construct()
     {
         $this->socialNetworks = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
-    }
+
+        $this->likedByUsers = new ArrayCollection();
+       }
 
     public function __toString()
     {
@@ -219,4 +228,33 @@ class Announcement
 
         return $this;
     }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getLikedByUsers(): Collection
+    {
+        return $this->likedByUsers;
+    }
+
+    public function addLikedByUser(User $likedByUser): self
+    {
+        if (!$this->likedByUsers->contains($likedByUser)) {
+            $this->likedByUsers[] = $likedByUser;
+            $likedByUser->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedByUser(User $likedByUser): self
+    {
+        if ($this->likedByUsers->contains($likedByUser)) {
+            $this->likedByUsers->removeElement($likedByUser);
+            $likedByUser->removeFavorite($this);
+        }
+
+        return $this;
+    }
+
 }

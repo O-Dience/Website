@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ user.username }} - Tableau de bord{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
+{% endblock %}
+{% block script %}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{% endblock %}
+
+{% block body %}
+
+<div class="container-md ">
+    <div class="row profile">
+		<div class="col-md-3">
+            {% include 'partials/_profile_sidebar.html.twig' %}
+		</div>
+		<div class="col-md-9">
+            <div class="profile-content">
+                <h2 class="mb-5">Bonjour {{ user.username }}, voici la liste de vos annonces visibles par les influenceurs</h2>
+			    {% for announcement in user.announcements %}
+            <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="list-group-item list-group-item-action my-1">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ announcement.title }}</h5>
+                    <small class="text-muted">{{ announcement.createdAt|date('d/m/Y') }}</small>
+                </div>
+                <p class="mb-1">{{ announcement.content }}</p>
+                {% for category in announcement.categories %}
+                    <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
+                {% endfor %}
+            </a>
+        {% endfor %}
+            </div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

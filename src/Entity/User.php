@@ -83,6 +83,13 @@ class User implements UserInterface
      */
     private $announcements;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Announcement::class, inversedBy="likedByUsers")
+     * @ORM\JoinTable(name="user_favorite_announcement")
+     */
+    private $favorites;
+
+
     public function __construct()
     {
         $this->userSocials = new ArrayCollection();
@@ -90,7 +97,9 @@ class User implements UserInterface
         $this->announcements = new ArrayCollection();
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
-    }
+
+        $this->favorites = new ArrayCollection();
+        }
 
     public function __toString()
     {
@@ -329,4 +338,32 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Announcement[]
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Announcement $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Announcement $favorite): self
+    {
+        if ($this->favorites->contains($favorite)) {
+            $this->favorites->removeElement($favorite);
+        }
+
+        return $this;
+    }
+
+    
 }
