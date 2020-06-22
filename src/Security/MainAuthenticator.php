@@ -99,15 +99,14 @@ class MainAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
             return new RedirectResponse($targetPath);
         }
         // Redirect user according to his role
-        // TU PEUX CHANGER LE NOM DES ROUTES MON GRAND TOUT EST DEJA FONCTIONNEL :)
-        if (in_array( "ROLE_ADMIN", $user->getRoles() )){
-            return new RedirectResponse($this->urlGenerator->generate('admin'));
-        }
+/*         if (in_array( "ROLE_ADMIN", $user->getRoles() )){
+            return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
+        } */
         if (in_array( "ROLE_BRAND", $user->getRoles() )){
-            return new RedirectResponse($this->urlGenerator->generate('brand'));
+            return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
         if (in_array( "ROLE_INFLUENCER", $user->getRoles() )){
-            return new RedirectResponse($this->urlGenerator->generate('influencer'));
+            return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
         else
         {
