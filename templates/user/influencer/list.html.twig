@@ -33,7 +33,7 @@
                                     <h4 class="card-title">{{influencer.username}}</h4>
                                     <p class="card-text">
                                     {% for category in influencer.categories %}
-                                    <span class="label label-info">{{ category }}</span>
+                                    <span class="label label-info">{{ category.label }}</span>
                                     {% endfor %}
                                     </p>
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
