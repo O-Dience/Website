@@ -88,7 +88,7 @@ class AnnouncementController extends AbstractController
     public function edit(Request $request, Announcement $announcement): Response
     {
 
-        //$this->denyAccessUnlessGranted('edit', $announcement);
+        $this->denyAccessUnlessGranted('edit', $announcement);
 
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
@@ -111,6 +111,8 @@ class AnnouncementController extends AbstractController
      */
     public function delete(Request $request, Announcement $announcement): Response
     {
+        $this->denyAccessUnlessGranted('delete', $announcement);
+        
         if ($this->isCsrfTokenValid('delete'.$announcement->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($announcement);
