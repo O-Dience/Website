@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
             $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picto')->getData(), "avatar_user")){
+            if($imageUploader->moveFile($form->get('picture')->getData(), "avatar_user")){
                 $user->setPicture($imageName);
             };
 
