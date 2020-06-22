@@ -12,116 +12,16 @@
 
 {% block body %}
 
-<div class="container">
+<div class="container-md ">
     <div class="row profile">
 		<div class="col-md-3">
-			<div class="profile-sidebar">
-				<!-- SIDEBAR USERPIC -->
-				<div class="profile-userpic">
-					<img src="{{asset('assets/images/avatar_user/') ~ brand.picture}}" class="img-fluid" alt="">
-				</div>
-				<!-- END SIDEBAR USERPIC -->
-				<!-- SIDEBAR USER TITLE -->
-				<div class="profile-usertitle">
-					<div class="profile-usertitle-name">
-						{{brand.username}}
-					</div>
-					<div class="profile-usertitle-job">
-						{% for socialProfile in brand.userSocials %}
-                            {% if not loop.first %}, {% endif %}
-                            {{ socialProfile.social.name }} - {{ socialProfile.link }}
-                        {% endfor %}
-					</div>
-				</div>
-				<!-- END SIDEBAR USER TITLE -->
-				<!-- SIDEBAR BUTTONS -->
-				<div class="profile-userbuttons">
-					<button type="button" class="btn btn-success btn-sm">Follow</button>
-					<button type="button" class="btn btn-danger btn-sm">Message</button>
-				</div>
-				<!-- END SIDEBAR BUTTONS -->
-				<!-- SIDEBAR MENU -->
-				<div class="profile-usermenu">
-					<ul class="nav">
-						<li class="active">
-							<a href="#">
-							<i class="glyphicon glyphicon-home"></i>
-							Overview </a>
-						</li>
-						<li>
-							<a href="#">
-							<i class="glyphicon glyphicon-user"></i>
-							Account Settings </a>
-						</li>
-						<li>
-							<a href="#" target="_blank">
-							<i class="glyphicon glyphicon-ok"></i>
-							Tasks </a>
-						</li>
-						<li>
-							<a href="#">
-							<i class="glyphicon glyphicon-flag"></i>
-							Help </a>
-						</li>
-					</ul>
-				</div>
-				<!-- END MENU -->
-			</div>
+            {% include 'partials/_profile_sidebar.html.twig' %}
+			
 		</div>
 		<div class="col-md-9">
             <div class="profile-content">
-			   Some user related content goes here...
-            </div>
-		</div>
-	</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="container">
-    <div class="card user-card mb-3 mx-auto my-2">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="https://via.placeholder.com/150" class="card-img" alt="avatar">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body text-lg-left text-center">
-                    <h2 class="card-title">{{ brand.username }}</h2>
-                    <p class="card-text">{% for socialProfile in brand.userSocials %}{% if not loop.first %}, {% endif %}{{ socialProfile.social.name }} - {{ socialProfile.link }}{% endfor %}</p>
-                    <p class="card-text"><small class="text-muted">500 influencers</small></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <h2>Mes annonces</h2>
-    <div class="list-group">
-        {% for announcement in announcements %}
+                <h2 class="mb-5">Bonjour {{ brand.username }}, voici la liste de vos annonces visibles par les influenceurs</h2>
+			    {% for announcement in brand.announcements %}
             <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="list-group-item list-group-item-action my-1">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ announcement.title }}</h5>
@@ -131,9 +31,11 @@
                 {% for category in announcement.categories %}
                     <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
                 {% endfor %}
-                <button class="btn btn-primary float-right" href="#">Add to favorites</button>
             </a>
         {% endfor %}
-    </div>
+            </div>
+		</div>
+	</div>
 </div>
+
 {% endblock %}

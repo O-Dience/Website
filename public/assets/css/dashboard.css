@@ -65,14 +65,21 @@ body {
   margin-top: 30px;
 }
 
-.profile-usermenu ul li {
+.profile-usermenu .list-group .list-group-item {
   border-bottom: 1px solid #f0f4f7;
+  margin: 3px 5%;
+  padding: 0;
+  text-align: left;
 }
 
 .profile-usermenu ul li:last-child {
   border-bottom: none;
 }
 
+.profile-usermenu ul{
+  display: flex;
+  flex-direction: column;
+}
 .profile-usermenu ul li a {
   color: #93a3b5;
   font-size: 14px;

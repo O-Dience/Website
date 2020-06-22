@@ -3,6 +3,7 @@ body{
   height: 100vh;
   font-family: 'Roboto', sans-serif;
   background-position: center;
+  background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
 }
