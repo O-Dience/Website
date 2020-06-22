@@ -1,26 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ influencer.username }} - Tableau de bord{% endblock %}
+{% block title %}{{ parent() }} - {{ user.username }} - Tableau de bord{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
+{% endblock %}
+{% block script %}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="card user-card mb-3 mx-auto my-2">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="https://via.placeholder.com/150" class="card-img" alt="avatar">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body text-lg-left text-center">
-                    <h2 class="card-title">{{ influencer.username }}</h2>
-                    <p class="card-text">{% for socialProfile in influencer.userSocials %}{% if not loop.first %}, {% endif %}{{ socialProfile.social.name }} - {{ socialProfile.link }}{% endfor %}</p>
-                    <p class="card-text"><small class="text-muted">3 marques</small></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <h2>Mes annonces</h2>
-    <div class="list-group">
-        {% for announcement in announcements %}
+
+<div class="container-md ">
+    <div class="row profile">
+		<div class="col-md-3">
+            {% include 'partials/_profile_sidebar.html.twig' %}
+			
+		</div>
+		<div class="col-md-9">
+            <div class="profile-content">
+                <h2 class="mb-5 text-align-center">Bonjour {{ user.username }}, voici la liste de vos annonces favorites</h2>
+			    {% for announcement in user.announcements %}
             <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="list-group-item list-group-item-action my-1">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ announcement.title }}</h5>
@@ -30,10 +31,11 @@
                 {% for category in announcement.categories %}
                     <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
                 {% endfor %}
-                <small class="text-muted">Ajoutée par {{ announcement.user.username }}</small>
-                <button class="btn btn-primary float-right" href="#">Add to favorites</button>
             </a>
         {% endfor %}
-    </div>
+            </div>
+		</div>
+	</div>
 </div>
+
 {% endblock %}
