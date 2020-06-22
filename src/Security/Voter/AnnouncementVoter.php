@@ -28,12 +28,12 @@ class AnnouncementVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'edit':
-                if ($user == $announcement->getUser()) {
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $announcement->getUser()) {
                     return true;
                 }
                 break;
             case 'delete':
-                if ($user == $announcement->getUser()) {
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $announcement->getUser()) {
                     return true;
                 }
                 break;

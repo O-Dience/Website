@@ -28,12 +28,12 @@ class UserVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'edit':
-                if ($user == $userToCompare) {
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userToCompare) {
                     return true;
                 }
                 break;
             case 'dashboard':
-                if ($user == $userToCompare) {
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userToCompare) {
                     return true;
                 }
                 break;
