@@ -57,19 +57,6 @@ class InfluencerType extends AbstractType
             ->add(
                 'birthdate', 
                 BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de naissance"],)
-            ->add('picture', FileType::class, [
-                'label' => 'Photo de profil',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'image/*',
-                        ],
-                    ])
-                ],
-            ])
             ->add('categories', EntityType::class, [
                 'multiple'=>true,
                 'class' => Category::class,
