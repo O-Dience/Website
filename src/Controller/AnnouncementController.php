@@ -27,9 +27,9 @@ class AnnouncementController extends AbstractController
 
         // If search is done, we try to find a match by title, then if no match, find by content
         $search = $request->query->get("search", null);
-        if ($search){
+        if ($search) {
             $announcements = $announcementRepository->searchByTitle($search);
-            if(!$announcements){
+            if (!$announcements) {
                 $announcements = $announcementRepository->searchByContent($search);
             }
         }
@@ -37,7 +37,7 @@ class AnnouncementController extends AbstractController
         $categories = $categoryRepository->findAll();
         $socialNetworks = $socialNetworkRepository->findAll();
         return $this->render('announcement/list.html.twig', [
-            'announcements' => $announcements, 'categories'=>$categories, 'socialNetworks'=> $socialNetworks
+            'announcements' => $announcements, 'categories' => $categories, 'socialNetworks' => $socialNetworks
         ]);
     }
 
@@ -53,9 +53,9 @@ class AnnouncementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
-            $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picto')->getData(), 'image_announcement')){
-            $announcement->setImage($imageName);
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "image_announcement");
+            if ($imageName) {
+                $announcement->setImage($imageName);
             };
 
             $announcement->setUser($this->getUser());
@@ -85,7 +85,7 @@ class AnnouncementController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Announcement $announcement): Response
+    public function edit(Request $request, Announcement $announcement, ImageUploader $imageUploader): Response
     {
 
         $this->denyAccessUnlessGranted('edit', $announcement);
@@ -94,10 +94,15 @@ class AnnouncementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "image_announcement");
+            if ($imageName) {
+                $announcement->setImage($imageName);
+            };
             $announcement->setUpdatedAt(new \DateTime());
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('announcement_show', ['id'=> $announcement->getId()]);
+            return $this->redirectToRoute('announcement_show', ['id' => $announcement->getId()]);
         }
 
         return $this->render('announcement/edit.html.twig', [
@@ -112,8 +117,8 @@ class AnnouncementController extends AbstractController
     public function delete(Request $request, Announcement $announcement): Response
     {
         $this->denyAccessUnlessGranted('delete', $announcement);
-        
-        if ($this->isCsrfTokenValid('delete'.$announcement->getId(), $request->request->get('_token'))) {
+
+        if ($this->isCsrfTokenValid('delete' . $announcement->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($announcement);
             $entityManager->flush();

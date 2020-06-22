@@ -38,8 +38,8 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
-            $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picto')->getData(), "category_picto")){
+            $imageName = $imageUploader->moveFile($form->get('picto')->getData(), "category_picto");
+            if ($imageName) {
                 $category->setPicto($imageName);
             };
 
@@ -75,6 +75,11 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->moveFile($form->get('picto')->getData(), "category_picto");
+            if ($imageName) {
+                $category->setPicto($imageName);
+            };
 
             $this->getDoctrine()->getManager()->flush();
 
@@ -92,7 +97,7 @@ class CategoryController extends AbstractController
      */
     public function delete(Request $request, Category $category): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();

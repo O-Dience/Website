@@ -46,6 +46,7 @@ class UserController extends AbstractController
     public function edit(User $user,  Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $this->denyAccessUnlessGranted('edit', $user);
+        
         if ( in_array( "ROLE_INFLUENCER", $user->getRoles() ) ){
             $form = $this->createForm(InfluencerType::class, $user);
         }
@@ -70,7 +71,7 @@ class UserController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user');
+            return $this->redirectToRoute('user_show');
         }
 
         return $this->render('user/edit.html.twig', [
