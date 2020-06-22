@@ -13,7 +13,7 @@
       </li> #}
       {% if 'ROLE_INFLUENCER' in app.user.roles %}
       <li class="nav-item {{ ( app.request.get('_route') == 'announcement_list') ? 'active' : '' }}">
-        <a class="nav-link " href="{{path('user_list', {'role': 'marque'})}}">Listes des annonces</a>
+        <a class="nav-link" href="{{path('announcement_list')}}">Listes des annonces</a>
       </li>
       <li class="nav-item {{ ( app.request.get('_route') == 'user_list') ? 'active' : '' }}">
         <a class="nav-link" href="{{path('user_list', {'role': 'marque'})}}">Listes des marques</a>
