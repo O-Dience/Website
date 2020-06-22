@@ -37,3 +37,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, roles: ROLE_ANONYMOUS }
+        - { path: ^/(marque|influenceur), roles: [ROLE_INFLUENCER, ROLE_BRAND] }
+        - { path: ^/profil, roles: [ROLE_INFLUENCER, ROLE_BRAND] }
+        - { path: ^/dashboard, roles: [ROLE_INFLUENCER, ROLE_BRAND] }
+        - { path: ^/annonce, roles: [ROLE_INFLUENCER, ROLE_BRAND] }
