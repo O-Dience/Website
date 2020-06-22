@@ -3,20 +3,37 @@
 {% block title %}{{ parent() }} - {{ influencer.username }} - Tableau de bord{% endblock %}
 
 {% block body %}
-<div>
-    <h1>{{ influencer.username }}</h1>
-    {% for socialProfile in influencer.userSocials %} <span>{% if not loop.first %}, {% endif %}{{ socialProfile.social.name }} - {{ socialProfile.link }}</span> {% endfor %}
-    <h2>Mes annonces</h2>
-    {% for announcement in announcements %}
-        <div>
-            <h2><a href="{{ path('announcement_show', {id:announcement.id }) }}">{{ announcement.title }}</a></h2>
-
-            {% for category in announcement.categories %}
-                {% if not loop.first %}, {% endif %}<em>{{ category.label }}</em>
-            {% endfor %}
-            Ajoutée par {{ announcement.user.username }} le {{ announcement.createdAt|date('d/m/Y') }}
-            <a href="#">Add to favorites</a>
+<div class="container">
+    <div class="card user-card mb-3 mx-auto my-2">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="https://via.placeholder.com/150" class="card-img" alt="avatar">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body text-lg-left text-center">
+                    <h2 class="card-title">{{ influencer.username }}</h2>
+                    <p class="card-text">{% for socialProfile in influencer.userSocials %}{% if not loop.first %}, {% endif %}{{ socialProfile.social.name }} - {{ socialProfile.link }}{% endfor %}</p>
+                    <p class="card-text"><small class="text-muted">3 marques</small></p>
+                </div>
+            </div>
         </div>
-    {% endfor %}
+    </div>
+    <h2>Mes annonces</h2>
+    <div class="list-group">
+        {% for announcement in announcements %}
+            <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="list-group-item list-group-item-action my-1">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ announcement.title }}</h5>
+                    <small class="text-muted">{{ announcement.createdAt|date('d/m/Y') }}</small>
+                </div>
+                <p class="mb-1">{{ announcement.content }}</p>
+                {% for category in announcement.categories %}
+                    <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
+                {% endfor %}
+                <small class="text-muted">Ajoutée par {{ announcement.user.username }}</small>
+                <button class="btn btn-primary float-right" href="#">Add to favorites</button>
+            </a>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

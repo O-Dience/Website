@@ -19,3 +19,7 @@ h5{
 .main__card{
   margin-top: 20vh;
 }
+
+.user-card {
+  max-width: 31.25rem;
+}
