@@ -37,3 +37,16 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/influenceur, roles: [ROLE_INFLUENCER, ROLE_BRAND] }
+        - { path: ^/marque, roles: ROLE_INFLUENCER }
+        - { path: ^/profil, roles: [ROLE_INFLUENCER, ROLE_BRAND] } # route user_edit et user_delete
+        - { path: ^/dashboard, roles: [ROLE_INFLUENCER, ROLE_BRAND] }
+        - { path: ^/annonce/liste, roles: ROLE_INFLUENCER }
+        - { path: ^/annonce/\d+, roles: [ROLE_INFLUENCER, ROLE_BRAND] }
+        - { path: ^/annonce, roles: ROLE_BRAND }
+        - { path: ^/categorie, roles: ROLE_ADMIN }
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_INFLUENCER, ROLE_BRAND]
