@@ -31,8 +31,8 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
-            $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picture')->getData(), "avatar_user")){
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
+            if($imageName){
                 $user->setPicture($imageName);
             };
 
@@ -50,7 +50,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register_influencer.html.twig', [
@@ -70,8 +70,8 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
-            $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picto')->getData(), "avatar_user")){
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
+            if($imageName){
                 $user->setPicture($imageName);
             };
 
@@ -89,7 +89,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register_brand.html.twig', [

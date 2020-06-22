@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
@@ -27,6 +28,15 @@ class InfluencerType extends AbstractType
             ->add('username', TextType::class, ['constraints'=>[ new NotBlank([
                 'message'=> 'Veuillez saisir un nom d\'utilisateur'
             ])],'label'=>'Nom d\'utilisateur'])
+            ->add('pictureFile', FileType::class, [
+                'label' => 'Avatar',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [new Image()]
+            ])
+            ->add(
+                'birthdate', 
+                BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de naissance"],)
             ->add('email', EmailType::class, ['label'=>'Votre e-mail'])
             ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,

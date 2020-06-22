@@ -53,8 +53,8 @@ class AnnouncementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
-            $imageName = $imageUploader->getRandomFileName('jpg');
-            if ($imageUploader->moveFile($form->get('picto')->getData(), 'image_announcement')) {
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "image_announcement");
+            if ($imageName) {
                 $announcement->setImage($imageName);
             };
 
@@ -94,10 +94,9 @@ class AnnouncementController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
-            if ($imageUploader->moveFile($form->get('picture')->getData(), "avatar_user")) {
-                $imageName = $imageUploader->getRandomFileName('jpg');
+            // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "image_announcement");
+            if ($imageName) {
                 $announcement->setImage($imageName);
             };
             $announcement->setUpdatedAt(new \DateTime());
