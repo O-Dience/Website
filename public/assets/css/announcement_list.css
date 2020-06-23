@@ -21,6 +21,14 @@
     border-bottom : 2px solid rgba(97, 203, 255, 0.65);
 }
 
+.well, a {
+    color:white;
+}
+
+.weel, a:hover {
+    color: white;
+}
+
 body {
 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 font-size: 14px;

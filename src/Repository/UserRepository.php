@@ -52,6 +52,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $query->execute();
     }
 
+    public function findByInfluencerId($id)
+    {
+        /*return $this->createQueryBuilder('announcement')
+            ->leftJoin('announcement.likedByUsers', 'user')
+            ->where('user.favorites = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->execute();*/
+        $qb = $this->createQueryBuilder('user')
+            ->where("user.id = :id")
+            ->setParameter('id', $id)       
+            ->leftJoin('user.favorites', 'fav')
+            ->addSelect('fav')
+            ->getQuery()
+            ->execute();
+        return $qb;
+    }
+
+
+
 
 /*     public function findUserFavoriteAnnouncements($id)
     {

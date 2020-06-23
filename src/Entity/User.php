@@ -83,11 +83,11 @@ class User implements UserInterface
      */
     private $announcements;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Announcement::class, inversedBy="likedByUsers")
-     * @ORM\JoinTable(name="user_favorite_announcement")
+     /**
+     * @ORM\OneToMany(targetEntity=AnnouncementFav::class, mappedBy="user", orphanRemoval=true)
      */
     private $favorites;
+    
 
 
     public function __construct()
@@ -97,9 +97,7 @@ class User implements UserInterface
         $this->announcements = new ArrayCollection();
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
-
-        $this->favorites = new ArrayCollection();
-        }
+            }
 
     public function getId(): ?int
     {
@@ -334,31 +332,25 @@ class User implements UserInterface
         return $this;
     }
 
+    
+
     /**
-     * @return Collection|Announcement[]
-     */
-    public function getFavorites(): Collection
+     * Get the value of favorites
+     */ 
+    public function getFavorites()
     {
         return $this->favorites;
     }
 
-    public function addFavorite(Announcement $favorite): self
+    /**
+     * Set the value of favorites
+     *
+     * @return  self
+     */ 
+    public function setFavorites($favorites)
     {
-        if (!$this->favorites->contains($favorite)) {
-            $this->favorites[] = $favorite;
-        }
+        $this->favorites = $favorites;
 
         return $this;
     }
-
-    public function removeFavorite(Announcement $favorite): self
-    {
-        if ($this->favorites->contains($favorite)) {
-            $this->favorites->removeElement($favorite);
-        }
-
-        return $this;
-    }
-
-    
 }
