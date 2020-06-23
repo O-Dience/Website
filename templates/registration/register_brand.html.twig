@@ -1,32 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - Inscription{% endblock %}
-
-{% block body %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
-
-    
-    <div class="container d-flex flex-column flex-md-row mt-md-3 rounded homepage__main__div homepage__main__div--brand">
-        <div class="col-12 col-md-6 my-auto">
-            <h1>Ce que nous vous proposons :</h1>
-            <p class="font-weight-bold">
-       Vous êtes une marque, vous souhaitez mettre en avant votre activité ou un produit en particulier? <br> Aliquam nec metus molestie, finibus mauris sit amet, ultrices orci. Nullam scelerisque commodo orci, ac luctus lectus consequat at. Aliquam ligula risus, aliquet sed tortor porta, convallis ullamcorper nibh. Curabitur condimentum, metus nec convallis malesuada, mauris velit malesuada sem, sit amet dignissim nisl odio eu eros. Phasellus suscipit luctus vulputate. Proin et sodales ex.
-            </p>
-        <a href="{{ path('app_register_brand') }}" class="badge badge-danger"> Oups, je veux plutôt m'enregistrer en tant qu'influenceur !</a> 
-        </div>
-        <div class="col-12 col-md-6 font-weight-bold">
-        <h3 class="text-center mt-3">Inscription</h3>
-       {{ form_start(brandForm) }}
-       {{ form_widget(brandForm) }}
-        <button type="submit" class="btn btn-danger m-3">Valider</button>
-        {{ form_end(brandForm) }}
-        </div>
-        </div>
+{% block title %}
+	{{ parent() }}
+	- Inscription
 {% endblock %}
 
+{% block body %}
+	{% for flashError in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+	{% endfor %}
 
 
+	<div class="container d-flex flex-column flex-md-row mt-md-3 rounded homepage__main__div homepage__main__div--brand">
+		<div class="col-12 col-md-6 my-auto">
+			<h1>Ce que nous vous proposons :</h1>
+			<p class="font-weight-bold">
+				Vous êtes une marque, vous souhaitez mettre en avant votre activité ou un produit en particulier?
+				<br>
+				Aliquam nec metus molestie, finibus mauris sit amet, ultrices orci. Nullam scelerisque commodo orci, ac luctus lectus consequat at. Aliquam ligula risus, aliquet sed tortor porta, convallis ullamcorper nibh. Curabitur condimentum, metus nec convallis malesuada, mauris velit malesuada sem, sit amet dignissim nisl odio eu eros. Phasellus suscipit luctus vulputate. Proin et sodales ex.
+			</p>
+			<a href="{{ path('app_register_brand') }}" class="badge badge-danger">
+				Oups, je veux plutôt m'enregistrer en tant qu'influenceur !</a>
+		</div>
+		<div class="col-12 col-md-6 font-weight-bold text-center">
+			<h3 class="text-center mt-3">Inscription</h3>
+			<div class="text-right">
+				{{ form_start(brandForm) }}
+				{{ form_widget(brandForm) }}
+			</div>
+			<button type="submit" class="btn btn-danger m-3">Valider</button>
+			{{ form_end(brandForm) }}
 
-
+		</div>
+	</div>
+{% endblock %}
