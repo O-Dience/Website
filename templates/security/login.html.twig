@@ -2,41 +2,34 @@
 
 {% block title %}Se connecter{% endblock %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"/>
+<link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
+{% endblock %}
 {% block body %}
-<form method="post">
+<form method="post" class="px-0">
+    <div><h1>Connexion</h1></div>
     {% if error %}
-        <div class="alert alert-danger mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger mx-2 mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-
     {% if app.user %}
         <div class="mb-3">
             Connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
     {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-    <label for="inputPassword">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
+    <div class="input-group px-2 my-2">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
         </div>
-    #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
+        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email">
+    </div>
+    <div class="input-group px-2 my-2">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-key icon"></i></span>
+        </div>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe">
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-off"></span> Se connecter</button>
 </form>
 {% endblock %}
