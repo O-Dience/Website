@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 
 class AnnouncementType extends AbstractType
 {
@@ -18,7 +19,12 @@ class AnnouncementType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
-            ->add('image', FileType::class, ['required' => false],)
+            ->add('pictureFile', FileType::class, [
+                'label' => 'Image d\'illustration',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [new Image()]
+            ])
             ->add('socialNetworks', EntityType::class, [
                 'multiple'=>true,
                 'class' => SocialNetwork::class,

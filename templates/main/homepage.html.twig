@@ -6,31 +6,32 @@
 {% endblock %}
 
 {% block body %}
-		<div class="container-fluid d-flex flex-column align-items-center">
-  <h1 class= "d-none d-md-block">A vot' service m'sieurs, dames !</h1>
-    <div class="d-flex justify-content-around">
-      
-      <div class="card d-none d-md-block col-5" >
-        <div class="card-body text-center  ">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">O'dience propose une plateforme unique pour mettre en relation entreprises et micro-influenceurs pour centraliser l'information et rendre plus efficace  les campagnes marketing sur tous les réseaux sociaux</p>
-          <div class=" text-center">
-          <a href="{{ path('app_register_influencer') }}" class="btn btn-primary m-3">Je suis un influenceur</a> 
-        </div>
-      </div>
-    </div>
-
-    <div class="card d-none d-md-block col-5" >
-      <div class="card-body text-center">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">O'dience propose une plateforme unique pour mettre en relation entreprises et micro-influenceurs pour centraliser l'information et rendre plus efficace  les campagnes marketing sur tous les réseaux sociaux</p>
-        <div class="text-center">
-        <a href="{{ path('app_register_brand') }}" class="btn btn-primary m-3">Je suis une entreprise</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+	<div class="container-fluid d-flex flex-column align-items-center h-100 homepage__main__div">
+		<h1 class="d-none d-md-block my-auto">A vot' service m'sieurs, dames !</h1>
+		<!-- Desktop Version -->
+		<div class="d-flex justify-content-around my-auto">
+			<div class="card d-none d-md-block col-5 text-info">
+				<div class="card-body text-center  ">
+					<h5 class="card-title">Influenceur</h5>
+					<p class="card-text">O'dience propose une plateforme unique pour mettre en relation entreprises et micro-influenceurs pour centraliser l'information et rendre plus efficace  les campagnes marketing sur tous les réseaux sociaux</p>
+					<div class=" text-center">
+						<a href="{{ path('app_register_influencer') }}" class="btn btn-info m-3">Je m'inscris</a>
+					</div>
+				</div>
+			</div>
+			<div class="card d-none d-md-block col-5 text-danger">
+				<div class="card-body text-center">
+					<h5 class="card-title">Entreprise</h5>
+					<p class="card-text">O'dience propose une plateforme unique pour mettre en relation entreprises et micro-influenceurs pour centraliser l'information et rendre plus efficace  les campagnes marketing sur tous les réseaux sociaux</p>
+					<div class="text-center">
+						<a href="{{ path('app_register_brand') }}" class="btn btn-danger m-3">Je m'inscris</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Desktop Version -->
+	<!-- Mobile Version -->
 	<div class="container-fluid d-flex flex-column align-items-center">
 		<div class="card main__card d-md-none">
 			<div class="card-body text-center">
@@ -42,5 +43,5 @@
 				</div>
 			</div>
 		</div>
-
-		{% endblock %}
+		<!-- /Mobile Version -->
+	{% endblock %}
