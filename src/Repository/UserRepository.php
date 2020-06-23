@@ -52,7 +52,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $query->execute();
     }
 
-
+  
 /*     public function findUserFavoriteAnnouncements($id)
     {
         return $this->createQueryBuilder('user')

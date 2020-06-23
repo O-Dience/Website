@@ -14,28 +14,33 @@
 
 <div class="container-md ">
     <div class="row profile">
-		<div class="col-md-3">
+        <div class="col-md-3">
             {% include 'partials/_profile_sidebar.html.twig' %}
-			
-		</div>
-		<div class="col-md-9">
+        </div>
+        <div class="col-md-9">
             <div class="profile-content">
-                <h2 class="mb-5 text-align-center">Bonjour {{ user.username }}, voici la liste de vos annonces favorites</h2>
-			    {% for announcement in user.announcements %}
-            <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="list-group-item list-group-item-action my-1">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ announcement.title }}</h5>
-                    <small class="text-muted">{{ announcement.createdAt|date('d/m/Y') }}</small>
+                <h2 class="mb-5 text-align-center">Bonjour {{ user.username }}, voici la liste de vos annonces favorites
+                </h2>
+                {% for favorite in favorites %}
+                <div class="mb-2">
+                    <a href="{{ path('announcement_show', {id:favorite.announcement.id }) }}"
+                        class="list-group-item list-group-item-action my-1">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ favorite.announcement.title }}</h5>
+                            <small class="text-muted">{{ favorite.announcement.createdAt|date('d/m/Y') }}</small>
+                           
+    *
+                        </div>
+                        <p class="mb-1">{{ favorite.announcement.content }}</p>
+                        {% for category in favorite.announcement.categories %}
+                        <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
+                        {% endfor %}
+                    </a>
                 </div>
-                <p class="mb-1">{{ announcement.content }}</p>
-                {% for category in announcement.categories %}
-                    <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
                 {% endfor %}
-            </a>
-        {% endfor %}
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
