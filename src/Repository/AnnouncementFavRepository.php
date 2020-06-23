@@ -47,4 +47,22 @@ class AnnouncementFavRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByInfluencerId($id)
+    {
+        /*return $this->createQueryBuilder('announcement')
+            ->leftJoin('announcement.likedByUsers', 'user')
+            ->where('user.favorites = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->execute();*/
+        $qb = $this->createQueryBuilder('announcementFav')
+            ->where('announcementFav.user = :id')
+            ->setParameter('id', $id)
+            ->leftJoin('announcementFav.announcement', 'announcement')
+            ->addSelect('announcement')
+            ->getQuery()
+            ->execute();
+        return $qb;
+    }
 }

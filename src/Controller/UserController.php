@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Form\BrandType;
 use App\Entity\Announcement;
 use App\Form\InfluencerType;
+use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -114,14 +115,14 @@ class UserController extends AbstractController
     /**
      * @Route("/dashboard/{id}", name="user_dashboard", methods={"GET"}, requirements={"id": "\d+"})
      */
-    public function userDashboard(User $user, UserRepository $userRepo)
+    public function userDashboard(User $user, AnnouncementFavRepository $announcementFavRepo, AnnouncementRepository $annoucementRepo)
     {
         $this->denyAccessUnlessGranted('dashboard', $user);
         if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             $influencer = $user;
-            $announcements = $userRepo->findByInfluencerId($influencer->getId());
+            $favorites = $announcementFavRepo->findByInfluencerId($influencer->getId());
             return $this->render('user/influencer/dashboard.html.twig', [
-                'announcements'=>$announcements,
+                'favorites'=>$favorites,
                 'user' => $user
             ]);
         }
