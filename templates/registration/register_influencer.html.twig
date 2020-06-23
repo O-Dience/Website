@@ -7,20 +7,23 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <h1>Ce qu'on peut faire pour toi :</h1>
-        <p>
-        Tu aimes partager tes passions avec tes abonnés? Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tincidunt purus, vitae tempus mi. Aenean ligula tortor, dictum id laoreet ac, facilisis id massa. Cras aliquet odio eu facilisis maximus. Aliquam nec metus molestie, finibus mauris sit amet, ultrices orci. Nullam scelerisque commodo orci, ac luctus lectus consequat at. Aliquam ligula risus, aliquet sed tortor porta, convallis ullamcorper nibh. Curabitur condimentum, metus nec convallis malesuada, mauris velit malesuada sem, sit amet dignissim nisl odio eu eros. Phasellus suscipit luctus vulputate. Proin et sodales ex.
-        </p>
-
-        <h3>Inscription</h3>
-
+    
+    <div class="container d-flex flex-column flex-md-row mt-md-3 rounded homepage__main__div homepage__main__div--influencer">
+        <div class="col-12 col-md-6 my-auto">
+            <h1>Ce qu'on peut faire pour toi :</h1>
+            <p class="font-weight-bold">
+            Tu aimes partager tes passions avec tes abonnés? <br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tincidunt purus, vitae tempus mi. Aenean ligula tortor, dictum id laoreet ac, facilisis id massa. Cras aliquet odio eu facilisis maximus. Aliquam nec metus molestie, finibus mauris sit amet, ultrices orci. Nullam scelerisque commodo orci, ac luctus lectus consequat at. Aliquam ligula risus, aliquet sed tortor porta, convallis ullamcorper nibh. Curabitur condimentum, metus nec convallis malesuada, mauris velit malesuada sem, sit amet dignissim nisl odio eu eros. Phasellus suscipit luctus vulputate. Proin et sodales ex.
+            </p>
+            <a href="{{ path('app_register_brand') }}" class="badge badge-info">Oups, je veux plutôt m'enregistrer en tant qu'entreprise !</a>
+        </div>
+        <div class="col-12 col-md-6 font-weight-bold">
+        <h3 class="text-center mt-3">Inscription</h3>
        {{ form_start(influencerForm) }}
        {{ form_widget(influencerForm) }}
-        <button type="submit" class="btn btn-primary m-3">Valider</button>
+        <button type="submit" class="btn btn-info m-3">Valider</button>
         {{ form_end(influencerForm) }}
-
-
-        <a href="{{ path('app_register_brand') }}">Oups ! Je suis une marque !</a> 
+        </div>
+        </div>
 {% endblock %}
 
 

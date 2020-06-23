@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -26,10 +27,17 @@ class BrandType extends AbstractType
                 'message'=> 'Veuillez saisir un nom d\'utilisateur'
             ])],'label'=>'Nom de votre entreprise'])
             ->add('pictureFile', FileType::class, [
-                'label' => 'Image',
+                'label' => 'Photo de profil',
                 'mapped' => false,
                 'required' => false,
-                'constraints' => [new Image()]
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/*',
+                        ],
+                    ])
+                ],
             ])
             ->add(
                 'birthdate', 
