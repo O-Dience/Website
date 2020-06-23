@@ -8,6 +8,7 @@ use App\Form\BrandType;
 use App\Entity\Announcement;
 use App\Form\InfluencerType;
 use App\Repository\AnnouncementRepository;
+use App\Service\ImageUploader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +30,7 @@ class UserController extends AbstractController
             $role = "brand";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_BRAND"]');
         }
-        else{
+        elseif($role === "user"){
             $role = "user";
             $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         }
@@ -43,7 +44,7 @@ class UserController extends AbstractController
     /**
      * @Route("/profil/{id}/modifier", name="user_edit", requirements={"role": "^(marque|influenceur)", "id": "\d+"}, methods={"GET","POST"})
      */
-    public function edit(User $user,  Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(User $user,  Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader): Response
     {
         $this->denyAccessUnlessGranted('edit', $user);
         
@@ -62,6 +63,11 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
         {
 
+            $imageName = $imageUploader->getRandomFileName('jpg');
+            if($imageUploader->moveFile($form->get('picture')->getData(), "avatar_user")){
+                $user->setPicture($imageName);
+                
+            };
             $password = $form->get('password')->getData();
             if ($password != null)
             {
