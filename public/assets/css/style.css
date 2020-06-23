@@ -32,3 +32,11 @@ h5 {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 3);
   color: white;
 }
+
+.homepage__main__div--influencer {
+  color: #17A2B8;
+}
+
+.homepage__main__div--brand {
+  color: #DA3343;
+}

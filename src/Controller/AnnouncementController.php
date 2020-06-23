@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Announcement;
+use App\Entity\User;
 use App\Form\AnnouncementType;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
@@ -63,7 +64,7 @@ class AnnouncementController extends AbstractController
             $entityManager->persist($announcement);
             $entityManager->flush();
 
-            return $this->redirectToRoute('announcement_list');
+            return $this->redirectToRoute('user_dashboard', ['id' => $this->getUser()->getId()]);
         }
 
         return $this->render('announcement/new.html.twig', [
