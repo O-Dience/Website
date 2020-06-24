@@ -51,6 +51,7 @@ easy_admin:
             form:
                 fields:
                     - { property: 'label'}
+                    - { property: 'picto', type: 'file'}
         SocialNetwork:
             class: App\Entity\SocialNetwork
             label: 'Réseaux Sociaux'
