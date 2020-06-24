@@ -98,9 +98,9 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
 
-        let categoryFilter = '';
-        let networkFilter = '';
-
+    let categoryFilter = '';
+    let networkFilter = '';
+        
     function onClickBtnFav(evt){
         evt.preventDefault()
         const url = this.href
@@ -108,71 +108,60 @@
         let favlink = evt.currentTarget;
         let favtext = this.querySelector('.favtext');
 
-
-
-
-
-
         console.log(favlink);
         axios.get(url).then(function(response){
 
             if(icone.classList.contains('fa-heart-o')){
                 icone.classList.replace('fa-heart-o', 'fa-heart')
                 favtext.innerHTML = "Retirer des favoris";
-
-
-
-
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
                 favtext.innerHTML = "Ajouter aux favoris";
             }
-
         });
     }
 
     // Filters announcements by category
     function filterByCategory(evt) {
-        let categoryChosen = evt.currentTarget.value;
-        document.querySelectorAll('.panel').forEach(function(announcement){
-            let found = false;
-            if (!categoryChosen) {
-                found = true;
-            }
-            else {
-                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
-                    if (categoryTag.dataset.categoryId == categoryChosen) {
-                        found = true;
-                    }
-                })
-            }
-            if (found) {
-                announcement.style.display = 'flex';
-                announcement.nextElementSibling.style.display = 'flex';
-            }
-            else {
-                announcement.style.display = 'none';
-                announcement.nextElementSibling.style.display = 'none';
-            }
-        })
+        categoryFilter = evt.target.value;
+        updateDisplay();
     }
 
     // Filters announcements by social network
     function filterByNetwork(evt) {
-        let networkChosen = evt.currentTarget.value;
+        networkFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Updates display of announcements according to the filters
+    function updateDisplay() {
         document.querySelectorAll('.panel').forEach(function(announcement){
-            let found = false;
-            if (!networkChosen) {
-                found = true;
+            let foundCategory = false;
+            let foundNetwork = false;
+            
+            if (categoryFilter == '') {
+                foundCategory = true;
             }
             else {
-                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
-                    if (network.dataset.networkId == networkChosen) {
-                        found = true;
+                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryFilter) {
+                        foundCategory = true;
                     }
                 })
             }
-            if (found) {
+
+            if (networkFilter == '') {
+                foundNetwork = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
+                    if (network.dataset.networkId == networkFilter) {
+                        foundNetwork = true;
+                    }
+                })
+            }
+            
+            if (foundCategory && foundNetwork) {
                 announcement.style.display = 'flex';
                 announcement.nextElementSibling.style.display = 'flex';
             }
@@ -183,11 +172,11 @@
         })
     }
 
-        document.getElementById('category_label').addEventListener('change', filterByCategory);
-        document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
-        document.querySelectorAll('a.js-fav').forEach(function(link){
-            link.addEventListener('click', onClickBtnFav)
-        })
+    document.getElementById('category_label').addEventListener('change', filterByCategory);
+    document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
+    document.querySelectorAll('a.js-fav').forEach(function(link){
+        link.addEventListener('click', onClickBtnFav)
+    })
     </script>
 {% endblock %}
            
