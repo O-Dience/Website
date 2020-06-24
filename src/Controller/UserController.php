@@ -6,10 +6,13 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Form\BrandType;
 use App\Entity\Announcement;
+use App\Entity\UserFav;
 use App\Form\InfluencerType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
-use App\Repository\UserRepository;
+use App\Repository\UserFavRepository;
+use App\Service\ImageUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -143,5 +146,46 @@ class UserController extends AbstractController
         {
             throw $this->createNotFoundException('Utilisateur introuvable');
         }
+    }
+
+/**
+     * 
+     * add or remove an announcement to the favorites
+     * 
+     * @Route("user/{id}/favoris", name="user_favorite")
+     *
+     * @param User $userLiked
+     * @param ObjectManager $manager
+     * @param UserFavRepository $favRepo
+     * @return Response
+     */
+    public function favorites(User $userLiked, EntityManagerInterface $manager, UserFavRepository $favRepo): Response
+    {
+        $user =$this->getUser();
+
+        if(!$user){
+
+        return $this->json(['code'=>403, 'message'=>'Unauthorizer'], 403);
+
+        }
+        if ($userLiked->isFavByUser($user)){
+            $favorite = $favRepo->findOneBy([
+                'userLiked'=>$userLiked,
+                'userLike'=>$user
+            ]);
+           
+            $manager->remove($favorite);
+            $manager->flush();
+
+            return $this->json(['code'=>200, 'message'=> 'L\'utilisateur '.  $userLiked->getUsername() . ' a été retirée de vos favoris !'], 200);
+        }
+
+        $favorite = new UserFav();
+        $favorite->setUserLiked($userLiked);
+        $favorite->setUserLike($user);
+
+        $manager->persist($favorite);
+        $manager->flush();
+        return $this->json(['code'=>200, 'message'=> 'L\'utilisateur '. $userLiked->getUsername() . ' a été ajoutée à vos favoris !'], 200);
     }
 }

@@ -82,9 +82,9 @@
             {# <a href="#" class="col-md-4 col-xs-4 well"><i class="fa fa-envelope fa-3"></i> Envoyer un message</a> #}
             <a href="{{path('announcement_favorite', {'id': announcement.id}) }}" class="col-md-6 col-xs-3 well js-fav">
             {% if app.user and announcement.isFavByUser(app.user) %}
-                <i class="fa fa-heart fa-lg "></i> 
+                <i class="fa fa-heart fa-lg "></i> <span class="favtext">Dans vos favoris</span>
             {% else %}
-            <i class="fa fa-heart-o fa-lg "></i> 
+            <i class="fa fa-heart-o fa-lg "></i> <span class="favtext">Ajouter à vos favoris</span>
             {% endif %}
             </a>
         </div>
@@ -102,12 +102,27 @@
         evt.preventDefault()
         const url = this.href
         const icone = this.querySelector('i');
+        let favlink = evt.currentTarget;
+        let favtext = this.querySelector('.favtext');
+
+
+
+
+
+
+        console.log(favlink);
         axios.get(url).then(function(response){
 
             if(icone.classList.contains('fa-heart-o')){
                 icone.classList.replace('fa-heart-o', 'fa-heart')
+                favtext.innerHTML = "Retirer des favoris";
+
+
+
+
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
+                favtext.innerHTML = "Ajouter aux favoris";
             }
 
         });

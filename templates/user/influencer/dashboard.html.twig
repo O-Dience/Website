@@ -17,6 +17,7 @@
         <div class="col-md-3">
             {% include 'partials/_profile_sidebar.html.twig' %}
         </div>
+
         <div class="col-md-9">
             <div class="profile-content">
                 <h2 class="mb-5 text-align-center">Bonjour {{ user.username }}, voici la liste de vos annonces favorites
@@ -29,7 +30,6 @@
                             <h5 class="mb-1">{{ favorite.announcement.title }}</h5>
                             <small class="text-muted">{{ favorite.announcement.createdAt|date('d/m/Y') }}</small>
                            
-    
                         </div>
                         <p class="mb-1">{{ favorite.announcement.content }}</p>
                         {% for category in favorite.announcement.categories %}

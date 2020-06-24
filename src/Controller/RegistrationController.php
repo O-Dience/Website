@@ -10,6 +10,8 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -22,7 +24,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("influenceur", name="influencer", methods={"GET", "POST"})
      */
-    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader): Response
+    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(InfluencerType::class, $user);
@@ -50,6 +52,13 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
+            $email = (new Email())
+            ->from('contact.odience@gmail.com')
+            ->to($user->getEmail())
+            ->subject('Bienvenue sur O\'Dience')
+            ->html('<p>Vous êtes bien inscrit !</p>');
+            $mailer->send($email);
+
             return $this->redirectToRoute('app_login');
         }
 
@@ -61,7 +70,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("marque", name="brand", methods={"GET", "POST"})
      */
-    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader): Response
+    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(BrandType::class, $user);
@@ -88,6 +97,13 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
+
+            $email = (new Email())
+            ->from('contact.odience@gmail.com')
+            ->to($user->getEmail())
+            ->subject('Bienvenue sur O\'Dience')
+            ->html('<p>Vous êtes bien inscrit sur notre site !</p>');
+            $mailer->send($email);
 
             return $this->redirectToRoute('app_login');
         }
