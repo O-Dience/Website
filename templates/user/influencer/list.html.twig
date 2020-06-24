@@ -7,11 +7,6 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet" href="{{asset('assets/css/influencer_list.css')}}">
 {% endblock %}
-{% block javascripts %}
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{% endblock %}
-
 
 
 {% block body %}
@@ -30,7 +25,18 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <p><img class=" img-fluid" src="{{asset('assets/images/avatar_user/' ~ influencer.picture ) }}" alt="card image"></p>
+                                    <div>
                                     <h4 class="card-title">{{influencer.username}}</h4>
+                                      <a href="{{path('user_favorite', {'id': influencer.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                                            {% if app.user and influencer.isFavByUser(app.user) %}
+                                                <i class="fa fa-heart fa-lg "></i> 
+                                            {% else %}
+                                            <i class="fa fa-heart-o fa-lg "></i>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+
+
                                     <p class="card-text">
                                     {% for category in influencer.categories %}
                                     <span class="label label-info">{{ category.label }}</span>
@@ -43,7 +49,16 @@
                         <div class="backside">
                             <div class="card">
                                 <div class="card-body text-center mt-4">
+                                    <div>
                                     <h4 class="card-title">{{influencer.username}}</h4>
+                                      <a href="{{path('user_favorite', {'id': influencer.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                                            {% if app.user and influencer.isFavByUser(app.user) %}
+                                                <i class="fa fa-heart fa-lg "></i> 
+                                            {% else %}
+                                            <i class="fa fa-heart-o fa-lg "></i>
+                                            {% endif %}
+                                        </a>
+                                    </div>
                                     <p class="card-text">AJOUTER UNE DESCRIPTION / BIO DANS L'ENTITE USER ?</p>
                                     <a href="{{path('user_show', {id: influencer.id, role: 'influenceur'})}}" class="btn btn-primary btn-sm"><span class="text-white">Profil</span></a>
                                     <ul class="list-inline">
@@ -67,4 +82,36 @@
     </div>
 </section>
 <!-- Team -->
+{% endblock %}
+
+{% block javascripts %}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+    function onClickBtnFav(evt){
+        evt.preventDefault()
+        const url = this.href
+        const icone = this.querySelector('i');
+        let favlink = evt.currentTarget;
+
+        axios.get(url).then(function(response){
+
+            if(icone.classList.contains('fa-heart-o') ){
+                icone.classList.replace('fa-heart-o', 'fa-heart')
+
+
+            } else{
+                icone.classList.replace('fa-heart', 'fa-heart-o')
+            }
+
+        });
+    }
+
+        document.querySelectorAll('a.js-fav').forEach(function(link){
+            link.addEventListener('click', onClickBtnFav)
+        })
+    </script>
 {% endblock %}
