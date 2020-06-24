@@ -45,12 +45,12 @@
     	  <div class="d-flex justify-content-around mt-3">
                 {% for category in announcement.categories %}
                     
-                        <span class="badge badge-secondary"> {{category.label}}</span>
+                        <span class="badge badge-secondary" data-category-id="{{ category.id }}"> {{category.label}}</span>
                     
                 {% endfor %}
                 {% for network in announcement.socialNetworks %}
                     
-                        <span class="badge badge-secondary"> {{network.name}}</span>
+                        <span class="badge badge-secondary" data-network-id="{{ network.id }}"> {{network.name}}</span>
                     
                 {% endfor %}
             </div>
@@ -98,6 +98,9 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
 
+        let categoryFilter = '';
+        let networkFilter = '';
+
     function onClickBtnFav(evt){
         evt.preventDefault()
         const url = this.href
@@ -113,6 +116,60 @@
         });
     }
 
+    // Filters announcements by category
+    function filterByCategory(evt) {
+        let categoryChosen = evt.currentTarget.value;
+        document.querySelectorAll('.panel').forEach(function(announcement){
+            let found = false;
+            if (!categoryChosen) {
+                found = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryChosen) {
+                        found = true;
+                    }
+                })
+            }
+            if (found) {
+                announcement.style.display = 'flex';
+                announcement.nextElementSibling.style.display = 'flex';
+            }
+            else {
+                announcement.style.display = 'none';
+                announcement.nextElementSibling.style.display = 'none';
+            }
+        })
+    }
+
+    // Filters announcements by social network
+    function filterByNetwork(evt) {
+        let networkChosen = evt.currentTarget.value;
+        document.querySelectorAll('.panel').forEach(function(announcement){
+            let found = false;
+            if (!networkChosen) {
+                found = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
+                    if (network.dataset.networkId == networkChosen) {
+                        found = true;
+                    }
+                })
+            }
+            if (found) {
+                announcement.style.display = 'flex';
+                announcement.nextElementSibling.style.display = 'flex';
+            }
+            else {
+                announcement.style.display = 'none';
+                announcement.nextElementSibling.style.display = 'none';
+            }
+        })
+    }
+
+        document.getElementById('category_label').addEventListener('change', filterByCategory);
+        document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
         document.querySelectorAll('a.js-fav').forEach(function(link){
             link.addEventListener('click', onClickBtnFav)
         })
