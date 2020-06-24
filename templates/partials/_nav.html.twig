@@ -13,18 +13,18 @@
       </li> #}
       {% if 'ROLE_INFLUENCER' in app.user.roles %}
       <li class="nav-item {{ ( app.request.get('_route') == 'announcement_list') ? 'active' : '' }}">
-        <a class="nav-link" href="{{path('announcement_list')}}">Listes des annonces</a>
+        <a class="nav-link" href="{{path('announcement_list')}}">LISTE DES ANNONCES</a>
       </li>
       <li class="nav-item {{ ( app.request.get('_route') == 'user_list') ? 'active' : '' }}">
-        <a class="nav-link" href="{{path('user_list', {'role': 'marque'})}}">Listes des marques</a>
+        <a class="nav-link" href="{{path('user_list', {'role': 'marque'})}}">LISTE DES MARQUES</a>
       </li>
       {% elseif 'ROLE_BRAND' in app.user.roles %}
       <li class="nav-item {{ ( app.request.get('_route') == 'user_list') ? 'active' : '' }}">
-        <a class="nav-link" href="{{path('user_list', {'role': 'influenceur'})}}">Listes des influenceurs</a>
+        <a class="nav-link" href="{{path('user_list', {'role': 'influenceur'})}}">LISTE DES INFLUENCEURS</a>
       </li>
       {% endif %}
       <li class="nav-item {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : '' }}">
-        <a class="nav-link" href="{{path('user_dashboard', {'id': app.user.id})}}">Tableau de bord</a>
+        <a class="nav-link" href="{{path('user_dashboard', {'id': app.user.id})}}">TABLEAU DE BORD</a>
       </li>
     </ul>
     {% endif %}
