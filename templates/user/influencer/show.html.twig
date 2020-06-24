@@ -3,7 +3,7 @@
 {% block title %}
 	{{ parent() }}
 	-
-	{{ influencer.username }}
+	{{ user.username }}
 {% endblock %}
 
 {% block stylesheets %}
@@ -33,20 +33,18 @@
 						<div class="col-md-6 ml-auto mr-auto">
 							<div class="profile">
 								<div class="avatar">
-									<img src="{% ( user.picture ) ? { user.picture }: ''%}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+									<img src="{{ asset('assets/images/avatar_user/') }}{{ ( user.picture ) ?  user.picture : 'default-avatar.jpg' }}" alt="Circle Image" class="img-raised rounded-circle img-fluid">
 								</div>
 								<div class="name">
-									<h3 class="title">{{influencer.username}}</h3>
+									<h3 class="title">{{ user.username }}</h3>
 									<h6>Designer</h6>
-									<a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble">
-										<i class="fa fa-facebook"></i>
+									{% if user.userSocials %}
+									{% for social in user.userSocials %}
+									<a href="{{ social.link }}" class="btn btn-just-icon btn-link btn-dribbble">
+										<i class="fa fa-{{ social.social.name }}"></i>
 									</a>
-									<a href="#pablo" class="btn btn-just-icon btn-link btn-twitter">
-										<i class="fa fa-twitter"></i>
-									</a>
-									<a href="#pablo" class="btn btn-just-icon btn-link btn-pinterest">
-										<i class="fa fa-pinterest"></i>
-									</a>
+									{% endfor %}
+									{% endif %}
 								</div>
 							</div>
 						</div>
