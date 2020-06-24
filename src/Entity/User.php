@@ -87,6 +87,16 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=AnnouncementFav::class, mappedBy="user", orphanRemoval=true)
      */
     private $favorites;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLiked", orphanRemoval=true)
+     */
+    private $userFavs;
+
+      /**
+     * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLike", orphanRemoval=true)
+     */
+    private $userFavorites;
     
 
 
@@ -97,7 +107,9 @@ class User implements UserInterface
         $this->announcements = new ArrayCollection();
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
-            }
+
+        $this->userFavs = new ArrayCollection();
+       }
 
     public function getId(): ?int
     {
@@ -350,6 +362,72 @@ class User implements UserInterface
     public function setFavorites($favorites)
     {
         $this->favorites = $favorites;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserFav[]
+     */
+    public function getUserFavs(): Collection
+    {
+        return $this->userFavs;
+    }
+
+    public function addUserFav(UserFav $userFav): self
+    {
+        if (!$this->userFavs->contains($userFav)) {
+            $this->userFavs[] = $userFav;
+            $userFav->setUserLiked($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFav(UserFav $userFav): self
+    {
+        if ($this->userFavs->contains($userFav)) {
+            $this->userFavs->removeElement($userFav);
+            // set the owning side to null (unless already changed)
+            if ($userFav->getUserLiked() === $this) {
+                $userFav->setUserLiked(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+    public function isFavByUser(User $user): bool {
+        foreach($this->userFavs as $fav){
+            if($fav->getUserLike() === $user){
+                return true;
+            }
+           
+        }
+        return false;
+    }
+    
+    
+   
+
+    /**
+     * Get the value of userFavorites
+     */ 
+    public function getUserFavorites()
+    {
+        return $this->userFavorites;
+    }
+
+    /**
+     * Set the value of userFavorites
+     *
+     * @return  self
+     */ 
+    public function setUserFavorites($userFavorites)
+    {
+        $this->userFavorites = $userFavorites;
 
         return $this;
     }
