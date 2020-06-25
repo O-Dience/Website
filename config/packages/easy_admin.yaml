@@ -12,7 +12,8 @@ easy_admin:
                 fields:
                     [
                         { 
-                            property: 'status', 
+                            property: 'status',
+                            type: 'toggle', 
                             label: 'Statut',
                         },
                         { 
@@ -38,7 +39,7 @@ easy_admin:
             list:
                 fields: 
                     [
-                        'picto', 
+                        {property: 'pictoWithPath', type: 'image'}, 
                         'label', 
                         { property: 'announcements', label: 'Annonces liées' },
                         { property: 'users', label: 'Utilisateurs liés' },

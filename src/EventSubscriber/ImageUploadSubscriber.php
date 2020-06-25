@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Subscriber;
+namespace App\EventSubscriber;
 
 use App\Entity\Category;
 use App\Service\ImageUploader;
@@ -29,9 +29,7 @@ class ImageUploadSubscriber implements EventSubscriberInterface
     function postCategoryPicto(GenericEvent $event) {
 
         $entity = $event->getSubject();
-        dd($entity);
         $method = $event->getArgument('request')->getMethod();
-
         if (! $entity instanceof Category || $method !== Request::METHOD_POST) {
             return;
         }

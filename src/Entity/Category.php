@@ -80,16 +80,22 @@ class Category
         return $this;
     }
 
-    public function getPicto(): ?string
+    public function getPicto()
     {
         return $this->picto;
     }
 
-    public function setPicto(string $picto): self
+    public function setPicto($picto)
     {
         $this->picto = $picto;
 
         return $this;
+    }
+
+    public function getPictoWithPath()
+    {
+        //Set path for easyadmin
+        return 'assets/images/category_picto/'.$this->picto;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
