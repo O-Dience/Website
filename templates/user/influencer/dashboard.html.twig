@@ -19,7 +19,7 @@
                 <h2 class="mb-5 text-align-center">Bonjour {{ user.username }}, voici la liste de vos annonces favorites
                 </h2>
                 {% for favorite in favorites %}
-                <a href="{{path('user_favorite', {'id': favorite.user.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                <a href="{{path('announcement_favorite', {'id': favorite.announcement.id}) }}" class="col-md-6 col-xs-4 well js-fav">
                     {% if app.user and favorite.announcement.isFavByUser(app.user) %}
                     <i class="fa fa-heart fa-lg "></i> 
                     {% else %}
