@@ -65,9 +65,7 @@ class BrandEditType extends AbstractType
                 "by_reference" => false
             ]);
     
-        
     }   
-
 
     public function configureOptions(OptionsResolver $resolver)
     {
