@@ -29,7 +29,7 @@ class ImageUploadSubscriber implements EventSubscriberInterface
     function postCategoryPicto(GenericEvent $event) {
 
         $entity = $event->getSubject();
-        dump($entity);
+        dd($entity);
         $method = $event->getArgument('request')->getMethod();
 
         if (! $entity instanceof Category || $method !== Request::METHOD_POST) {
