@@ -20,10 +20,13 @@ easy_admin:
                             property: 'title', 
                             label: 'Titre' 
                         },
-                        'image',
+                        {
+                            property: 'imageWithPath',
+                            type: 'image',
+                            label: 'Illustration',
+                        }
                         { property: 'socialNetwork', label: 'Réseaux sociaux' },
                         { property: 'created_at', label: 'Créé le' },
-                        { property: 'updated_at', label: 'Mis à jour le' }
                     ]
                 actions:
                     - { name: 'edit', icon: 'pencil', label: false, css_class: 'btn btn-secondary' }
@@ -32,7 +35,6 @@ easy_admin:
                 fields:
                     - { property: 'title'}
                     - { property: 'content'}
-                    - { property: 'status'}
         Category:
             class: App\Entity\Category
             label: 'Catégories'
@@ -52,15 +54,15 @@ easy_admin:
             form:
                 fields:
                     - { property: 'label'}
-                    - { property: 'picto', type: 'file'}
+                    - { property: 'picto', type: 'file', type_options: { data_class: null } }
         SocialNetwork:
             class: App\Entity\SocialNetwork
             label: 'Réseaux Sociaux'
             list:
                 fields: 
                     [
+                        { property: 'pictoWithPath', type: 'image', label: 'Picto' },
                         { property: 'name', label: 'Nom' },
-                        'picto',
                         { property: 'announcements', label: 'Annonces liés' }
                     ]
                 actions:
@@ -69,17 +71,17 @@ easy_admin:
             form:
                 fields:
                     - { property: 'name' }
+                    - { property: 'picto', type: 'file', type_options: { data_class: null }}
         User:
             class: App\Entity\User
             label: Utilisateurs
             list:
                 fields: 
                     [
-                        { property: 'picture', label: 'Avatar' }, 
-                        'email', 
+                        { property: 'status', label: 'Statut', type: 'toggle' },
+                        { property: 'pictureWithPath', label: 'Avatar', type: 'image' },
                         { property: 'username', label: 'Utilisateur' }, 
-                        { property: 'roles', label: 'Rôles' }, 
-                        { property: 'status', label: 'Statut' }, 
+                        { property: 'roles', label: 'Rôles' },  
                         { property: 'created_at', label: 'Créé le' }, 
                         { property: 'updated_at', label: 'Mis à jour le' }
                     ]
@@ -89,8 +91,19 @@ easy_admin:
             form:
                 fields:
                     - { property: 'username' }
-                    - { property: 'roles' }
-                    - { property: 'status' }
+                    - { 
+                        property: 'roles',
+                        type: 'choice',
+                        type_options: {
+                            choices: {
+                                Administrateur: 'ROLE_ADMIN',
+                                Marque: 'ROLE_BRAND',
+                                Influenceur: 'ROLE_INFLUENCER',
+                                    },
+                            expanded: true,
+                            multiple: true
+                        }
+                        }
     design:
         menu:
 
