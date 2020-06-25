@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -44,23 +45,13 @@ class BrandEditType extends AbstractType
                 'birthdate', 
                 BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de création"],)
             ->add('email', EmailType::class, ['label'=>'Votre e-mail'])
-            ->add('password', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les deux mots de passe doivent être identiques.',
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Retapez votre mot de passe'],
                 'mapped' => false,
-                'required'=>false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'Votre mot de passe doit faire au moins 8 caractères',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ], 'label'=>'Mot de passe'
-                
+                'required' => false,
             ])
             ->add('categories', EntityType::class, [
                 'multiple'=>true,
