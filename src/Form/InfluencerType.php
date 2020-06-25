@@ -28,12 +28,6 @@ class InfluencerType extends AbstractType
             ->add('username', TextType::class, ['constraints'=>[ new NotBlank([
                 'message'=> 'Veuillez saisir un nom d\'utilisateur'
             ])],'label'=>'Nom d\'utilisateur'])
-            ->add('pictureFile', FileType::class, [
-                'label' => 'Avatar',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [new Image()]
-            ])
             ->add(
                 'birthdate', 
                 BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de naissance"],)
@@ -57,7 +51,7 @@ class InfluencerType extends AbstractType
             ->add(
                 'birthdate', 
                 BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de naissance"],)
-            ->add('picture', FileType::class, [
+            ->add('pictureFile', FileType::class, [
                 'label' => 'Photo de profil',
                 'mapped' => false,
                 'required' => false,

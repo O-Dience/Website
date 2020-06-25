@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Announcement;
+use App\Entity\AnnouncementFav;
 use App\Form\AnnouncementType;
+use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SocialNetworkRepository;
 use App\Service\ImageUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,7 +66,7 @@ class AnnouncementController extends AbstractController
             $entityManager->persist($announcement);
             $entityManager->flush();
 
-            return $this->redirectToRoute('announcement_list');
+            return $this->redirectToRoute('user_dashboard', ['id' => $this->getUser()->getId()]);
         }
 
         return $this->render('announcement/new.html.twig', [
@@ -125,5 +128,46 @@ class AnnouncementController extends AbstractController
         }
 
         return $this->redirectToRoute('announcement_index');
+    }
+
+    /**
+     * 
+     * add or remove an announcement to the favorites
+     * 
+     * @Route("/{id}/favoris", name="favorite")
+     *
+     * @param Announcement $announcement
+     * @param ObjectManager $manager
+     * @param AnnouncementFavRepository $favRepo
+     * @return Response
+     */
+    public function favorites(Announcement $announcement, EntityManagerInterface $manager, AnnouncementFavRepository $favRepo): Response
+    {
+        $user =$this->getUser();
+
+        if(!$user){
+
+        return $this->json(['code'=>403, 'message'=>'Unauthorizer'], 403);
+
+        }
+        if ($announcement->isFavByUser($user)){
+            $favorite = $favRepo->findOneBy([
+                'announcement'=>$announcement,
+                'user'=>$user
+            ]);
+            
+            $manager->remove($favorite);
+            $manager->flush();
+
+            return $this->json(['code'=>200, 'message'=> 'L\'annonce '.  $announcement->getTitle() . ' a été retirée de vos favoris !'], 200);
+        }
+
+        $favorite = new AnnouncementFav();
+        $favorite->setAnnouncement($announcement);
+        $favorite->setUser($user);
+
+        $manager->persist($favorite);
+        $manager->flush();
+        return $this->json(['code'=>200, 'message'=> 'L\'annonce '.  $announcement->getTitle() . ' a été ajoutée à vos favoris !'], 200);
     }
 }

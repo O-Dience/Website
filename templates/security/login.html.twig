@@ -7,39 +7,29 @@
 <link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
 {% endblock %}
 {% block body %}
-<div class="container mt-3 rounded">
-    <form method="post">
-        <div class="row rounded-top">
-            <h1><i class="fa fa-lock" aria-hidden="true"></i> Connexion</h1>
+<form method="post" class="px-0">
+    <div><h1>Connexion</h1></div>
+    {% if error %}
+        <div class="alert alert-danger mx-2 mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    {% if app.user %}
+        <div class="mb-3">
+            Connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
-        <br />
-        {% if error %}
-            <div class="alert alert-danger mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-        <br />
-        {% if app.user %}
-            <div class="mb-3">
-                Connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
-            </div>
-        {% endif %}
-        <br />
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-            </div>
-            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email">
+    {% endif %}
+    <div class="input-group px-2 my-2">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
         </div>
-        <br />
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fa fa-key icon"></i></span>
-            </div>
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe">
+        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email">
+    </div>
+    <div class="input-group px-2 my-2">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-key icon"></i></span>
         </div>
-        <br />
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        <br />
-        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-off"></span> Se connecter</button>
-    </form>
-</div>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe">
+    </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-off"></span> Se connecter</button>
+</form>
 {% endblock %}

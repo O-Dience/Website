@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AnnouncementRepository;
-use DateTime;
+use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -67,9 +67,10 @@ class Announcement
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="favorites")
+     * @ORM\OneToMany(targetEntity=AnnouncementFav::class, mappedBy="announcement", orphanRemoval=true)
      */
-    private $likedByUsers;
+    private $favorites;
+
 
     
 
@@ -80,8 +81,7 @@ class Announcement
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
 
-        $this->likedByUsers = new ArrayCollection();
-       }
+        $this->favorites = new ArrayCollection();       }
 
     public function __toString()
     {
@@ -230,31 +230,45 @@ class Announcement
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|AnnouncementFav[]
      */
-    public function getLikedByUsers(): Collection
+    public function getFavorites(): Collection
     {
-        return $this->likedByUsers;
+        return $this->favorites;
     }
 
-    public function addLikedByUser(User $likedByUser): self
+    public function addFavorite(AnnouncementFav $favorite): self
     {
-        if (!$this->likedByUsers->contains($likedByUser)) {
-            $this->likedByUsers[] = $likedByUser;
-            $likedByUser->addFavorite($this);
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+            $favorite->setAnnouncement($this);
         }
 
         return $this;
     }
 
-    public function removeLikedByUser(User $likedByUser): self
+    public function removeFavorite(AnnouncementFav $favorite): self
     {
-        if ($this->likedByUsers->contains($likedByUser)) {
-            $this->likedByUsers->removeElement($likedByUser);
-            $likedByUser->removeFavorite($this);
+        if ($this->favorites->contains($favorite)) {
+            $this->favorites->removeElement($favorite);
+            // set the owning side to null (unless already changed)
+            if ($favorite->getAnnouncement() === $this) {
+                $favorite->setAnnouncement(null);
+            }
         }
 
         return $this;
     }
 
+    //function for check if an announcement is in the user's favorites
+    public function isFavByUser(User $user) : bool
+    {
+        foreach($this->favorites as $favorite){
+            if ($favorite->getUser() === $user) return true;
+        }
+
+        return false;
+    }
+
+   
 }

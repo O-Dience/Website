@@ -22,6 +22,7 @@
 				-
 				{{ socialProfile.link }}
 			{% endfor %}
+			{{ user.userFavorites | length }}
 		</div>
 	</div>
 	<!-- END SIDEBAR USER TITLE -->
@@ -35,10 +36,21 @@
 	<!-- SIDEBAR MENU -->
 	<div class="profile-usermenu">
 		<ul class="list-group">
+			{% if ( 'ROLE_BRAND' in user.roles) %}
 			<a href="{{path('user_dashboard', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : '' }}">
 				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
 				Mes annonces en ligne
 			</a>
+			<a href="{{path('announcement_new', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'announcement_new') ? 'active' : '' }}">
+				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
+				Créer une annonce
+			</a>
+			{% elseif ( 'ROLE_INFLUENCER' in user.roles) %}
+			<a href="{{path('user_dashboard', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : '' }}">
+				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
+				Mes annonces favorites
+			</a>
+			{% endif %}
 			<a href="{{path('user_edit', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'user_edit') ? 'active' : '' }}">
 				<i class="fa fa-cog ml-1 mr-1" aria-hidden="true"></i>
 				Editer mon profil

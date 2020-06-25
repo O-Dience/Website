@@ -11,7 +11,6 @@
 {% endblock %}
 
 {% block body %}
-
 <div class="container-md ">
     <div class="row profile">
 		<div class="col-md-3">
@@ -21,6 +20,7 @@
             <div class="profile-content">
                 <h2 class="mb-5">Bonjour {{ user.username }}, voici la liste de vos annonces visibles par les influenceurs</h2>
 			    {% for announcement in user.announcements %}
+                <div class="mb-2">
             <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="list-group-item list-group-item-action my-1">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ announcement.title }}</h5>
@@ -31,6 +31,7 @@
                     <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
                 {% endfor %}
             </a>
+            </div>
         {% endfor %}
             </div>
 		</div>

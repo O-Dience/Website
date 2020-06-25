@@ -83,11 +83,21 @@ class User implements UserInterface
      */
     private $announcements;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Announcement::class, inversedBy="likedByUsers")
-     * @ORM\JoinTable(name="user_favorite_announcement")
+     /**
+     * @ORM\OneToMany(targetEntity=AnnouncementFav::class, mappedBy="user", orphanRemoval=true)
      */
     private $favorites;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLiked", orphanRemoval=true)
+     */
+    private $userFavs;
+
+      /**
+     * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLike", orphanRemoval=true)
+     */
+    private $userFavorites;
+    
 
 
     public function __construct()
@@ -98,8 +108,8 @@ class User implements UserInterface
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
 
-        $this->favorites = new ArrayCollection();
-        }
+        $this->userFavs = new ArrayCollection();
+       }
 
     public function __toString()
     {
@@ -339,31 +349,91 @@ class User implements UserInterface
         return $this;
     }
 
+    
+
     /**
-     * @return Collection|Announcement[]
-     */
-    public function getFavorites(): Collection
+     * Get the value of favorites
+     */ 
+    public function getFavorites()
     {
         return $this->favorites;
     }
 
-    public function addFavorite(Announcement $favorite): self
+    /**
+     * Set the value of favorites
+     *
+     * @return  self
+     */ 
+    public function setFavorites($favorites)
     {
-        if (!$this->favorites->contains($favorite)) {
-            $this->favorites[] = $favorite;
+        $this->favorites = $favorites;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserFav[]
+     */
+    public function getUserFavs(): Collection
+    {
+        return $this->userFavs;
+    }
+
+    public function addUserFav(UserFav $userFav): self
+    {
+        if (!$this->userFavs->contains($userFav)) {
+            $this->userFavs[] = $userFav;
+            $userFav->setUserLiked($this);
         }
 
         return $this;
     }
 
-    public function removeFavorite(Announcement $favorite): self
+    public function removeUserFav(UserFav $userFav): self
     {
-        if ($this->favorites->contains($favorite)) {
-            $this->favorites->removeElement($favorite);
+        if ($this->userFavs->contains($userFav)) {
+            $this->userFavs->removeElement($userFav);
+            // set the owning side to null (unless already changed)
+            if ($userFav->getUserLiked() === $this) {
+                $userFav->setUserLiked(null);
+            }
         }
 
         return $this;
     }
 
+
+
+    public function isFavByUser(User $user): bool {
+        foreach($this->userFavs as $fav){
+            if($fav->getUserLike() === $user){
+                return true;
+            }
+           
+        }
+        return false;
+    }
     
+    
+   
+
+    /**
+     * Get the value of userFavorites
+     */ 
+    public function getUserFavorites()
+    {
+        return $this->userFavorites;
+    }
+
+    /**
+     * Set the value of userFavorites
+     *
+     * @return  self
+     */ 
+    public function setUserFavorites($userFavorites)
+    {
+        $this->userFavorites = $userFavorites;
+
+        return $this;
+    }
 }
