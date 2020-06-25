@@ -55,7 +55,11 @@
 				<i class="fa fa-cog ml-1 mr-1" aria-hidden="true"></i>
 				Editer mon profil
 			</a>
+			<a href="{{path('social_add', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'social_add') ? 'active' : '' }}">
+				Gérer mes réseaux sociaux
+			</a>
 		</ul>
 	</div>
 	<!-- END MENU -->
 </div>
+

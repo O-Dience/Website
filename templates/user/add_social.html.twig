@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>Réseaux sociaux</h1>
+
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button class="btn" type="button" onclick="createNewSocialForm()">Ajouter un autre réseau </button>
+<button class="btn btn-primary" type="submit">Valider</button>
+{{ form_end(form) }}
+
+{% endblock %}

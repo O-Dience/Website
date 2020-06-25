@@ -5,10 +5,6 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
 {% endblock %}
-{% block script %}
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-{% endblock %}
 
 {% block body %}
 
@@ -23,13 +19,19 @@
                 <h2 class="mb-5 text-align-center">Bonjour {{ user.username }}, voici la liste de vos annonces favorites
                 </h2>
                 {% for favorite in favorites %}
+                <a href="{{path('user_favorite', {'id': favorite.user.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                    {% if app.user and favorite.announcement.isFavByUser(app.user) %}
+                    <i class="fa fa-heart fa-lg "></i> 
+                    {% else %}
+                    <i class="fa fa-heart-o fa-lg "></i>
+                    {% endif %}
+                </a>
                 <div class="mb-2">
                     <a href="{{ path('announcement_show', {id:favorite.announcement.id }) }}"
                         class="list-group-item list-group-item-action my-1">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">{{ favorite.announcement.title }}</h5>
                             <small class="text-muted">{{ favorite.announcement.createdAt|date('d/m/Y') }}</small>
-                           
                         </div>
                         <p class="mb-1">{{ favorite.announcement.content }}</p>
                         {% for category in favorite.announcement.categories %}
@@ -43,4 +45,37 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+    function onClickBtnFav(evt){
+        evt.preventDefault()
+        const url = this.href
+        const icone = this.querySelector('i');
+        let favlink = evt.currentTarget;
+
+        axios.get(url).then(function(response){
+
+            if(icone.classList.contains('fa-heart-o') ){
+                icone.classList.replace('fa-heart-o', 'fa-heart')
+
+
+            } else{
+                icone.classList.replace('fa-heart', 'fa-heart-o')
+            }
+
+        });
+    }
+
+        document.querySelectorAll('a.js-fav').forEach(function(link){
+            link.addEventListener('click', onClickBtnFav)
+        })
+    </script>
 {% endblock %}

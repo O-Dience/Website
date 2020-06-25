@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -68,13 +69,17 @@ class User implements UserInterface
      */
     private $updated_at;
 
+
     /**
      * @ORM\OneToMany(targetEntity=UserSocial::class, mappedBy="user", orphanRemoval=true)
+     * 
      */
     private $userSocials;
 
+
     /**
      * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
+     * 
      */
     private $categories;
 
