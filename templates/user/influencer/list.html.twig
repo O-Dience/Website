@@ -15,10 +15,16 @@
     <div class="container">
         <h5 class="section-title h1">Les Influenceurs</h5>
         <small>Ajouter menu des filtres, liens RS dynamiques</small>
+        <select id="category_filter">
+            <option value="">Filtrer par catégorie</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.label }}</option>
+            {% endfor %}
+        </select>
         <div class="row">
         {% for influencer in users %}
             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="user_card_group col-xs-12 col-sm-6 col-md-4">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -39,7 +45,7 @@
 
                                     <p class="card-text">
                                     {% for category in influencer.categories %}
-                                    <span class="label label-info">{{ category.label }}</span>
+                                    <span class="label label-info" data-category-id="{{ category.id }}">{{ category.label }}</span>
                                     {% endfor %}
                                     </p>
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
@@ -90,6 +96,7 @@
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
+    let categoryFilter = '';
 
     function onClickBtnFav(evt){
         evt.preventDefault()
@@ -110,6 +117,37 @@
         });
     }
 
+    // Filters influencers by category
+    function filterByCategory(evt) {
+        categoryFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Updates display of influencers according to the filters
+    function updateDisplay() {
+        document.querySelectorAll('.user_card_group').forEach(function(user){
+            let foundCategory = false;
+            
+            if (categoryFilter == '') {
+                foundCategory = true;
+            }
+            else {
+                user.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryFilter) {
+                        foundCategory = true;
+                    }
+                })
+            }
+            
+            if (foundCategory) {
+                user.style.display = 'block';
+            }
+            else {
+                user.style.display = 'none';
+            }
+        })
+    }
+    document.getElementById('category_filter').addEventListener('change', filterByCategory);
         document.querySelectorAll('a.js-fav').forEach(function(link){
             link.addEventListener('click', onClickBtnFav)
         })
