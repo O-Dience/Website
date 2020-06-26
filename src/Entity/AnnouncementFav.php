@@ -2,21 +2,23 @@
 
 namespace App\Entity;
 
-
 use ApiPlatform\Core\Annotation\ApiResource;
-
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter; 
 use App\Repository\AnnouncementFavRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AnnouncementFavRepository::class)
  * @ApiResource(
- *      attributes={"order"={"id":"DESC"}},
- *      normalizationContext={"groups"={"read:announcementFav"}},
+ *      attributes={
+ *      "order"={"favAt": "DESC"}
+ *      },
+ *      normalizationContext={"groups"={"announcementFav:read"}},
  *      collectionOperations={"get"},
- *      itemOperations={"get"}
+ *      itemOperations={"get"}     
  * )
+ * 
  */
 class AnnouncementFav
 {
@@ -24,29 +26,35 @@ class AnnouncementFav
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:announcementFav"})
+     * @Groups({"announcementFav:read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Announcement::class, inversedBy="favorites")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:announcementFav"})
+     * 
      */
     private $announcement;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="favorites")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:announcementFav"})
+     * 
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $favAt;
 
 
-  
-
-    
+    public function __construct()
+    {
+        
+        $this->favAt = new \DateTime;
+    }
 
     public function getId(): ?int
     {
@@ -77,5 +85,16 @@ class AnnouncementFav
         return $this;
     }
 
+    public function getFavAt(): ?\DateTimeInterface
+    {
+        return $this->favAt;
+    }
+
+    public function setFavAt(\DateTimeInterface $favAt): self
+    {
+        $this->favAt = $favAt;
+
+        return $this;
+    }
  
 }
