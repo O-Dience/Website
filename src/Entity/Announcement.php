@@ -71,6 +71,11 @@ class Announcement
      */
     private $favorites;
 
+    /**
+     * @ORM\OneToMany(targetEntity=AnnouncementReport::class, mappedBy="announcement", orphanRemoval=true)
+     */
+    private $reports;
+
 
     
 
@@ -81,7 +86,8 @@ class Announcement
         $this->created_at = new \DateTime;
         $this->status = true; // true = active
 
-        $this->favorites = new ArrayCollection();       }
+        $this->favorites = new ArrayCollection();
+        $this->reports = new ArrayCollection();       }
 
     public function __toString()
     {
@@ -271,6 +277,47 @@ class Announcement
     {
         foreach($this->favorites as $favorite){
             if ($favorite->getUser() === $user) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Collection|AnnouncementReport[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(AnnouncementReport $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setAnnouncement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(AnnouncementReport $report): self
+    {
+        if ($this->reports->contains($report)) {
+            $this->reports->removeElement($report);
+            // set the owning side to null (unless already changed)
+            if ($report->getAnnouncement() === $this) {
+                $report->setAnnouncement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    //function to check if an announcement was reported by this user
+    public function isReportedByUser(User $user) : bool
+    {
+        foreach($this->reports as $report){
+            if ($report->getReporter() === $user) return true;
         }
 
         return false;
