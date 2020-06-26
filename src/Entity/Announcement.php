@@ -36,7 +36,7 @@ class Announcement
     private $image;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $status;
 
@@ -79,9 +79,14 @@ class Announcement
         $this->socialNetworks = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->created_at = new \DateTime;
-        $this->status = 1; // 1 = active
+        $this->status = true; // true = active
 
         $this->favorites = new ArrayCollection();       }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
 
     public function getId(): ?int
     {
@@ -112,24 +117,30 @@ class Announcement
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(?string $image): self
+    public function setImage($image)
     {
         $this->image = $image;
 
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getImageWithPath()
+    {
+        //Set path for easyadmin
+        return 'assets/images/image_announcement/'.$this->image;
+    }
+
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(bool $status): self
     {
         $this->status = $status;
 
