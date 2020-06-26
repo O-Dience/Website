@@ -43,12 +43,11 @@ class GoogleUserProvider
         if($token){
             
             $userKey = $response->toArray()["id_token"];
-            $response = $this->httpClient->request('GET', 'https://www.googleapis.com/gmail/v1/users/'.$userKey.'/profile' , [
+            $response = $this->httpClient->request('GET', 'https://www.googleapis.com/gmail/v1/users/me/profile' , [
                 'headers' => [
                     'Authorization' => 'Bearer '.$token
                 ]
             ]);
-            dd($response->toArray());
         }else{
             throw new NotFoundHttpException("Un problème est survenu, veuillez réessayer.");
         }
