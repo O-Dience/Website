@@ -152,6 +152,27 @@ class User implements UserInterface
         return $this;
     }
 
+
+    public function getFrenchRole()
+    {
+        //Set path for easyadmin
+        if (in_array('ROLE_BRAND', $this->roles)){
+            return 'Marque';
+        }
+        if (in_array('ROLE_INFLUENCER', $this->roles)){
+            return 'Influenceur';
+        }
+        if (in_array('ROLE_MODERATOR', $this->roles)){
+            return 'Modérateur';
+        }
+        if (in_array('ROLE_MODERATOR', $this->roles)){
+            return 'Modérateur';
+        }
+        if (in_array('ROLE_ADMIN', $this->roles)){
+            return 'Administrateur';
+        }
+        
+    }
     /**
      * @see UserInterface
      */
