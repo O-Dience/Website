@@ -313,5 +313,15 @@ class Announcement
         return $this;
     }
 
+    //function to check if an announcement was reported by this user
+    public function isReportedByUser(User $user) : bool
+    {
+        foreach($this->reports as $report){
+            if ($report->getReporter() === $user) return true;
+        }
+
+        return false;
+    }
+
    
 }
