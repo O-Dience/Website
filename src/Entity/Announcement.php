@@ -21,16 +21,19 @@ class Announcement
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"announcementFav:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"announcementFav:read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"announcementFav:read"})
      */
     private $content;
 
@@ -46,11 +49,13 @@ class Announcement
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"announcementFav:read"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"announcementFav:read"})
      */
     private $updated_at;
 
@@ -61,6 +66,7 @@ class Announcement
 
     /**
      * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="announcements")
+     * @Groups({"announcementFav:read"})
      */
     private $categories;
 

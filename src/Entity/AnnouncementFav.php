@@ -15,8 +15,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      "order"={"favAt": "DESC"}
  *      },
  *      normalizationContext={"groups"={"announcementFav:read"}},
- *      collectionOperations={"get"},
- *      itemOperations={"get"}     
+ *      itemOperations={
+ *      "delete"={
+ *      "path"="/v1/announcement/favs/{id}",
+ *      "security" = "is_granted('delete_announcementFav', object)",  
+ *      }
+ *    }     
  * )
  * 
  */
@@ -33,14 +37,14 @@ class AnnouncementFav
     /**
      * @ORM\ManyToOne(targetEntity=Announcement::class, inversedBy="favorites")
      * @ORM\JoinColumn(nullable=false)
-     * 
+     * @Groups({"announcementFav:read"})
      */
     private $announcement;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="favorites")
      * @ORM\JoinColumn(nullable=false)
-     * 
+     * @Groups({"announcementFav:read"})
      */
     private $user;
 

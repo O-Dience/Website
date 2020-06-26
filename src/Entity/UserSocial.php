@@ -56,7 +56,7 @@ class UserSocial
 
     public function __toString(){
 
-        return $this->social;
+        return (string) $this->social->getName();
     }
 
     public function getId(): ?int

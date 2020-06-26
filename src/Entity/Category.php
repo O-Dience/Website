@@ -23,7 +23,7 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
-
+     * @Groups({"announcementFav:read"})
      */
     private $label;
 

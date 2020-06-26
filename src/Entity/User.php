@@ -23,6 +23,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"announcementFav:read"})
      */
     private $id;
 
@@ -44,6 +45,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $username;
 
@@ -74,7 +76,7 @@ class User implements UserInterface
 
 
     /**
-     * @ORM\OneToMany(targetEntity=UserSocial::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=UserSocial::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
      * 
      */
     private $userSocials;
@@ -265,14 +267,14 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|SocialNetwork[]
+     * @return Collection|UserSocial[]
      */
     public function getUserSocials(): Collection
     {
         return $this->userSocials;
     }
 
-    public function addUserSocial(SocialNetwork $userSocial): self
+    public function addUserSocial(UserSocial $userSocial): self
     {
         if (!$this->userSocials->contains($userSocial)) {
             $this->userSocials[] = $userSocial;
@@ -282,7 +284,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function removeUserSocial(SocialNetwork $userSocial): self
+    public function removeUserSocial(UserSocial $userSocial): self
     {
         if ($this->userSocials->contains($userSocial)) {
             $this->userSocials->removeElement($userSocial);

@@ -20,6 +20,17 @@
 				{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 				{{ form_widget(form) }}
 
+{# 				  <h3>Réseaux sociaux</h3>
+					{{ form_start(socialForm, {'attr': {'novalidate': 'novalidate'}}) }}
+      			{% for social in user.userSocials %}
+						<h4>{{ social.social.name }}</h4>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+						{{ form_widget(socialForm) }}
+						<button class="btn btn-primary" type="submit">Valider</button>
+				{{ form_end(socialForm) }}
+        		{% endfor %}
+    			</ul> #}
+
 				<button class="btn" type="button" onclick="createNewSocialForm()">Ajouter un réseau </button>
 				<button class="btn btn-primary" type="submit">Valider</button>
 				{{ form_end(form) }}
@@ -40,12 +51,14 @@ const userSocialFormList = document.querySelector("#brand_edit_userSocials");
 const prototype = userSocialFormList.dataset.prototype;
 let currentIndex = userSocialFormList.children.length;
 
-function createNewSocialForm() {
+function createBrandNewSocialForm() {
     const newElement = document.createElement('div');
     newElement.innerHTML = prototype.replace(/__name__/g, currentIndex);
     currentIndex ++;
     userSocialFormList.appendChild(newElement);
 }
+
+
 
 </script>
 

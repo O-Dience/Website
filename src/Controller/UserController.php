@@ -9,6 +9,7 @@ use App\Form\BrandType;
 use App\Entity\UserFav;
 use App\Entity\UserSocial;
 use App\Form\BrandEditType;
+use App\Form\InfluencerEditType;
 use App\Form\InfluencerType;
 use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
@@ -57,7 +58,7 @@ class UserController extends AbstractController
 
 
         if ( in_array( "ROLE_INFLUENCER", $user->getRoles() ) ){
-            $form = $this->createForm(InfluencerType::class, $user);
+            $form = $this->createForm(InfluencerEditType::class, $user);
         }
         elseif ( in_array( "ROLE_BRAND", $user->getRoles() ) ){
             $form = $this->createForm(BrandEditType::class, $user);

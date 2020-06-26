@@ -22,11 +22,12 @@ class AnnouncementFavVoter extends Voter
     {
         $user = $token->getUser();
 
+        
+
         if(!$user instanceof User || !$subject instanceof AnnouncementFav){
             
             return false;
         }
-
-        return $subject->getUser()->getId() === $user->getId;
+        return $subject->getUser()->getId() === $user->getId();
     }
 }
