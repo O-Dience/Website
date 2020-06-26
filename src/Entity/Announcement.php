@@ -71,6 +71,11 @@ class Announcement
      */
     private $favorites;
 
+    /**
+     * @ORM\OneToMany(targetEntity=AnnouncementReport::class, mappedBy="announcement", orphanRemoval=true)
+     */
+    private $reports;
+
 
     
 
@@ -81,7 +86,8 @@ class Announcement
         $this->created_at = new \DateTime;
         $this->status = true; // true = active
 
-        $this->favorites = new ArrayCollection();       }
+        $this->favorites = new ArrayCollection();
+        $this->reports = new ArrayCollection();       }
 
     public function __toString()
     {
@@ -274,6 +280,37 @@ class Announcement
         }
 
         return false;
+    }
+
+    /**
+     * @return Collection|AnnouncementReport[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(AnnouncementReport $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setAnnouncement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(AnnouncementReport $report): self
+    {
+        if ($this->reports->contains($report)) {
+            $this->reports->removeElement($report);
+            // set the owning side to null (unless already changed)
+            if ($report->getAnnouncement() === $this) {
+                $report->setAnnouncement(null);
+            }
+        }
+
+        return $this;
     }
 
    

@@ -97,6 +97,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLike", orphanRemoval=true)
      */
     private $userFavorites;
+
+    /**
+     * @ORM\OneToMany(targetEntity=AnnouncementReport::class, mappedBy="reporter", orphanRemoval=true)
+     */
+    private $reportedAnnouncements;
     
 
 
@@ -109,6 +114,7 @@ class User implements UserInterface
         $this->status = 1; // 1 = active
 
         $this->userFavs = new ArrayCollection();
+        $this->reportedAnnouncements = new ArrayCollection();
        }
 
     public function __toString()
@@ -460,6 +466,37 @@ class User implements UserInterface
     public function setUserFavorites($userFavorites)
     {
         $this->userFavorites = $userFavorites;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AnnouncementReport[]
+     */
+    public function getReportedAnnouncements(): Collection
+    {
+        return $this->reportedAnnouncements;
+    }
+
+    public function addReportedAnnouncement(AnnouncementReport $reportedAnnouncement): self
+    {
+        if (!$this->reportedAnnouncements->contains($reportedAnnouncement)) {
+            $this->reportedAnnouncements[] = $reportedAnnouncement;
+            $reportedAnnouncement->setReporter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedAnnouncement(AnnouncementReport $reportedAnnouncement): self
+    {
+        if ($this->reportedAnnouncements->contains($reportedAnnouncement)) {
+            $this->reportedAnnouncements->removeElement($reportedAnnouncement);
+            // set the owning side to null (unless already changed)
+            if ($reportedAnnouncement->getReporter() === $this) {
+                $reportedAnnouncement->setReporter(null);
+            }
+        }
 
         return $this;
     }
