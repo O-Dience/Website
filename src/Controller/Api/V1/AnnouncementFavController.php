@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\V1;
 
+use App\Entity\AnnouncementFav;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,9 +26,12 @@ class AnnouncementFavController extends AbstractController
     /**
      * @Route("/{id}", name="delete", methods={ "DELETE"})
      */
-    public function delete()
+    public function delete(AnnouncementFav $announcementFav)
     {
-        return $this->json([
+        $em->$this->getDoctrine()->getManager();
+        $em->remove($announcementFav);
+        $em->flush();
+            return $this->json([
             'message' => 'Fav supprimé',
             'path' => 'src/Controller/Api/V1/AnnouncementFavController.php',
         ]);
