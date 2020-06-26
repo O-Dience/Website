@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -28,16 +29,32 @@ class GoogleUserProvider
     // Get Google API Token and inject information in User entity
     public function loadUserFromGoogle(string $code)
     {
-        $redirectUri = $this->generator->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $url = 'https://oauth2.googleapis.com/token?client_id='.$this->googleClient.'&client_secret='.$this->googleId.'&code='.$code.'redirect_uri='.$redirectUri.'&grant_type=authorization_code';
+        $redirectUri = $this->generator->generate('app_register_influencer', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = 'https://oauth2.googleapis.com/token?client_id='.$this->googleClient.'&client_secret='.$this->googleId.'&code='.$code.'&redirect_uri='.$redirectUri.'&grant_type=authorization_code';
 
         $response = $this->httpClient->request('POST', $url, [
             'headers' => [
-                'Accept' => 'application/json'
+                'Accept' => 'application/json',
             ]
         ]);
+        
+        $token = $response->toArray()['access_token'];
+        dd($response->toArray());
+        if($token){
+            
+            $userKey = $response->toArray()["id_token"];
+            $response = $this->httpClient->request('GET', 'https://www.googleapis.com/gmail/v1/users/'.$userKey.'/profile' , [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$token
+                ]
+            ]);
+            dd($response->toArray());
+        }else{
+            throw new NotFoundHttpException("Un problème est survenu, veuillez réessayer.");
+        }
 
-        dd($response);
+
+        dd($response->toArray());
         
     }
 }
