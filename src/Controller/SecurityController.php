@@ -3,14 +3,39 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    private $googleClient;
+    private $googleId;
+
+    /**
+     * @param $googleClient
+     * @param $googleId
+     */
+    public function __construct($googleClient, $googleId)
+    {
+        $this->googleClient = $googleClient;
+        $this->googleId = $googleId;
+    }
+
+    /**
+     * @Route("/login/google", name="app_login_google")
+     */
+    public function googleAuth(UrlGeneratorInterface $generator)
+    {
+        $url = $generator->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return new RedirectResponse('https://accounts.google.com/o/oauth2/v2/auth?scope=email&access_type=online&response_type=code&redirect_uri='. $url .'&client_id='.$this->googleClient);
+    }
+
     /**
      * @Route("/login", name="app_login")
      */

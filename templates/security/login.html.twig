@@ -17,6 +17,7 @@
             Connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
         </div>
     {% endif %}
+    <a href="{{path('app_login_google')}}">Se connecter avec Google</a>
     <div class="input-group px-2 my-2">
         <div class="input-group-prepend">
             <span class="input-group-text"><i class="fas fa-envelope"></i></span>

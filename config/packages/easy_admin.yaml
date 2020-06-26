@@ -237,7 +237,7 @@ easy_admin:
                         { 
                             property: 'username',
                         },
-                        { 
+                        {
                             property: 'roles',
                             type: 'choice',
                             type_options: 
