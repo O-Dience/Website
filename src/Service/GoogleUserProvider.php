@@ -30,25 +30,42 @@ class GoogleUserProvider
     public function loadUserFromGoogle(string $code)
     {
         $redirectUri = $this->generator->generate('app_register_influencer', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $url = 'https://oauth2.googleapis.com/token?client_id='.$this->googleClient.'&client_secret='.$this->googleId.'&code='.$code.'&redirect_uri='.$redirectUri.'&grant_type=authorization_code';
 
-        $response = $this->httpClient->request('POST', $url, [
+        /*         $url = 'https://oauth2.googleapis.com/token?client_id='.$this->googleClient.'&client_secret='.$this->googleId.'&code='.$code.'&redirect_uri='.$redirectUri.'&grant_type=authorization_code';
+
+                $response = $this->httpClient->request('POST', $url, [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                    ]
+                ]); */
+
+        //get json config to use in the request
+        $response = $this->httpClient->request('GET', 'https://accounts.google.com/.well-known/openid-configuration');
+        $openIdConfig = json_decode($response->getContent());
+        // set the request
+        $response = $this->httpClient->request('POST', $openIdConfig->userinfo_endpoint, [
             'headers' => [
-                'Accept' => 'application/json',
+                'code' => $code,
+                'client_id' => $this->googleClient,
+                'client_secret' => $this->googleId,
+                'redirect_uri' => $redirectUri,
+                'grant_type' => 'authorization_code'
             ]
         ]);
-        
-        $token = $response->toArray()['access_token'];
-        dd($response->toArray());
-        if($token){
-            
-            $userKey = $response->toArray()["id_token"];
-            $response = $this->httpClient->request('GET', 'https://www.googleapis.com/gmail/v1/users/me/profile' , [
+        $accessToken = json_decode($response->getContent())->access_token;
+        if($accessToken){ 
+            $response = $this->httpClient->request('GET', $openIdConfig->userinfo_endpoint, [
                 'headers' => [
-                    'Authorization' => 'Bearer '.$token
+                    'Authorization' => 'Bearer '. $accessToken
                 ]
             ]);
-        }else{
+            $jsonResponse = json_decode($response->getContent());
+            if($jsonResponse->email_verified === true){
+                dd($jsonResponse->email);
+            }
+        }
+        else
+        {
             throw new NotFoundHttpException("Un problème est survenu, veuillez réessayer.");
         }
 
