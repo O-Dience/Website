@@ -118,6 +118,7 @@ class RegistrationController extends AbstractController
      */
     public function registerOauthUser()
     {
-        dd('coucou');
+
+        // TODO: CREATE FORM TO HANDLE COMPLETION OF OAUTH USERS REGISTRATION
     }
 }

@@ -6,18 +6,22 @@ use App\Entity\User;
 use App\Service\GoogleUserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class GoogleAuthenticator extends AbstractGuardAuthenticator
 {
 
-    public function __construct(GoogleUserProvider $googleProvider)
+    public function __construct(GoogleUserProvider $googleProvider, UrlGeneratorInterface $urlGenerator)
     {
         $this->googleProvider = $googleProvider;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function supports(Request $request)
@@ -34,7 +38,11 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
+        // create a random token to identify easily user later on
+        $token = new CsrfToken('authenticate', sha1(mt_rand(1, 90000) . 'SALT'));
+
         $user = $this->googleProvider->loadUserFromGoogle($credentials['code']);
+
         return $user;
     }
 
@@ -45,24 +53,21 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        // todo
+        // return new RedirectResponse($this->urlGenerator->generate('app_register_oauthUser'));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        // Get user to check for his role
         $user = $token->getUser();
 
+        if (!$user->getId()){
+            dd($user);
+        }
         if (in_array( "ROLE_BRAND", $user->getRoles() )){
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
         if (in_array( "ROLE_INFLUENCER", $user->getRoles() )){
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
-        }
-        // If user have no role assigned yet
-        else{
-
-            return new RedirectResponse($this->urlGenerator->generate('app_register_oauthUser'));
         }
     }
 

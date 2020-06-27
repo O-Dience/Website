@@ -1,36 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Se connecter{% endblock %}
+{% block title %}Se connecter
+{% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"/>
-<link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"/>
+	<link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
 {% endblock %}
+{% block javascript %}
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+{% endblock %}
+
 {% block body %}
-<form method="post" class="px-0">
-    <div><h1>Connexion</h1></div>
-    {% if error %}
-        <div class="alert alert-danger mx-2 mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-    {% if app.user %}
-        <div class="mb-3">
-            Connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
-        </div>
-    {% endif %}
-    <a href="{{path('app_login_google')}}">Se connecter avec Google</a>
-    <div class="input-group px-2 my-2">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-        </div>
-        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email">
-    </div>
-    <div class="input-group px-2 my-2">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-key icon"></i></span>
-        </div>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe">
-    </div>
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-off"></span> Se connecter</button>
-</form>
+	<form method="post" class="px-0">
+		<div>
+			<h1>Connexion</h1>
+		</div>
+
+		{% if error %}
+			<div class="alert alert-danger mx-2 mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+
+		{% if app.user %}
+			<div class="mb-3">
+				Connecté en tant que
+				{{ app.user.username }},
+				<a href="{{ path('app_logout') }}">Se déconnecter</a>
+			</div>
+		{% endif %}
+		<div class="Social__connection btn">
+			<a href="{{path('app_login_google')}}">
+				<div class="google-btn">
+					<div class="google-icon-wrapper">
+						<img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+					</div>
+					<p class="btn-text">
+						<b>Connexion via google</b>
+					</p>
+				</div>
+			</a>
+		</div>
+		<div class="input-group px-2 my-2">
+			<div class="input-group-prepend">
+				<span class="input-group-text">
+					<i class="fas fa-envelope"></i>
+				</span>
+			</div>
+			<input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email">
+		</div>
+		<div class="input-group px-2 my-2">
+			<div class="input-group-prepend">
+				<span class="input-group-text">
+					<i class="fa fa-key icon"></i>
+				</span>
+			</div>
+			<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe">
+		</div>
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+		<button type="submit" class="btn btn-success">
+			<span class="glyphicon glyphicon-off"></span>
+			Se connecter
+        </button>
+	</form>
 {% endblock %}
