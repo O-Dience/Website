@@ -97,17 +97,15 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLike", orphanRemoval=true)
      */
     private $userFavorites;
-    
 
-
-    public function __construct()
+    public function __construct(array $data = [])
     {
+
         $this->userSocials = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->announcements = new ArrayCollection();
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
-
         $this->userFavs = new ArrayCollection();
        }
 

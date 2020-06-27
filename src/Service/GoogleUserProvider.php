@@ -2,6 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -18,12 +21,14 @@ class GoogleUserProvider
      * @param  $httpClient
      * @param  $generator
      */
-    public function __construct($googleClient, $googleId, HttpClientInterface $httpClient, UrlGeneratorInterface $generator)
+    public function __construct($googleClient, $googleId, HttpClientInterface $httpClient, UrlGeneratorInterface $generator, ImageUploader $imageUploader, UserRepository $userRepository)
     {
         $this->googleClient = $googleClient;
         $this->googleId = $googleId;
         $this->httpClient = $httpClient;
         $this->generator = $generator;
+        $this->imageUploader = $imageUploader;
+        $this->userRepository = $userRepository;
     }
 
     // Get Google API Token and inject information in User entity
@@ -57,7 +62,27 @@ class GoogleUserProvider
             ]);
             $jsonResponse = json_decode($response->getContent());
             if($jsonResponse->email_verified === true){
-                dd($jsonResponse);
+
+                return $jsonResponse;
+                //Check if user already exist in database
+                $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $jsonResponse->email]);
+                
+                 if($user){
+
+                    $user = $this->userRepository->findOneByEmail($jsonResponse->email);
+                    return $user;
+                }
+                // Otherwise, create partial user and redirect to adapted form to register fully the new user
+                else {
+
+                    $user = new User;
+                    $user
+                        ->setUsername($jsonResponse->given_name)
+                        ->setEmail($jsonResponse->email);
+                        // ->setPicture($jsonResponse->picture);
+                    return $user;
+                }
+
             }
         }
         else
