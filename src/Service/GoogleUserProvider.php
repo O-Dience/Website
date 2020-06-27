@@ -29,22 +29,16 @@ class GoogleUserProvider
     // Get Google API Token and inject information in User entity
     public function loadUserFromGoogle(string $code)
     {
+
         $redirectUri = $this->generator->generate('app_register_influencer', [], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        /*         $url = 'https://oauth2.googleapis.com/token?client_id='.$this->googleClient.'&client_secret='.$this->googleId.'&code='.$code.'&redirect_uri='.$redirectUri.'&grant_type=authorization_code';
-
-                $response = $this->httpClient->request('POST', $url, [
-                    'headers' => [
-                        'Accept' => 'application/json',
-                    ]
-                ]); */
 
         //get json config to use in the request
         $response = $this->httpClient->request('GET', 'https://accounts.google.com/.well-known/openid-configuration');
         $openIdConfig = json_decode($response->getContent());
+        $userInfo = $openIdConfig->userinfo_endpoint;
         // set the request
-        $response = $this->httpClient->request('POST', $openIdConfig->userinfo_endpoint, [
-            'headers' => [
+        $response = $this->httpClient->request('POST', $openIdConfig->token_endpoint, [
+            'body' => [
                 'code' => $code,
                 'client_id' => $this->googleClient,
                 'client_secret' => $this->googleId,
@@ -52,21 +46,23 @@ class GoogleUserProvider
                 'grant_type' => 'authorization_code'
             ]
         ]);
+        
         $accessToken = json_decode($response->getContent())->access_token;
+        
         if($accessToken){ 
-            $response = $this->httpClient->request('GET', $openIdConfig->userinfo_endpoint, [
+            $response = $this->httpClient->request('GET', $userInfo, [
                 'headers' => [
                     'Authorization' => 'Bearer '. $accessToken
                 ]
             ]);
             $jsonResponse = json_decode($response->getContent());
             if($jsonResponse->email_verified === true){
-                dd($jsonResponse->email);
+                dd($jsonResponse);
             }
         }
         else
         {
-            throw new NotFoundHttpException("Un problème est survenu, veuillez réessayer.");
+            throw new NotFoundHttpException('404');
         }
 
 
