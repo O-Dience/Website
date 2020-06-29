@@ -10,6 +10,7 @@ use App\Entity\UserFav;
 use App\Form\InfluencerType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\UserFavRepository;
 use App\Service\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +25,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{role}/liste", name="user_list", methods={"GET"}, requirements={"role": "^(marque|influenceur|utilisateur)"})
      */
-    public function list($role): Response
+    public function list($role, CategoryRepository $categoryRepository): Response
     {
         if($role === "influenceur"){
             $role = "influencer";
@@ -38,9 +39,10 @@ class UserController extends AbstractController
             $role = "user";
             $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         }
-
+        $categories = $categoryRepository->findAll();
         return $this->render('user/'.$role.'/list.html.twig', [
             "users" => $users,
+            'categories' => $categories
         ]);
     }
 

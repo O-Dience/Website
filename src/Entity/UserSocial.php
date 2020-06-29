@@ -34,6 +34,11 @@ class UserSocial
      */
     private $social;
 
+    public function __toString()
+    {
+        return $this->link;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -45,12 +45,12 @@
     	  <div class="d-flex justify-content-around mt-3">
                 {% for category in announcement.categories %}
                     
-                        <span class="badge badge-secondary"> {{category.label}}</span>
+                        <span class="badge badge-secondary" data-category-id="{{ category.id }}"> {{category.label}}</span>
                     
                 {% endfor %}
                 {% for network in announcement.socialNetworks %}
                     
-                        <span class="badge badge-secondary"> {{network.name}}</span>
+                        <span class="badge badge-secondary" data-network-id="{{ network.id }}"> {{network.name}}</span>
                     
                 {% endfor %}
             </div>
@@ -77,16 +77,28 @@
     </div>   
 	<div class="row nav mb-3"> 
         <div class="col-md-6"></div>
+<<<<<<< HEAD
         <div class="col-md-6 col-xs-6 row" style="margin: 0px;padding: 0px;">
             <a href="{{ path('announcement_show', {id:announcement.id }) }}"  class="col-md-6 col-xs-3 well"><i class="fa fa-eye fa-3"></i> Consulter l'annonce</a>
             {# <a href="#" class="col-md-4 col-xs-4 well"><i class="fa fa-envelope fa-3"></i> Envoyer un message</a> #}
             <a href="{{path('announcement_favorite', {'id': announcement.id}) }}" class="col-md-6 col-xs-3 well js-fav">
+=======
+        <div class="col-md-6 col-xs-12 row" style="margin: 0px;padding: 0px;">
+            <a href="{{ path('announcement_show', {id:announcement.id }) }}"  class="col-4 well"><i class="fa fa-eye fa-3"></i> Consulter l'annonce</a>
+            {# <a href="#" class="col-md-4 col-xs-4 well"><i class="fa fa-envelope fa-3"></i> Envoyer un message</a> #}
+            <a href="{{path('announcement_favorite', {'id': announcement.id}) }}" class="col-4 well js-fav">
+>>>>>>> def26b1ea7ab0b47942bef283ccdebcd8f0e05be
             {% if app.user and announcement.isFavByUser(app.user) %}
                 <i class="fa fa-heart fa-lg "></i> <span class="favtext">Dans vos favoris</span>
             {% else %}
             <i class="fa fa-heart-o fa-lg "></i> <span class="favtext">Ajouter à vos favoris</span>
             {% endif %}
             </a>
+            {% if app.user and announcement.isReportedByUser(app.user) %}
+                <span class="col-4 well"><i class="fa fa-exclamation-triangle fa-3"></i> Annonce signalée !</span>
+            {% else %}
+                <a href="{{ path('announcement_report', {id:announcement.id }) }}"  class="col-4 well"><i class="fa fa-exclamation-triangle fa-3"></i> Signaler l'annonce</a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
@@ -98,6 +110,9 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
 
+    let categoryFilter = '';
+    let networkFilter = '';
+        
     function onClickBtnFav(evt){
         evt.preventDefault()
         const url = this.href
@@ -105,32 +120,75 @@
         let favlink = evt.currentTarget;
         let favtext = this.querySelector('.favtext');
 
-
-
-
-
-
         console.log(favlink);
         axios.get(url).then(function(response){
 
             if(icone.classList.contains('fa-heart-o')){
                 icone.classList.replace('fa-heart-o', 'fa-heart')
                 favtext.innerHTML = "Retirer des favoris";
-
-
-
-
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
                 favtext.innerHTML = "Ajouter aux favoris";
             }
-
         });
     }
 
-        document.querySelectorAll('a.js-fav').forEach(function(link){
-            link.addEventListener('click', onClickBtnFav)
+    // Filters announcements by category
+    function filterByCategory(evt) {
+        categoryFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Filters announcements by social network
+    function filterByNetwork(evt) {
+        networkFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Updates display of announcements according to the filters
+    function updateDisplay() {
+        document.querySelectorAll('.panel').forEach(function(announcement){
+            let foundCategory = false;
+            let foundNetwork = false;
+            
+            if (categoryFilter == '') {
+                foundCategory = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryFilter) {
+                        foundCategory = true;
+                    }
+                })
+            }
+
+            if (networkFilter == '') {
+                foundNetwork = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
+                    if (network.dataset.networkId == networkFilter) {
+                        foundNetwork = true;
+                    }
+                })
+            }
+            
+            if (foundCategory && foundNetwork) {
+                announcement.style.display = 'flex';
+                announcement.nextElementSibling.style.display = 'flex';
+            }
+            else {
+                announcement.style.display = 'none';
+                announcement.nextElementSibling.style.display = 'none';
+            }
         })
+    }
+
+    document.getElementById('category_label').addEventListener('change', filterByCategory);
+    document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
+    document.querySelectorAll('a.js-fav').forEach(function(link){
+        link.addEventListener('click', onClickBtnFav)
+    })
     </script>
 {% endblock %}
            
