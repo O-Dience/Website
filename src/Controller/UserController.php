@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Form\BrandType;
 use App\Entity\UserFav;
+use App\Entity\UserReport;
 use App\Entity\UserSocial;
 use App\Form\BrandEditType;
 use App\Form\InfluencerEditType;
@@ -222,6 +223,36 @@ class UserController extends AbstractController
             "user" => $user
         ]);
 
+    }
+
+    /**
+     * Report an user
+     * 
+     * @Route("/{id}/signaler", name="report")
+     * 
+     * @param User $reportee
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function report(User $reportee, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['code' => 403, 'message' => 'Unauthorized'], 403);
+        }
+
+        if ($reportee->isReportedByUser($user)) {
+            return $this->json(['code' => 200, 'message '=> 'Vous avez déjà signalé cet utilisateur !'], 200);
+        }
+
+        $report = new UserReport();
+        $report->setReportee($reportee);
+        $report->setReporter($user);
+
+        $manager->persist($report);
+        $manager->flush();
+        return $this->json(['code' => 200, 'message' => 'L\'utilisateur '. $reportee->getUsername() . ' a été signalé.'], 200);
     }
 
 }
