@@ -48,21 +48,22 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
+        // TODO: Manage registering 
+        if (!$user->getId()){
+            return false;
+        }
         return true;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        // return new RedirectResponse($this->urlGenerator->generate('app_register_oauthUser'));
+        return new RedirectResponse($this->urlGenerator->generate('homepage'));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $user = $token->getUser();
 
-        if (!$user->getId()){
-            dd($user);
-        }
         if (in_array( "ROLE_BRAND", $user->getRoles() )){
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
