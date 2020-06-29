@@ -113,7 +113,6 @@
         let favlink = evt.currentTarget;
         let favtext = this.querySelector('.favtext');
 
-        console.log(favlink);
         axios.get(url).then(function(response){
 
             if(icone.classList.contains('fa-heart-o')){

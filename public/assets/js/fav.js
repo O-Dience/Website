@@ -12,7 +12,7 @@ let fav = {
        
 }
 
-document.querySelectorAll('a.js-fav').forEach(function(link){
+document.querySelectorAll('button.js-fav').forEach(function(link){
     link.addEventListener('click', fav.onClickBtnFav)
-})
+});
 
