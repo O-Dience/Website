@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container-md ">
+	<div class="row profile">
+		<div class="col-md-3">
+			{% include 'partials/_profile_sidebar.html.twig' %}
+		</div>
+
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button class="btn" type="button" onclick="createNewSocialForm()">Ajouter un autre réseau </button>
+<button class="btn btn-primary" type="submit">Valider</button>
+{{ form_end(form) }}
+
+{% endblock %}

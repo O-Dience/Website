@@ -40,9 +40,10 @@ class SocialNetwork
     private $updated_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserSocial::class, mappedBy="social", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=UserSocial::class, mappedBy="social", orphanRemoval=true, cascade={"persist"})
      */
     private $userSocials;
+
 
     /**
      * @ORM\ManyToMany(targetEntity=Announcement::class, mappedBy="socialNetworks")
@@ -56,11 +57,11 @@ class SocialNetwork
         $this->announcements = new ArrayCollection();
     }
 
+
     public function __toString()
     {
         return $this->name;
     }
-
 
     public function getId(): ?int
     {

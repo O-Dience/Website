@@ -117,3 +117,10 @@ body {
   background: #fff;
   min-height: 460px;
 }
+
+.favAnnouncement{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
