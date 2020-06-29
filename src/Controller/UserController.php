@@ -228,7 +228,7 @@ class UserController extends AbstractController
     /**
      * Report an user
      * 
-     * @Route("/{id}/signaler", name="report")
+     * @Route("/user/{id}/signaler", name="user_report")
      * 
      * @param User $reportee
      * @param EntityManagerInterface $manager
@@ -252,7 +252,7 @@ class UserController extends AbstractController
 
         $manager->persist($report);
         $manager->flush();
-        return $this->json(['code' => 200, 'message' => 'L\'utilisateur '. $reportee->getUsername() . ' a été signalé.'], 200);
+        return $this->json(['code' => 200, 'message' => 'L\'utilisateur '. $reportee->getUsername() . ' a été signalé par '. $user->getUsername() . '.'], 200);
     }
 
 }
