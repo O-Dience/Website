@@ -38,22 +38,6 @@ class UserSocial
     private $social;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function __toString(){
 
         return (string) $this->social->getName();

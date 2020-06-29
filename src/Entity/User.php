@@ -60,7 +60,7 @@ class User implements UserInterface
     private $picture;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $status;
 
@@ -107,6 +107,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLike", orphanRemoval=true)
      */
     private $userFavorites;
+
+    /**
+     * @ORM\OneToMany(targetEntity=AnnouncementReport::class, mappedBy="reporter", orphanRemoval=true)
+     */
+    private $reportedAnnouncements;
     
 
 
@@ -119,7 +124,13 @@ class User implements UserInterface
         $this->status = 1; // 1 = active
 
         $this->userFavs = new ArrayCollection();
+        $this->reportedAnnouncements = new ArrayCollection();
        }
+
+    public function __toString()
+    {
+        return $this->username;
+    }
 
     public function getId(): ?int
     {
@@ -157,6 +168,27 @@ class User implements UserInterface
         return $this;
     }
 
+
+    public function getFrenchRole()
+    {
+        //Set path for easyadmin
+        if (in_array('ROLE_BRAND', $this->roles)){
+            return 'Marque';
+        }
+        if (in_array('ROLE_INFLUENCER', $this->roles)){
+            return 'Influenceur';
+        }
+        if (in_array('ROLE_MODERATOR', $this->roles)){
+            return 'Modérateur';
+        }
+        if (in_array('ROLE_MODERATOR', $this->roles)){
+            return 'Modérateur';
+        }
+        if (in_array('ROLE_ADMIN', $this->roles)){
+            return 'Administrateur';
+        }
+        
+    }
     /**
      * @see UserInterface
      */
@@ -230,12 +262,18 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getPictureWithPath()
+    {
+        //Set path for easyadmin
+        return 'assets/images/avatar_user/'.$this->picture;
+    }
+
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(bool $status): self
     {
         $this->status = $status;
 
@@ -438,6 +476,37 @@ class User implements UserInterface
     public function setUserFavorites($userFavorites)
     {
         $this->userFavorites = $userFavorites;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AnnouncementReport[]
+     */
+    public function getReportedAnnouncements(): Collection
+    {
+        return $this->reportedAnnouncements;
+    }
+
+    public function addReportedAnnouncement(AnnouncementReport $reportedAnnouncement): self
+    {
+        if (!$this->reportedAnnouncements->contains($reportedAnnouncement)) {
+            $this->reportedAnnouncements[] = $reportedAnnouncement;
+            $reportedAnnouncement->setReporter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedAnnouncement(AnnouncementReport $reportedAnnouncement): self
+    {
+        if ($this->reportedAnnouncements->contains($reportedAnnouncement)) {
+            $this->reportedAnnouncements->removeElement($reportedAnnouncement);
+            // set the owning side to null (unless already changed)
+            if ($reportedAnnouncement->getReporter() === $this) {
+                $reportedAnnouncement->setReporter(null);
+            }
+        }
 
         return $this;
     }
