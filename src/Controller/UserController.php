@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\SocialNetwork;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\BrandType;
-use App\Entity\Announcement;
 use App\Entity\UserFav;
+use App\Entity\UserSocial;
+use App\Form\BrandEditType;
+use App\Form\InfluencerEditType;
 use App\Form\InfluencerType;
+use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
@@ -53,24 +57,27 @@ class UserController extends AbstractController
     public function edit(User $user,  Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader): Response
     {
         $this->denyAccessUnlessGranted('edit', $user);
-        
+
+
         if ( in_array( "ROLE_INFLUENCER", $user->getRoles() ) ){
-            $form = $this->createForm(InfluencerType::class, $user);
+            $form = $this->createForm(InfluencerEditType::class, $user);
         }
         elseif ( in_array( "ROLE_BRAND", $user->getRoles() ) ){
-            $form = $this->createForm(BrandType::class, $user);
+            $form = $this->createForm(BrandEditType::class, $user);
         }
         else{
             $form = $this->createForm(UserType::class, $user);
         }
 
+      
+
         $form->handleRequest($request);
-
+  
         if ($form->isSubmitted() && $form->isValid())
-        {
-
+        {   
+           
             $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picture')->getData(), "avatar_user")){
+            if($imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user")){
                 $user->setPicture($imageName);
                 
             };
@@ -83,8 +90,9 @@ class UserController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_show');
+            return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
         }
+
 
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
@@ -190,4 +198,30 @@ class UserController extends AbstractController
         $manager->flush();
         return $this->json(['code'=>200, 'message'=> 'L\'utilisateur '. $userLiked->getUsername() . ' a été ajoutée à vos favoris !'], 200);
     }
+
+        /**
+     * @Route("/user/{id}/social/add", name="social_add", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
+     */
+    public function addUserSocial(User $user, Request $request){
+
+        $userSocial = new UserSocial();
+        $userSocial->setUser($user);
+
+        $form = $this->createForm(UserSocialType::class, $userSocial);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($userSocial);
+            $manager->flush();
+            return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
+        }
+
+        return $this->render('user/add_social.html.twig', [
+            "form" => $form->createView(),
+            "user" => $user
+        ]);
+
+    }
+
 }
