@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\SocialNetwork;
 use App\Entity\User;
 use App\Form\UserType;
-use App\Form\BrandType;
-use App\Entity\Announcement;
 use App\Entity\UserFav;
-use App\Form\InfluencerType;
+use App\Entity\UserReport;
+use App\Entity\UserSocial;
+use App\Form\BrandEditType;
+use App\Form\InfluencerEditType;
+use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
@@ -53,24 +56,27 @@ class UserController extends AbstractController
     public function edit(User $user,  Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader): Response
     {
         $this->denyAccessUnlessGranted('edit', $user);
-        
+
+
         if ( in_array( "ROLE_INFLUENCER", $user->getRoles() ) ){
-            $form = $this->createForm(InfluencerType::class, $user);
+            $form = $this->createForm(InfluencerEditType::class, $user);
         }
         elseif ( in_array( "ROLE_BRAND", $user->getRoles() ) ){
-            $form = $this->createForm(BrandType::class, $user);
+            $form = $this->createForm(BrandEditType::class, $user);
         }
         else{
             $form = $this->createForm(UserType::class, $user);
         }
 
+      
+
         $form->handleRequest($request);
-
+  
         if ($form->isSubmitted() && $form->isValid())
-        {
-
+        {   
+           
             $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picture')->getData(), "avatar_user")){
+            if($imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user")){
                 $user->setPicture($imageName);
                 
             };
@@ -83,8 +89,9 @@ class UserController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_show');
+            return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
         }
+
 
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
@@ -100,19 +107,15 @@ class UserController extends AbstractController
 
         if (in_array("ROLE_INFLUENCER", $user->getRoles()))
         {
-            $influencer = $user;
-
             return $this->render('user/influencer/show.html.twig', [
-                'influencer' => $influencer,
+                'user' => $user,
             ]);
         }
         
         if (in_array("ROLE_BRAND", $user->getRoles()))
         {
-            $brand = $user;
-            
             return $this->render('user/brand/show.html.twig', [
-                'brand' => $brand,
+                'user' => $user,
             ]);
         }
 
@@ -190,4 +193,96 @@ class UserController extends AbstractController
         $manager->flush();
         return $this->json(['code'=>200, 'message'=> 'L\'utilisateur '. $userLiked->getUsername() . ' a été ajoutée à vos favoris !'], 200);
     }
+
+        /**
+     * @Route("/user/{id}/social/add", name="social_add", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
+     */
+    public function addUserSocial(User $user, Request $request){
+
+        $userSocial = new UserSocial();
+        $userSocial->setUser($user);
+
+        $form = $this->createForm(UserSocialType::class, $userSocial);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($userSocial);
+            $manager->flush();
+            return $this->redirectToRoute('social_profile', ['id'=>$user->getId()]);
+        }
+
+        return $this->render('social/add_social.html.twig', [
+            "form" => $form->createView(),
+        ]);
+
+    }
+
+     /**
+     * @Route("/user/{id}/social/edit", name="social_edit", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
+     */
+    public function editUserSocial( UserSocial $userSocial,Request $request){
+
+        $this->denyAccessUnlessGranted('edit_userSocial', $userSocial);
+
+
+        $form = $this->createForm(UserSocialType::class, $userSocial);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($userSocial);
+            $manager->flush();
+            return $this->redirectToRoute('social_profile', ['id'=>$userSocial->getUser()->getId()]);
+        }
+
+        return $this->render('social/edit_social.html.twig', [
+            "userSocial"=>$userSocial,
+            "form" => $form->createView(),
+        ]);
+
+    }
+
+
+    /** 
+    * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
+    */
+    public function showUserSocial(User $user){
+
+        return $this->render('social/social_profile.html.twig', [
+            "user" => $user
+        ]);
+        
+    }
+  
+    /**
+     * Report an user
+     * 
+     * @Route("/user/{id}/signaler", name="user_report")
+     * 
+     * @param User $reportee
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function report(User $reportee, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['code' => 403, 'message' => 'Unauthorized'], 403);
+        }
+
+        if ($reportee->isReportedByUser($user)) {
+            return $this->json(['code' => 200, 'message '=> 'Vous avez déjà signalé cet utilisateur !'], 200);
+        }
+
+        $report = new UserReport();
+        $report->setReportee($reportee);
+        $report->setReporter($user);
+
+        $manager->persist($report);
+        $manager->flush();
+        return $this->json(['code' => 200, 'message' => 'L\'utilisateur '. $reportee->getUsername() . ' a été signalé par '. $user->getUsername() . '.'], 200);
+    }
+
 }

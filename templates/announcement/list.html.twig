@@ -78,15 +78,20 @@
 	<div class="row nav mb-3"> 
         <div class="col-md-6"></div>
         <div class="col-md-6 col-xs-12 row" style="margin: 0px;padding: 0px;">
-            <a href="{{ path('announcement_show', {id:announcement.id }) }}"  class="col-md-6 col-xs-4 well"><i class="fa fa-eye fa-3"></i> Consulter l'annonce</a>
+            <a href="{{ path('announcement_show', {id:announcement.id }) }}"  class="col-4 well"><i class="fa fa-eye fa-3"></i> Consulter l'annonce</a>
             {# <a href="#" class="col-md-4 col-xs-4 well"><i class="fa fa-envelope fa-3"></i> Envoyer un message</a> #}
-            <a href="{{path('announcement_favorite', {'id': announcement.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+            <a href="{{path('announcement_favorite', {'id': announcement.id}) }}" class="col-4 well js-fav">
             {% if app.user and announcement.isFavByUser(app.user) %}
                 <i class="fa fa-heart fa-lg "></i> <span class="favtext">Dans vos favoris</span>
             {% else %}
             <i class="fa fa-heart-o fa-lg "></i> <span class="favtext">Ajouter à vos favoris</span>
             {% endif %}
             </a>
+            {% if app.user and announcement.isReportedByUser(app.user) %}
+                <a href="{{ path('announcement_report', {id:announcement.id }) }}"  class="col-4 well js-report ann-reported"><i class="fa fa-exclamation-triangle fa-3"></i> Annonce signalée !</a>
+            {% else %}
+                <a href="{{ path('announcement_report', {id:announcement.id }) }}"  class="col-4 well js-report ann-not-reported"><i class="fa fa-exclamation-triangle fa-3"></i> Signaler l'annonce</a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
@@ -108,7 +113,6 @@
         let favlink = evt.currentTarget;
         let favtext = this.querySelector('.favtext');
 
-        console.log(favlink);
         axios.get(url).then(function(response){
 
             if(icone.classList.contains('fa-heart-o')){
@@ -117,6 +121,18 @@
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
                 favtext.innerHTML = "Ajouter aux favoris";
+            }
+        });
+    }
+
+    function onClickBtnReport(evt){
+        evt.preventDefault()
+        const url = this.href;
+        let reportlink = evt.currentTarget;
+        axios.get(url).then(function(response){
+            if(reportlink.classList.contains('ann-not-reported')){
+                reportlink.classList.replace('ann-not-reported', 'ann-reported');
+                reportlink.childNodes[1].nodeValue = " Annonce signalée !";
             }
         });
     }
@@ -176,6 +192,9 @@
     document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
     document.querySelectorAll('a.js-fav').forEach(function(link){
         link.addEventListener('click', onClickBtnFav)
+    })
+    document.querySelectorAll('a.js-report').forEach(function(link){
+        link.addEventListener('click', onClickBtnReport);
     })
     </script>
 {% endblock %}

@@ -42,6 +42,7 @@
                                     {% endfor %}
                                     </p>
                                     <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-plus"></i></a>
+                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -62,13 +63,44 @@
 
                                     <p class="card-text">AJOUTER UNE DESCRIPTION / BIO DANS L'ENTITE USER ?</p>
                                     <a href="{{path('user_show', {id: brand.id, role: 'marque'})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
+                                    {% if app.user and brand.isReportedByUser(app.user) %}
+                                        <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
+                                    {% else %}
+                                        <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
+                                    {% endif %}
                                     <ul class="list-inline">
                                         {% for social in brand.userSocials %}
+                                        {% if social.social.name == 'Facebook' %}
                                         <li class="list-inline-item">
                                             <a class="social-icon text-xs-center" target="_blank" href="#">
                                                 <i class="fa fa-facebook"></i>
                                             </a>
                                         </li>
+                                        {% elseif social.social.name == 'Twitter' %}
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        {% elseif social.social.name == 'Instagram' %}
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                                <i class="fa fa-instgram"></i>
+                                            </a>
+                                        </li>
+                                        {% elseif social.social.name == 'Twitch' %}
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                                <i class="fa fa-twitch"></i>
+                                            </a>
+                                        </li>
+                                        {% elseif social.social.name == 'Snapchat' %}
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                                <i class="fa fa-snapchat"></i>
+                                            </a>
+                                        </li>
+                                        {% endif %}
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -114,8 +146,24 @@
         });
     }
 
+    function onClickBtnReport(evt){
+        evt.preventDefault()
+        const url = this.href;
+        let reportlink = evt.currentTarget;
+        let reportText = this.querySelector('span');
+        axios.get(url).then(function(response){
+            if(reportlink.classList.contains('user-not-reported')){
+                reportlink.classList.replace('user-not-reported', 'user-reported');
+                reportText.innerHTML = "Signalé !";
+            }
+        });
+    }
+
         document.querySelectorAll('a.js-fav').forEach(function(link){
             link.addEventListener('click', onClickBtnFav)
+        })
+        document.querySelectorAll('a.js-report').forEach(function(link){
+            link.addEventListener('click', onClickBtnReport);
         })
     </script>
 {% endblock %}
