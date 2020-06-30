@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Announcement;
 use App\Entity\AnnouncementFav;
+use App\Entity\AnnouncementReport;
 use App\Form\AnnouncementType;
 use App\Repository\AnnouncementFavRepository;
+use App\Repository\AnnouncementReportRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SocialNetworkRepository;
@@ -169,5 +171,35 @@ class AnnouncementController extends AbstractController
         $manager->persist($favorite);
         $manager->flush();
         return $this->json(['code'=>200, 'message'=> 'L\'annonce '.  $announcement->getTitle() . ' a été ajoutée à vos favoris !'], 200);
+    }
+
+    /**
+     * Report an announcement
+     * 
+     * @Route("/{id}/signaler", name="report")
+     * 
+     * @param Announcement $announcement
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function report(Announcement $announcement, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['code' => 403, 'message' => 'Unauthorized'], 403);
+        }
+
+        if ($announcement->isReportedByUser($user)) {
+            return $this->json(['code' => 200, 'message '=> 'Vous avez déjà signalé cette annonce !'], 200);
+        }
+
+        $report = new AnnouncementReport();
+        $report->setAnnouncement($announcement);
+        $report->setReporter($user);
+
+        $manager->persist($report);
+        $manager->flush();
+        return $this->json(['code' => 200, 'message' => 'L\'annonce '. $announcement->getTitle() . ' a été signalée par ' . $user->getUsername() . '.'], 200);
     }
 }

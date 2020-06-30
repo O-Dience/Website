@@ -1,5 +1,9 @@
 body {
-  background: #F1F3FA;
+  background-image: url('../images/background_dashboard.png');
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 /* Profile container */
@@ -113,3 +117,10 @@ body {
   background: #fff;
   min-height: 460px;
 }
+
+.favAnnouncement{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+

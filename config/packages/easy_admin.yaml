@@ -1,0 +1,283 @@
+easy_admin:
+    site_name: 'Tableau de bord O''Dience'
+    user:
+        name_property_path: 'email'
+        avatar_property_path: 'picture'
+    formats:
+        date: 'd/m/Y'
+    list:
+        max-results: 20
+    entities:
+        Announcement:
+            class: App\Entity\Announcement
+            label: 'Annonces'
+            disabled_actions: 
+                [
+                    'new',
+                ]
+            list:
+                fields:
+                    [
+                        { 
+                            property: 'status',
+                            type: 'toggle', 
+                            label: 'Statut',
+                        },
+                        { 
+                            property: 'title', 
+                            label: 'Titre' 
+                        },
+                        {
+                            property: 'imageWithPath',
+                            type: 'image',
+                            label: 'Illustration',
+                        },
+                        { 
+                            property: 'socialNetworks', 
+                            label: 'Réseaux sociaux',
+                            type: 'array',
+                        },
+                        { 
+                            property: 'created_at', 
+                            label: 'Créé le',
+                        },
+                    ]
+                actions:
+                    [
+                        { 
+                            name: 'edit', 
+                            icon: 'pencil', 
+                            label: false, 
+                            css_class: 'btn btn-secondary',
+                        },
+                        { 
+                            name: 'delete', 
+                            icon: 'trash', 
+                            label: false, 
+                            css_class: 'btn btn-danger', 
+                        },
+                    ]
+
+            form:
+                fields:
+                    [
+                        { 
+                            property: 'title',
+                        },
+                        { 
+                            property: 'content',
+                        },
+                    ]
+
+        Category:
+            class: App\Entity\Category
+            label: 'Catégories'
+            list:
+                fields: 
+                    [
+                        {
+                            property: 'pictoWithPath', 
+                            type: 'image'
+                        }, 
+                        {
+                            property: 'label', 
+                        },
+                        { 
+                            property: 'announcements', 
+                            label: 'Annonces liées' 
+                        },
+                        { 
+                            property: 'users', 
+                            label: 'Utilisateurs liés' 
+                        },
+                        { 
+                            property: 'created_at', 
+                            label: 'Créé le' 
+                        },
+                        { 
+                            property: 'updated_at', 
+                            label: 'Mis à jour le' 
+                        },
+                    ]
+                actions:
+                    [
+                        { 
+                            name: 'edit', 
+                            icon: 'pencil', 
+                            label: false, 
+                            css_class: 'btn btn-secondary' 
+                        },
+                        { 
+                            name: 'delete', 
+                            icon: 'trash', 
+                            label: false, 
+                            css_class: 'btn btn-danger' 
+                        },
+                    ]
+
+            form:
+                fields:
+                    [
+                    { 
+                        property: 'label'
+                    },
+                    { 
+                        property: 'picto', 
+                        type: 'file', 
+                        type_options: 
+                            { 
+                                data_class: null 
+                            }, 
+                    },
+                    ]
+
+        SocialNetwork:
+            class: App\Entity\SocialNetwork
+            label: 'Réseaux Sociaux'
+            list:
+                fields: 
+                    [
+                        { 
+                            property: 'pictoWithPath', 
+                            type: 'image', 
+                            label: 'Picto' 
+                        },
+                        { 
+                            property: 'name', 
+                            label: 'Nom' 
+                        },
+                        { 
+                            property: 'announcements', 
+                            label: 'Annonces liés' 
+                        },
+                    ]
+                actions:
+                    [
+                        { 
+                            name: 'edit', 
+                            icon: 'pencil', 
+                            label: false, 
+                            css_class: 'btn btn-secondary' 
+                        },
+                        { 
+                            name: 'delete', 
+                            icon: 'trash', 
+                            label: false, 
+                            css_class: 'btn btn-danger' 
+                        },
+                    ]
+
+            form:
+                fields:
+                    [
+                        { 
+                            property: 'name',
+                        },
+                        { 
+                            property: 'picto', 
+                            type: 'file', 
+                            type_options: 
+                                { 
+                                    data_class: null 
+                                },
+                        },
+                    ]
+
+        User:
+            class: App\Entity\User
+            label: Utilisateurs
+            list:
+                fields: 
+                    [
+                        { 
+                            property: 'status', 
+                            label: 'Statut', 
+                            type: 'toggle' 
+                        },
+                        { 
+                            property: 'pictureWithPath', 
+                            label: 'Avatar', type: 'image',
+                        },
+                        { 
+                            property: 'username', 
+                            label: 'Utilisateur',
+                        }, 
+                        { 
+                            property: 'frenchRole',
+                            label: 'Rôle',
+                        },  
+                        { 
+                            property: 'created_at', 
+                            label: 'Créé le',
+                        }, 
+                        { 
+                            property: 'updated_at', 
+                            label: 'Mis à jour le',
+                        },
+                    ]
+                actions:
+                    [
+                        { 
+                            name: 'edit', 
+                            icon: 'pencil', 
+                            label: false, 
+                            css_class: 'btn btn-secondary' 
+                        },
+                        { 
+                            name: 'delete', 
+                            icon: 'trash', 
+                            label: false, 
+                            css_class: 'btn btn-danger', 
+                        },
+                    ]
+
+            form:
+                fields:
+                    [
+                        { 
+                            property: 'username',
+                        },
+                        { 
+                            property: 'roles',
+                            type: 'choice',
+                            type_options: 
+                                {
+                                    choices: 
+                                        {
+                                            Administrateur: 'ROLE_ADMIN',
+                                            Modérateur: 'ROLE_MODERATOR',
+                                            Marque: 'ROLE_BRAND',
+                                            Influenceur: 'ROLE_INFLUENCER',
+                                        },
+                                    expanded: true,
+                                    multiple: true,
+                                },
+                        }
+                    ]
+
+    design:
+        menu:
+            [
+                { 
+                    entity: Announcement, 
+                    icon: 'newspaper-o',
+                },
+                { 
+                    entity: User, 
+                    icon: 'users',
+                },
+                { 
+                    entity: Category, 
+                    icon: 'anchor',
+                },
+                { 
+                    entity: SocialNetwork, 
+                    icon: 'mobile',
+                },
+            ]
+
+
+        brand_color: '#264653'
+        assets:
+            css:
+                - 'css/admin.css'

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserSocialRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserSocialRepository::class)
@@ -17,11 +18,13 @@ class UserSocial
      */
     private $id;
 
+
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $link;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userSocials")
      * @ORM\JoinColumn(nullable=false)
@@ -34,6 +37,12 @@ class UserSocial
      */
     private $social;
 
+
+    public function __toString(){
+
+        return (string) $this->social->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,7 +53,7 @@ class UserSocial
         return $this->link;
     }
 
-    public function setLink(string $link): self
+    public function setLink(?string $link): self
     {
         $this->link = $link;
 

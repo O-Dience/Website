@@ -7,12 +7,6 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet" href="{{asset('assets/css/influencer_list.css')}}">
 {% endblock %}
-{% block javascripts %}
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{% endblock %}
-
-
 
 {% block body %}
 <!-- Team -->
@@ -30,22 +24,50 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <p><img class=" img-fluid" src="{{asset('assets/images/avatar_user/' ~ brand.picture ) }}" alt="card image"></p>
-                                    <h4 class="card-title"><span class="text-danger">{{brand.username}}</span></h4>
+
+                                    <div>
+                                    <h4 class="card-title"><span class="text-danger">{{brand.username}}</span></h4> 
+                                     <a href="{{path('user_favorite', {'id': brand.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                                            {% if app.user and brand.isFavByUser(app.user) %}
+                                                <i class=" fa fa-heart fa-lg "></i> 
+                                            {% else %}
+                                            <i class="fa fa-heart-o fa-lg "></i>
+                                            {% endif %}
+                                        </a>
+                                    </div>  
+
                                     <p class="card-text">
                                     {% for category in brand.categories %}
                                     <span class="label label-info">{{ category.label }}</span>
                                     {% endfor %}
                                     </p>
                                     <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-plus"></i></a>
+                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="backside">
                             <div class="card">
                                 <div class="card-body text-center mt-4">
+                                    <div>
+                                    
                                     <h4 class="card-title text-danger"><span class="text-danger">{{brand.username}}</span></h4>
+                                        <a href="{{path('user_favorite', {'id': brand.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                                            {% if app.user and brand.isFavByUser(app.user) %}
+                                                <i class="fa fa-heart fa-lg "></i> 
+                                            {% else %}
+                                            <i class="fa fa-heart-o fa-lg "></i>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+
                                     <p class="card-text">AJOUTER UNE DESCRIPTION / BIO DANS L'ENTITE USER ?</p>
                                     <a href="{{path('user_show', {id: brand.id, role: 'marque'})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
+                                    {% if app.user and brand.isReportedByUser(app.user) %}
+                                        <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
+                                    {% else %}
+                                        <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
+                                    {% endif %}
                                     <ul class="list-inline">
                                         {% for social in brand.userSocials %}
                                         <li class="list-inline-item">
@@ -67,4 +89,55 @@
     </div>
 </section>
 <!-- Team -->
+{% endblock %}
+
+{% block javascripts %}
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+    function onClickBtnFav(evt){
+        evt.preventDefault()
+        const url = this.href
+        const icone = this.querySelector('i');
+        let favlink = evt.currentTarget;
+        
+
+        axios.get(url).then(function(response){
+
+            if(icone.classList.contains('fa-heart-o') ){
+                icone.classList.replace('fa-heart-o', 'fa-heart')
+              
+
+            } else{
+                icone.classList.replace('fa-heart', 'fa-heart-o')
+                
+            }
+
+        });
+    }
+
+    function onClickBtnReport(evt){
+        evt.preventDefault()
+        const url = this.href;
+        let reportlink = evt.currentTarget;
+        let reportText = this.querySelector('span');
+        axios.get(url).then(function(response){
+            if(reportlink.classList.contains('user-not-reported')){
+                reportlink.classList.replace('user-not-reported', 'user-reported');
+                reportText.innerHTML = "Signalé !";
+            }
+        });
+    }
+
+        document.querySelectorAll('a.js-fav').forEach(function(link){
+            link.addEventListener('click', onClickBtnFav)
+        })
+        document.querySelectorAll('a.js-report').forEach(function(link){
+            link.addEventListener('click', onClickBtnReport);
+        })
+    </script>
 {% endblock %}

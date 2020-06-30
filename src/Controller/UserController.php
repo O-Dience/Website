@@ -2,14 +2,23 @@
 
 namespace App\Controller;
 
+use App\Entity\SocialNetwork;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\BrandType;
-use App\Entity\Announcement;
+use App\Entity\UserFav;
+use App\Entity\UserReport;
+use App\Entity\UserSocial;
+use App\Form\BrandEditType;
+use App\Form\InfluencerEditType;
 use App\Form\InfluencerType;
+use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
-use App\Repository\UserRepository;
+use App\Repository\CategoryRepository;
+use App\Repository\UserFavRepository;
+use App\Service\ImageUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +30,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{role}/liste", name="user_list", methods={"GET"}, requirements={"role": "^(marque|influenceur|utilisateur)"})
      */
-    public function list($role): Response
+    public function list($role, CategoryRepository $categoryRepository): Response
     {
         if($role === "influenceur"){
             $role = "influencer";
@@ -35,9 +44,10 @@ class UserController extends AbstractController
             $role = "user";
             $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         }
-
+        $categories = $categoryRepository->findAll();
         return $this->render('user/'.$role.'/list.html.twig', [
             "users" => $users,
+            'categories' => $categories
         ]);
     }
 
@@ -48,24 +58,27 @@ class UserController extends AbstractController
     public function edit(User $user,  Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader): Response
     {
         $this->denyAccessUnlessGranted('edit', $user);
-        
+
+
         if ( in_array( "ROLE_INFLUENCER", $user->getRoles() ) ){
-            $form = $this->createForm(InfluencerType::class, $user);
+            $form = $this->createForm(InfluencerEditType::class, $user);
         }
         elseif ( in_array( "ROLE_BRAND", $user->getRoles() ) ){
-            $form = $this->createForm(BrandType::class, $user);
+            $form = $this->createForm(BrandEditType::class, $user);
         }
         else{
             $form = $this->createForm(UserType::class, $user);
         }
 
+      
+
         $form->handleRequest($request);
-
+  
         if ($form->isSubmitted() && $form->isValid())
-        {
-
+        {   
+           
             $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('picture')->getData(), "avatar_user")){
+            if($imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user")){
                 $user->setPicture($imageName);
                 
             };
@@ -78,8 +91,9 @@ class UserController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_show');
+            return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
         }
+
 
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
@@ -140,4 +154,101 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('Utilisateur introuvable');
         }
     }
+
+/**
+     * 
+     * add or remove an announcement to the favorites
+     * 
+     * @Route("user/{id}/favoris", name="user_favorite")
+     *
+     * @param User $userLiked
+     * @param ObjectManager $manager
+     * @param UserFavRepository $favRepo
+     * @return Response
+     */
+    public function favorites(User $userLiked, EntityManagerInterface $manager, UserFavRepository $favRepo): Response
+    {
+        $user =$this->getUser();
+
+        if(!$user){
+
+        return $this->json(['code'=>403, 'message'=>'Unauthorizer'], 403);
+
+        }
+        if ($userLiked->isFavByUser($user)){
+            $favorite = $favRepo->findOneBy([
+                'userLiked'=>$userLiked,
+                'userLike'=>$user
+            ]);
+           
+            $manager->remove($favorite);
+            $manager->flush();
+
+            return $this->json(['code'=>200, 'message'=> 'L\'utilisateur '.  $userLiked->getUsername() . ' a été retirée de vos favoris !'], 200);
+        }
+
+        $favorite = new UserFav();
+        $favorite->setUserLiked($userLiked);
+        $favorite->setUserLike($user);
+
+        $manager->persist($favorite);
+        $manager->flush();
+        return $this->json(['code'=>200, 'message'=> 'L\'utilisateur '. $userLiked->getUsername() . ' a été ajoutée à vos favoris !'], 200);
+    }
+
+        /**
+     * @Route("/user/{id}/social/add", name="social_add", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
+     */
+    public function addUserSocial(User $user, Request $request){
+
+        $userSocial = new UserSocial();
+        $userSocial->setUser($user);
+
+        $form = $this->createForm(UserSocialType::class, $userSocial);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($userSocial);
+            $manager->flush();
+            return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
+        }
+
+        return $this->render('user/add_social.html.twig', [
+            "form" => $form->createView(),
+            "user" => $user
+        ]);
+
+    }
+
+    /**
+     * Report an user
+     * 
+     * @Route("/user/{id}/signaler", name="user_report")
+     * 
+     * @param User $reportee
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function report(User $reportee, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['code' => 403, 'message' => 'Unauthorized'], 403);
+        }
+
+        if ($reportee->isReportedByUser($user)) {
+            return $this->json(['code' => 200, 'message '=> 'Vous avez déjà signalé cet utilisateur !'], 200);
+        }
+
+        $report = new UserReport();
+        $report->setReportee($reportee);
+        $report->setReporter($user);
+
+        $manager->persist($report);
+        $manager->flush();
+        return $this->json(['code' => 200, 'message' => 'L\'utilisateur '. $reportee->getUsername() . ' a été signalé par '. $user->getUsername() . '.'], 200);
+    }
+
 }

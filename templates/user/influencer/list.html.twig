@@ -7,11 +7,6 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet" href="{{asset('assets/css/influencer_list.css')}}">
 {% endblock %}
-{% block javascripts %}
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{% endblock %}
-
 
 
 {% block body %}
@@ -20,32 +15,64 @@
     <div class="container">
         <h5 class="section-title h1">Les Influenceurs</h5>
         <small>Ajouter menu des filtres, liens RS dynamiques</small>
+        <select id="category_filter">
+            <option value="">Filtrer par catégorie</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.label }}</option>
+            {% endfor %}
+        </select>
         <div class="row">
         {% for influencer in users %}
             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="user_card_group col-xs-12 col-sm-6 col-md-4">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
                                     <p><img class=" img-fluid" src="{{asset('assets/images/avatar_user/' ~ influencer.picture ) }}" alt="card image"></p>
+                                    <div>
                                     <h4 class="card-title">{{influencer.username}}</h4>
+                                      <a href="{{path('user_favorite', {'id': influencer.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                                            {% if app.user and influencer.isFavByUser(app.user) %}
+                                                <i class="fa fa-heart fa-lg "></i> 
+                                            {% else %}
+                                            <i class="fa fa-heart-o fa-lg "></i>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+
+
                                     <p class="card-text">
                                     {% for category in influencer.categories %}
-                                    <span class="label label-info">{{ category.label }}</span>
+                                    <span class="label label-info" data-category-id="{{ category.id }}">{{ category.label }}</span>
                                     {% endfor %}
                                     </p>
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i></a>
                                 </div>
                             </div>
                         </div>
                         <div class="backside">
                             <div class="card">
                                 <div class="card-body text-center mt-4">
+                                    <div>
                                     <h4 class="card-title">{{influencer.username}}</h4>
+                                      <a href="{{path('user_favorite', {'id': influencer.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                                            {% if app.user and influencer.isFavByUser(app.user) %}
+                                                <i class="fa fa-heart fa-lg "></i> 
+                                            {% else %}
+                                            <i class="fa fa-heart-o fa-lg "></i>
+                                            {% endif %}
+                                        </a>
+                                    </div>
                                     <p class="card-text">AJOUTER UNE DESCRIPTION / BIO DANS L'ENTITE USER ?</p>
                                     <a href="{{path('user_show', {id: influencer.id, role: 'influenceur'})}}" class="btn btn-primary btn-sm"><span class="text-white">Profil</span></a>
+                                    {% if app.user and influencer.isReportedByUser(app.user) %}
+                                        <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
+                                    {% else %}
+                                        <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
+                                    {% endif %}
                                     <ul class="list-inline">
                                         {% for social in influencer.userSocials %}
                                         <li class="list-inline-item">
@@ -67,4 +94,84 @@
     </div>
 </section>
 <!-- Team -->
+{% endblock %}
+
+{% block javascripts %}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+    let categoryFilter = '';
+
+    function onClickBtnFav(evt){
+        evt.preventDefault()
+        const url = this.href
+        const icone = this.querySelector('i');
+        let favlink = evt.currentTarget;
+
+        axios.get(url).then(function(response){
+
+            if(icone.classList.contains('fa-heart-o') ){
+                icone.classList.replace('fa-heart-o', 'fa-heart')
+
+
+            } else{
+                icone.classList.replace('fa-heart', 'fa-heart-o')
+            }
+
+        });
+    }
+
+    function onClickBtnReport(evt){
+        evt.preventDefault()
+        const url = this.href;
+        let reportlink = evt.currentTarget;
+        let reportText = this.querySelector('span');
+        axios.get(url).then(function(response){
+            if(reportlink.classList.contains('user-not-reported')){
+                reportlink.classList.replace('user-not-reported', 'user-reported');
+                reportText.innerHTML = "Signalé !";
+            }
+        });
+    }
+
+    // Filters influencers by category
+    function filterByCategory(evt) {
+        categoryFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Updates display of influencers according to the filters
+    function updateDisplay() {
+        document.querySelectorAll('.user_card_group').forEach(function(user){
+            let foundCategory = false;
+            
+            if (categoryFilter == '') {
+                foundCategory = true;
+            }
+            else {
+                user.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryFilter) {
+                        foundCategory = true;
+                    }
+                })
+            }
+            
+            if (foundCategory) {
+                user.style.display = 'block';
+            }
+            else {
+                user.style.display = 'none';
+            }
+        })
+    }
+    document.getElementById('category_filter').addEventListener('change', filterByCategory);
+        document.querySelectorAll('a.js-fav').forEach(function(link){
+            link.addEventListener('click', onClickBtnFav)
+        })
+        document.querySelectorAll('a.js-report').forEach(function(link){
+            link.addEventListener('click', onClickBtnReport);
+        })
+    </script>
 {% endblock %}
