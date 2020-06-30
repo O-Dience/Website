@@ -88,9 +88,9 @@
             {% endif %}
             </a>
             {% if app.user and announcement.isReportedByUser(app.user) %}
-                <span class="col-4 well"><i class="fa fa-exclamation-triangle fa-3"></i> Annonce signalée !</span>
+                <a href="{{ path('announcement_report', {id:announcement.id }) }}"  class="col-4 well js-report ann-reported"><i class="fa fa-exclamation-triangle fa-3"></i> Annonce signalée !</a>
             {% else %}
-                <a href="{{ path('announcement_report', {id:announcement.id }) }}"  class="col-4 well"><i class="fa fa-exclamation-triangle fa-3"></i> Signaler l'annonce</a>
+                <a href="{{ path('announcement_report', {id:announcement.id }) }}"  class="col-4 well js-report ann-not-reported"><i class="fa fa-exclamation-triangle fa-3"></i> Signaler l'annonce</a>
             {% endif %}
         </div>
     </div>
@@ -122,6 +122,18 @@
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
                 favtext.innerHTML = "Ajouter aux favoris";
+            }
+        });
+    }
+
+    function onClickBtnReport(evt){
+        evt.preventDefault()
+        const url = this.href;
+        let reportlink = evt.currentTarget;
+        axios.get(url).then(function(response){
+            if(reportlink.classList.contains('ann-not-reported')){
+                reportlink.classList.replace('ann-not-reported', 'ann-reported');
+                reportlink.childNodes[1].nodeValue = " Annonce signalée !";
             }
         });
     }
@@ -181,6 +193,9 @@
     document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
     document.querySelectorAll('a.js-fav').forEach(function(link){
         link.addEventListener('click', onClickBtnFav)
+    })
+    document.querySelectorAll('a.js-report').forEach(function(link){
+        link.addEventListener('click', onClickBtnReport);
     })
     </script>
 {% endblock %}

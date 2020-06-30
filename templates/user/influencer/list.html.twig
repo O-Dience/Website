@@ -49,6 +49,7 @@
                                     {% endfor %}
                                     </p>
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -67,6 +68,11 @@
                                     </div>
                                     <p class="card-text">AJOUTER UNE DESCRIPTION / BIO DANS L'ENTITE USER ?</p>
                                     <a href="{{path('user_show', {id: influencer.id, role: 'influenceur'})}}" class="btn btn-primary btn-sm"><span class="text-white">Profil</span></a>
+                                    {% if app.user and influencer.isReportedByUser(app.user) %}
+                                        <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
+                                    {% else %}
+                                        <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
+                                    {% endif %}
                                     <ul class="list-inline">
                                         {% for social in influencer.userSocials %}
                                         <li class="list-inline-item">
@@ -117,6 +123,19 @@
         });
     }
 
+    function onClickBtnReport(evt){
+        evt.preventDefault()
+        const url = this.href;
+        let reportlink = evt.currentTarget;
+        let reportText = this.querySelector('span');
+        axios.get(url).then(function(response){
+            if(reportlink.classList.contains('user-not-reported')){
+                reportlink.classList.replace('user-not-reported', 'user-reported');
+                reportText.innerHTML = "Signalé !";
+            }
+        });
+    }
+
     // Filters influencers by category
     function filterByCategory(evt) {
         categoryFilter = evt.target.value;
@@ -150,6 +169,9 @@
     document.getElementById('category_filter').addEventListener('change', filterByCategory);
         document.querySelectorAll('a.js-fav').forEach(function(link){
             link.addEventListener('click', onClickBtnFav)
+        })
+        document.querySelectorAll('a.js-report').forEach(function(link){
+            link.addEventListener('click', onClickBtnReport);
         })
     </script>
 {% endblock %}

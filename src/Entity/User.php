@@ -112,6 +112,16 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=AnnouncementReport::class, mappedBy="reporter", orphanRemoval=true)
      */
     private $reportedAnnouncements;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserReport::class, mappedBy="reporter", orphanRemoval=true)
+     */
+    private $reportedUsers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserReport::class, mappedBy="reportee", orphanRemoval=true)
+     */
+    private $reportedBy;
     
 
 
@@ -125,6 +135,8 @@ class User implements UserInterface
 
         $this->userFavs = new ArrayCollection();
         $this->reportedAnnouncements = new ArrayCollection();
+        $this->reportedUsers = new ArrayCollection();
+        $this->reportedBy = new ArrayCollection();
        }
 
     public function __toString()
@@ -510,4 +522,77 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|UserReport[]
+     */
+    public function getReportedUsers(): Collection
+    {
+        return $this->reportedUsers;
+    }
+
+    public function addReportedUser(UserReport $reportedUser): self
+    {
+        if (!$this->reportedUsers->contains($reportedUser)) {
+            $this->reportedUsers[] = $reportedUser;
+            $reportedUser->setReporter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedUser(UserReport $reportedUser): self
+    {
+        if ($this->reportedUsers->contains($reportedUser)) {
+            $this->reportedUsers->removeElement($reportedUser);
+            // set the owning side to null (unless already changed)
+            if ($reportedUser->getReporter() === $this) {
+                $reportedUser->setReporter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserReport[]
+     */
+    public function getReportedBy(): Collection
+    {
+        return $this->reportedBy;
+    }
+
+    public function addReportedBy(UserReport $reportedBy): self
+    {
+        if (!$this->reportedBy->contains($reportedBy)) {
+            $this->reportedBy[] = $reportedBy;
+            $reportedBy->setReportee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedBy(UserReport $reportedBy): self
+    {
+        if ($this->reportedBy->contains($reportedBy)) {
+            $this->reportedBy->removeElement($reportedBy);
+            // set the owning side to null (unless already changed)
+            if ($reportedBy->getReportee() === $this) {
+                $reportedBy->setReportee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    //function to check if another user was reported by this user
+    public function isReportedByUser(User $user) : bool
+    {
+        foreach($this->reportedBy as $report){
+            if ($report->getReporter() === $user) return true;
+        }
+
+        return false;
+    }
+
 }
