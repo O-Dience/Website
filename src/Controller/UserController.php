@@ -6,6 +6,7 @@ use App\Entity\SocialNetwork;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Entity\UserFav;
+use App\Entity\UserReport;
 use App\Entity\UserSocial;
 use App\Form\BrandEditType;
 use App\Form\InfluencerEditType;
@@ -106,19 +107,15 @@ class UserController extends AbstractController
 
         if (in_array("ROLE_INFLUENCER", $user->getRoles()))
         {
-            $influencer = $user;
-
             return $this->render('user/influencer/show.html.twig', [
-                'influencer' => $influencer,
+                'user' => $user,
             ]);
         }
         
         if (in_array("ROLE_BRAND", $user->getRoles()))
         {
-            $brand = $user;
-            
             return $this->render('user/brand/show.html.twig', [
-                'brand' => $brand,
+                'user' => $user,
             ]);
         }
 
@@ -258,5 +255,34 @@ class UserController extends AbstractController
         
     }
   
+    /**
+     * Report an user
+     * 
+     * @Route("/user/{id}/signaler", name="user_report")
+     * 
+     * @param User $reportee
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function report(User $reportee, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['code' => 403, 'message' => 'Unauthorized'], 403);
+        }
+
+        if ($reportee->isReportedByUser($user)) {
+            return $this->json(['code' => 200, 'message '=> 'Vous avez déjà signalé cet utilisateur !'], 200);
+        }
+
+        $report = new UserReport();
+        $report->setReportee($reportee);
+        $report->setReporter($user);
+
+        $manager->persist($report);
+        $manager->flush();
+        return $this->json(['code' => 200, 'message' => 'L\'utilisateur '. $reportee->getUsername() . ' a été signalé par '. $user->getUsername() . '.'], 200);
+    }
 
 }
