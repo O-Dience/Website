@@ -15,13 +15,13 @@
 			{{user.username}}
 		</div>
 		<div class="profile-usertitle-job">
-			{% for socialProfile in user.userSocials %}
+			{# {% for socialProfile in user.userSocials %}
 				{% if not loop.first %},
 				{% endif %}
 				{{ socialProfile.social.name }}
 				-
 				{{ socialProfile.link }}
-			{% endfor %}
+			{% endfor %} #}
 			{{ user.userFavorites | length }}
 		</div>
 	</div>
@@ -55,7 +55,8 @@
 				<i class="fa fa-cog ml-1 mr-1" aria-hidden="true"></i>
 				Editer mon profil
 			</a>
-			<a href="{{path('social_add', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'social_add') ? 'active' : '' }}">
+			<a href="{{path('social_profile', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'social_profile') ? 'active' : '' }}">
+				<i class="fa fa-mobile ml-1 mr-1" aria-hidden="true"></i>
 				Gérer mes réseaux sociaux
 			</a>
 		</ul>

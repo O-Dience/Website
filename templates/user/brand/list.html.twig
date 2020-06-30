@@ -70,11 +70,37 @@
                                     {% endif %}
                                     <ul class="list-inline">
                                         {% for social in brand.userSocials %}
+                                        {% if social.social.name == 'Facebook' %}
                                         <li class="list-inline-item">
                                             <a class="social-icon text-xs-center" target="_blank" href="#">
                                                 <i class="fa fa-facebook"></i>
                                             </a>
                                         </li>
+                                        {% elseif social.social.name == 'Twitter' %}
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        {% elseif social.social.name == 'Instagram' %}
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                                <i class="fa fa-instgram"></i>
+                                            </a>
+                                        </li>
+                                        {% elseif social.social.name == 'Twitch' %}
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                                <i class="fa fa-twitch"></i>
+                                            </a>
+                                        </li>
+                                        {% elseif social.social.name == 'Snapchat' %}
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                                <i class="fa fa-snapchat"></i>
+                                            </a>
+                                        </li>
+                                        {% endif %}
                                         {% endfor %}
                                     </ul>
                                 </div>
