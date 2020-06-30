@@ -200,6 +200,6 @@ class AnnouncementController extends AbstractController
 
         $manager->persist($report);
         $manager->flush();
-        return $this->json(['code' => 200, 'message' => 'L\'annonce '. $announcement->getTitle() . ' a été signalée.'], 200);
+        return $this->json(['code' => 200, 'message' => 'L\'annonce '. $announcement->getTitle() . ' a été signalée par ' . $user->getUsername() . '.'], 200);
     }
 }
