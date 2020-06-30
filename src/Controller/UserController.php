@@ -109,19 +109,15 @@ class UserController extends AbstractController
 
         if (in_array("ROLE_INFLUENCER", $user->getRoles()))
         {
-            $influencer = $user;
-
             return $this->render('user/influencer/show.html.twig', [
-                'influencer' => $influencer,
+                'user' => $user,
             ]);
         }
         
         if (in_array("ROLE_BRAND", $user->getRoles()))
         {
-            $brand = $user;
-            
             return $this->render('user/brand/show.html.twig', [
-                'brand' => $brand,
+                'user' => $user,
             ]);
         }
 
