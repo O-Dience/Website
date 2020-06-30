@@ -249,6 +249,8 @@ class UserController extends AbstractController
     */
     public function showUserSocial(User $user){
 
+        $this->denyAccessUnlessGranted('show_social', $user);
+
         return $this->render('social/social_profile.html.twig', [
             "user" => $user
         ]);
