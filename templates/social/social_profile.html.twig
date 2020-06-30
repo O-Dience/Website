@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ user.username }} - Réseaux sociaux{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('assets/css/user_social.css')}}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-md ">
+	<div class="row profile">
+		<div class="col-md-3">
+			{% include 'partials/_profile_sidebar.html.twig' %}
+		</div>
+
+		<div class="col-md-9">
+			<div class="social-content">
+				<h2 class="mb-5 text-align-center">Bonjour {{ user.username }}, ici vous pourrez gérer vos différents
+					réseaux </h2>
+				<div class="d-flex flex-justify-between text-center">
+					{% for socialProfile in user.userSocials %}
+					<div class="col-5 social__div">
+						{% if socialProfile.social.name == 'Facebook' %}
+							<a href="{{ socialProfile.link }}">Mon Facebook </a>
+						<div data-id={{socialProfile.id}} >
+							<button class="delete_social"> supprimer </button>
+							<button class="edit_social">
+								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
+							</button>
+						</div>
+						{% elseif socialProfile.social.name == 'Twitch' %}
+						<div >
+							<a href="{{ socialProfile.link }}"> Mon compte Twitch</a>
+						</div>
+						<div data-id={{socialProfile.id}} >
+							<button class="delete_social"> supprimer </button>
+							<button class="edit_social">
+								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
+							</button>
+						</div>
+						{% elseif socialProfile.social.name == 'Instagram' %}
+						<div>
+							<a href="{{ socialProfile.link }}">Mon profil Insta </a>
+						</div>
+						<div data-id={{socialProfile.id}} >
+							<button class="delete_social"> supprimer </button>
+							<button class="edit_social">
+								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
+							</button>
+						</div>
+						{% elseif socialProfile.social.name == 'Twitter' %}
+						<a href="{{ socialProfile.link }}">Mon compte Twitter </a>
+						<div data-id={{socialProfile.id}} >
+							<button class="delete_social"> supprimer </button>
+							<button class="edit_social">
+								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
+							</button>
+						</div>
+						{% elseif socialProfile.social.name == 'Snapchat' %}
+						<a href="{{ socialProfile.link }}">
+							Mon compte Snapchat
+						</a>
+						<div data-id={{socialProfile.id}} >
+							<button class="delete_social"> supprimer </button>
+							<button class="edit_social">
+								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
+							</button>
+						</div>
+						{% endif %}
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<a href="{{ path('social_add', {id:user.id }) }}">Ajouter un nouveau profil</a>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset('assets/js/api.js')}}"></script>
+<script src="{{asset('assets/js/social.js')}}"></script>
+
+{% endblock %}

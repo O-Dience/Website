@@ -57,13 +57,13 @@ class BrandEditType extends AbstractType
                 'multiple'=>true,
                 'class' => Category::class,
                 'choice_label' => 'label'
-            ])
-            ->add('userSocials', CollectionType::class, [
-                'entry_type' => UserSocialType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                "by_reference" => false
             ]);
+            // ->add('userSocials', CollectionType::class, [
+            //     'entry_type' => UserSocialType::class,
+            //     'entry_options' => ['label' => false],
+            //     'allow_add' => true,
+            //     "by_reference" => false
+            // ])
     
     }   
 
