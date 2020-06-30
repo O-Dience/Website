@@ -112,4 +112,13 @@ class RegistrationController extends AbstractController
             'brandForm' => $form->createView(),
         ]);
     }
+
+        /**
+     * @Route("question", name="oauthUser", methods={"GET", "POST"})
+     */
+    public function registerOauthUser()
+    {
+
+        // TODO: CREATE FORM TO HANDLE COMPLETION OF OAUTH USERS REGISTRATION
+    }
 }
