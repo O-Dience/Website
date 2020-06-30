@@ -11,23 +11,32 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AnnouncementFavVoter extends Voter
 {
 
-    const delete = 'delete_announcementFav';
-
-    protected function supports(string $attribute, $subject){
-        
-        return $attribute == self::delete && $subject instanceof AnnouncementFav;
+    protected function supports($attribute, $subject)
+    {
+        // replace with your own logic
+        // https://symfony.com/doc/current/security/voters.html
+        return in_array($attribute, ['delete'])
+            && $subject instanceof AnnouncementFav;
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $announcementFav, TokenInterface $token)
     {
         $user = $token->getUser();
 
-        
-
-        if(!$user instanceof User || !$subject instanceof AnnouncementFav){
-            
+         // if the user is anonymous, do not grant access
+         if (!$user instanceof UserInterface) {
             return false;
         }
-        return $subject->getUser()->getId() === $user->getId();
+
+         // ... (check conditions and return true to grant permission) ...
+         switch ($attribute) {
+        case 'delete':
+            if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $announcementFav->getUser()) {
+                return true;
+            }
+            break;
     }
+
+    return false;
+}
 }

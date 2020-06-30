@@ -199,6 +199,8 @@ class UserController extends AbstractController
      */
     public function addUserSocial(User $user, Request $request){
 
+        $this->denyAccessUnlessGranted('add_social', $user);
+
         $userSocial = new UserSocial();
         $userSocial->setUser($user);
 
@@ -223,7 +225,7 @@ class UserController extends AbstractController
      */
     public function editUserSocial( UserSocial $userSocial,Request $request){
 
-        $this->denyAccessUnlessGranted('edit_userSocial', $userSocial);
+        $this->denyAccessUnlessGranted('edit', $userSocial);
 
 
         $form = $this->createForm(UserSocialType::class, $userSocial);

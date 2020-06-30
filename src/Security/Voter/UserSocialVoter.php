@@ -11,22 +11,36 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserSocialVoter extends Voter
 {
 
-    const edit = 'edit_userSocial';
-    protected function supports(string $attribute, $subject){
-        
-        return $attribute == self::edit && $subject instanceof UserSocial;
+    protected function supports($attribute, $subject)
+    {
+        // replace with your own logic
+        // https://symfony.com/doc/current/security/voters.html
+        return in_array($attribute, ['edit', 'delete'])
+            && $subject instanceof UserSocial;
     }
-
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    
+    protected function voteOnAttribute($attribute, $userSocial, TokenInterface $token)
     {
         $user = $token->getUser();
-
-        
-
-        if(!$user instanceof User || !$subject instanceof UserSocial){
-            
+        // if the user is anonymous, do not grant access
+        if (!$user instanceof UserInterface) {
             return false;
         }
-        return $subject->getUser()->getId() === $user->getId();
-    }
+
+    // ... (check conditions and return true to grant permission) ...
+ switch ($attribute) {
+    case 'edit':
+        if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userSocial->getUser()) {
+            return true;
+        }
+        break;
+    case 'delete':
+        if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userSocial->getUser()) {
+            return true;
+        }
+        break;
+}
+
+return false;
+}
 }
