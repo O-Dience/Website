@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Annonces postées par {{ brand.username }}{% endblock %}
+{% block title %}{{ parent() }} - Annonces postées par {{ user.username }}{% endblock %}
 
 {% block body %}
 <ul>
-{% for announcement in brand.announcements %}
+{% for announcement in user.announcements %}
     <li>
         <h1>
             {{ announcement.title }} - 
