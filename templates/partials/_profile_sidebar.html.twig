@@ -15,19 +15,19 @@
 			{{user.username}}
 		</div>
 		<div class="profile-usertitle-job">
-		{% if user.userFavorites is not empty %}
-			<p>Vous avez {{ user.userFavorites | length }} coups de coeur !</p>
-		{% endif %}
-			
+		<p>Domaine: {% for category in user.categories %}
+			<span class="label label-info">{{category.label}}</span></p>
+		{% endfor %}
 		</div>
 	</div>
 	<!-- END SIDEBAR USER TITLE -->
 	<!-- SIDEBAR BUTTONS -->
 	<div class="profile-userbuttons">
-		{% for category in user.categories %}
-			<span class="label label-info">{{category.label}}</span>
-		{% endfor %}
+		{% if user.userFavorites is not empty %}
+			<p>Vous avez {{ user.userFavorites | length }} coups de coeur !</p>
+		{% endif %}
 	</div>
+
 	<!-- END SIDEBAR BUTTONS -->
 	<!-- SIDEBAR MENU -->
 	<div class="profile-usermenu">

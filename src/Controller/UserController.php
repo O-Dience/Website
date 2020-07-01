@@ -74,11 +74,9 @@ class UserController extends AbstractController
   
         if ($form->isSubmitted() && $form->isValid())
         {   
-           
-            $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user")){
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
+            if($imageName){
                 $user->setPicture($imageName);
-                
             };
             $password = $form->get('password')->getData();
             if ($password != null)

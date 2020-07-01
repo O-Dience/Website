@@ -123,6 +123,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=UserReport::class, mappedBy="reportee", orphanRemoval=true)
      */
     private $reportedBy;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
   
 
     public function __construct(array $data = [])
@@ -593,6 +598,18 @@ class User implements UserInterface
         }
 
         return false;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
 }

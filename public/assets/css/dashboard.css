@@ -124,7 +124,7 @@ body {
   align-items: center;
 }
 
-
+/* Announcement list, overflow */
 .overflow_dashboard {
   height:600px;
   overflow-y: scroll;
