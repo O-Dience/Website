@@ -36,6 +36,10 @@ class RegistrationController extends AbstractController
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
             if($imageName){
                 $user->setPicture($imageName);
+            }else{
+                //Let's attribute a random pic to our new user
+                $picture = 'default/default'. rand(1,13).'.png';
+                $user->setPicture($picture);
             };
 
             // encode the plain password
@@ -82,6 +86,10 @@ class RegistrationController extends AbstractController
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
             if($imageName){
                 $user->setPicture($imageName);
+            }else{
+                //Let's attribute a random pic to our new user
+                $picture = 'default/default-brand.png';
+                $user->setPicture($picture);
             };
 
             // encode the plain password
