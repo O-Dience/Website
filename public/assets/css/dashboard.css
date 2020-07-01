@@ -124,3 +124,8 @@ body {
   align-items: center;
 }
 
+
+.overflow_dashboard {
+  height:600px;
+  overflow-y: scroll;
+}

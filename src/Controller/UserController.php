@@ -86,6 +86,7 @@ class UserController extends AbstractController
                 $encodedPassword = $passwordEncoder->encodePassword($user, $password);
                 $user->setPassword($encodedPassword);
             }
+            $user->setUpdatedAt(new \DateTime());
 
             $this->getDoctrine()->getManager()->flush();
 

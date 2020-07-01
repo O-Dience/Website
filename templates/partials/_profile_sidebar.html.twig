@@ -6,7 +6,7 @@
 	class="profile-sidebar">
 	<!-- SIDEBAR USERPIC -->
 	<div class="profile-userpic">
-		<img src="{{asset('assets/images/avatar_user/') ~ user.picture}}" class="img-fluid" alt="">
+		<img src="{{asset('/assets/images/avatar_user/') ~ user.picture}}" class="img-fluid" alt="">
 	</div>
 	<!-- END SIDEBAR USERPIC -->
 	<!-- SIDEBAR USER TITLE -->
@@ -15,14 +15,10 @@
 			{{user.username}}
 		</div>
 		<div class="profile-usertitle-job">
-			{# {% for socialProfile in user.userSocials %}
-				{% if not loop.first %},
-				{% endif %}
-				{{ socialProfile.social.name }}
-				-
-				{{ socialProfile.link }}
-			{% endfor %} #}
-			{{ user.userFavorites | length }}
+		{% if user.userFavorites is not empty %}
+			<p>Vous avez {{ user.userFavorites | length }} coups de coeur !</p>
+		{% endif %}
+			
 		</div>
 	</div>
 	<!-- END SIDEBAR USER TITLE -->
