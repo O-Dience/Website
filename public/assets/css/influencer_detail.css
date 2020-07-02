@@ -12,6 +12,7 @@
 }
 
 a .material-icons {
+    color: #9C27B0;
     vertical-align: middle;
 }
 
@@ -21,9 +22,11 @@ a .material-icons {
     left: 0;
     right: 0;
 }
+
 .profile-page {
-    margin-top: 200px;
+    padding-top: 200px;
 }
+
 .profile-page .page-header {
     height: 380px;
     background-position:center;
@@ -189,5 +192,8 @@ img.rounded {
     display: block;
 }
 
-
+.social__logo {
+    height: 35px;
+    max-width: 35px!important;
+}
 

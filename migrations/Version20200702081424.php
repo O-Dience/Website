@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200701161510 extends AbstractMigration
+final class Version20200702081424 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,14 +20,12 @@ final class Version20200701161510 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user ADD description LONGTEXT DEFAULT NULL');
+        $this->addSql('ALTER TABLE social_network CHANGE created_at created_at DATETIME DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
     {
-
         // this down() migration is auto-generated, please modify it to your needs
-
-        $this->addSql('ALTER TABLE user DROP description');
+        $this->addSql('ALTER TABLE social_network CHANGE created_at created_at DATETIME NOT NULL');
     }
 }

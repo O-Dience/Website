@@ -113,8 +113,15 @@ class UserController extends AbstractController
         
         if (in_array("ROLE_BRAND", $user->getRoles()))
         {
+            // Calculate overall favorites get from announcements
+            $likes = 0;
+            foreach ( $user->getAnnouncements() as $announcement) {
+                $announcementLikes = count($announcement->getFavorites()) + 1;
+                $likes += $announcementLikes;
+            };
             return $this->render('user/brand/show.html.twig', [
                 'user' => $user,
+                'likes' => $likes
             ]);
         }
 
