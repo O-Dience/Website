@@ -99,9 +99,9 @@ class MainAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
             return new RedirectResponse($targetPath);
         }
         // Redirect user according to his role
-/*         if (in_array( "ROLE_ADMIN", $user->getRoles() )){
-            return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
-        } */
+        if (in_array( "ROLE_ADMIN", $user->getRoles() )){
+            return new RedirectResponse($this->urlGenerator->generate('easyadmin'));
+        }
         if (in_array( "ROLE_BRAND", $user->getRoles() )){
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
