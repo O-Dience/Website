@@ -1,15 +1,12 @@
 let fav = {
 
   onClickBtnFav:function(evt){
-
         evt.preventDefault()
-
-        let favId = this.parentNode.dataset.id 
+        let fav = document.querySelector('.favAnnouncement')
+            favId = fav.dataset.id
             api.deleteFav(favId)
-            this.parentNode.remove()  
+            fav.remove()  
     }
-
-       
 }
 
 document.querySelectorAll('a.js-fav').forEach(function(link){
