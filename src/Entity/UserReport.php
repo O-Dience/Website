@@ -29,6 +29,21 @@ class UserReport
      */
     private $reportee;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_confirmed;
+
+    public function __construct()
+    {
+        $this->is_confirmed = false;
+    }
+
+    public function __toString()
+    {
+        return $this->reporter->__toString() . ' signale ' . $this->reportee->__toString();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +69,18 @@ class UserReport
     public function setReportee(?User $reportee): self
     {
         $this->reportee = $reportee;
+
+        return $this;
+    }
+
+    public function getIsConfirmed(): ?bool
+    {
+        return $this->is_confirmed;
+    }
+
+    public function setIsConfirmed(bool $is_confirmed): self
+    {
+        $this->is_confirmed = $is_confirmed;
 
         return $this;
     }
