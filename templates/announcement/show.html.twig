@@ -88,7 +88,9 @@
                                     <img <img src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}"  title="" alt="">
                                 </div>
                                 <div class="media-body">
-                                    <h6><a href="{{path('user_show', {id: announcement.user.id , role: 'marque'})}}">{{announcement.user.username }}</a> </h6>
+                                    <h6>{{announcement.user.username }}
+                                    <a href="{{path('user_show', {id: announcement.user.id , role: 'marque'})}}"><span class="user_profile">(voir profil)</span></a>
+                                    </h6>
                                 </div>
                             </div>
                             <p> {{announcement.user.description }}</p>
@@ -106,9 +108,9 @@
                                     <div class="lpa-title">
                                         <h5><a href="{{ path('announcement_report', {id:announcement.id }) }}" class="js-report ann-not-reported">
                                         {% if app.user and announcement.isReportedByUser(app.user) %}
-                                        <span>Annonce signalée</span>
+                                        <span class="ann-reported">Annonce signalée</span>
                                         {% else %}
-                                        <span>Signaler l'annonce</span>
+                                        <span class="report_link">Signaler l'annonce</span>
                                         {% endif %}
                                         </a></h5>
                                     </div>
@@ -120,9 +122,9 @@
                                     
                                         <h5><a href="{{ path('user_report', {id:announcement.user.id }) }}" class="js-report user-not-reported">
                                         {% if app.user and announcement.user.isReportedByUser(app.user) %}
-                                        <span>Signalé !
+                                        <span class="ann-reported">Signalé !
                                         {% else %}
-                                        <span>Signalez l'auteur de cette annonce</span>
+                                        <span class="report_link"> Signaler l'auteur de cette annonce</span>
                                         {% endif %}</a></h5>
                                     </div>
                                 </div>
@@ -156,19 +158,21 @@
         });
     }
 
-    function onClickBtnReport(evt){
+    function onClickAnnReport(evt){
         evt.preventDefault()
         const url = this.href;
         let reportlink = evt.currentTarget;
+        let reportText = this.querySelector('span');
         axios.get(url).then(function(response){
             if(reportlink.classList.contains('ann-not-reported')){
                 reportlink.classList.replace('ann-not-reported', 'ann-reported');
-                reportlink.childNodes[1].nodeValue = " Annonce signalée !";
+                reportText.innerHTML = " Annonce signalée !";
+                reportlink.style.color = 'red'
             }
         });
     }
 
-    function onClickBtnReport(evt){
+    function onClickUserReport(evt){
         evt.preventDefault()
         const url = this.href;
         let reportlink = evt.currentTarget;
@@ -176,7 +180,8 @@
         axios.get(url).then(function(response){
             if(reportlink.classList.contains('user-not-reported')){
                 reportlink.classList.replace('user-not-reported', 'user-reported');
-                reportText.innerHTML = "Signalé !";
+                reportText.innerHTML = "Utilisateur signalé !";
+                reportlink.style.color = 'red';
             }
         });
     }
@@ -187,11 +192,11 @@
     })
   
     document.querySelectorAll('a.js-report').forEach(function(link){
-        link.addEventListener('click', onClickBtnReport);
+        link.addEventListener('click', onClickAnnReport);
     })
   
     document.querySelectorAll('a.js-report').forEach(function(link){
-        link.addEventListener('click', onClickBtnReport);
+        link.addEventListener('click', onClickUserReport);
     })
     </script>
 {% endblock %}
