@@ -1,21 +1,105 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Annonces postées par {{ user.username }}{% endblock %}
-
-{% block body %}
-<ul>
-{% for announcement in user.announcements %}
-    <li>
-        <h1>
-            {{ announcement.title }} - 
-            {% for category in announcement.categories %}
-                {{ category.label }},
-            {% endfor %}
-        </h1>
-        <p>
-            {{ announcement.content }}
-        </p>
-    </li>
-{% endfor %}
-</ul>
+{% block title %}
+	{{ parent() }}
+	-
+	{{ user.username }}
 {% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('assets/css/brand_detail.css')}}">
+{% endblock %}
+{% block body %}
+	<div class="row py-5 px-4 bg-danger">
+		<div
+			class="col-xl-8 col-md-8 col-sm-12 mx-auto">
+
+			<!-- Profile widget -->
+			<div class="bg-white shadow rounded overflow-hidden">
+				<div class="px-3 bg-dark">
+					<div class="media align-items-center profile-header">
+						<div class="profile mt-2 mr-3">
+						<img src="{{asset('assets/images/avatar_user/')}}{{ user.picture }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+						</div>
+						<div class="media-body text-white d-flex align-items-center justify-content-between">
+							<h2 class="d-block my-auto">{{ user.username }}</h2>
+							<p class="small d-block d-flex flex-column">
+								{% for category in user.categories %}
+								<i class="fa fa-map-marker mr-2">{{ category.label }}</i>
+								{% endfor %}
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex flex-column align-items-center justify-content-between mb-3 mx-auto">
+					<h2 class="my-5"> Profil</h2>
+					<p class="mb-0 text-center mx-5">{{ user.description }}</p>
+				</div>
+				<div class="bg-light p-4 d-flex justify-content-end text-center">
+					<ul class="list-inline mb-0">
+						<li class="list-inline-item">
+							<h5 class="font-weight-bold mb-0 d-block">
+								{{ user.announcements|length }}
+							</h5>
+							<small class="text-muted">
+								<i class="fa fa-user-circle-o mr-1"></i>
+								Annonces actuellement en ligne
+							</small>
+						</li>
+						<li class="list-inline-item">
+							<h5 class="font-weight-bold mb-0 d-block">{{ user.announcements|length }}</h5>
+							<small class="text-muted">
+								<i class="fa fa-picture-o mr-1"></i>
+								Annonces postées
+							</small>
+						</li>
+						<li class="list-inline-item">
+							<h5 class="font-weight-bold mb-0 d-block">
+								{{ likes }}
+							</h5>
+							<small class="text-muted">
+								<i class="fa fa-user-circle-o mr-1"></i>
+								Total de mise en favoris
+							</small>
+						</li>
+					</ul>
+				</div>
+
+				<div class="py-4 px-4">
+					{% if user.announcements|length > 0 %}
+						<div class="d-flex align-items-center justify-content-between mb-3">
+							<h5 class="mb-0  mx-auto">Annonces en ligne postées par
+								{{ user.username }}</h5>
+						</div>
+						<div class="row">
+							{% for announcement in user.announcements %}
+								<div class="col-lg-6 mb-2 pr-lg-1 mx-auto">
+									{% if announcement.image is null %}
+										<img src="https://image.shutterstock.com/image-photo/pink-pineapple-concept-600w-1019030506.jpg" alt="" class="img-fluid rounded shadow-sm h-auto w-100">
+									{% else %}
+										<img src="{{asset('assets/images/image_announcement/')}}{{ announcement.image }}" alt="" class="img-fluid rounded shadow-sm">
+									{% endif %}
+									<div class="ml-2 mr-2  announcement__details">
+										<h5>{{ announcement.title}}</h5>
+										<a class="btn btn-info text-white">Détail</a>
+									</div>
+								</div>
+							{% endfor %}
+						{% else %}
+							<div class="row">
+								<div class="d-flex align-items-center justify-content-between mb-3 mx-auto">
+									<h5 class="mb-0 text-center">{{ user.username }}
+										n'a encore aucune annonce en ligne</h5>
+								</div>
+
+								<div class="col-lg-10 pl-lg-1 mx-auto">
+									<img src="{{ asset('assets/images/comingSoon.jpg')}}" alt="" class="img-fluid rounded shadow-sm">
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<!-- End profile widget -->
+
+			</div>
+		</div>
+	{% endblock %}
