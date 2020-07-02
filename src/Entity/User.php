@@ -108,6 +108,7 @@ class User implements UserInterface
      */
     private $userFavorites;
 
+
     /**
      * @ORM\OneToMany(targetEntity=AnnouncementReport::class, mappedBy="reporter", orphanRemoval=true)
      */
@@ -122,17 +123,21 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=UserReport::class, mappedBy="reportee", orphanRemoval=true)
      */
     private $reportedBy;
-    
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+  
 
-    public function __construct()
+    public function __construct(array $data = [])
     {
+
         $this->userSocials = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->announcements = new ArrayCollection();
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
-
         $this->userFavs = new ArrayCollection();
         $this->reportedAnnouncements = new ArrayCollection();
         $this->reportedUsers = new ArrayCollection();
@@ -593,6 +598,18 @@ class User implements UserInterface
         }
 
         return false;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
 }

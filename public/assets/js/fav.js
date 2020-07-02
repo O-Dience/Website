@@ -14,5 +14,5 @@ let fav = {
 
 document.querySelectorAll('a.js-fav').forEach(function(link){
     link.addEventListener('click', fav.onClickBtnFav)
-})
+});
 

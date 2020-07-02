@@ -6,8 +6,10 @@ use App\Entity\SocialNetwork;
 use App\Entity\UserSocial;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserSocialType extends AbstractType
 {
@@ -21,7 +23,11 @@ class UserSocialType extends AbstractType
                 'class' => SocialNetwork::class,
                 'choice_label' => 'name'
             ])
-            ->add('link')
+            ->add('link', UrlType::class, [
+                'constraints'=> [ new NotBlank([
+                    'message' => 'Veuillez ajouter le lien de votre profil',
+                ]),
+            ]])
         ;
     }
 

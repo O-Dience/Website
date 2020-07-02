@@ -26,6 +26,7 @@ class RegistrationController extends AbstractController
      */
     public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
     {
+ 
         $user = new User();
         $form = $this->createForm(InfluencerType::class, $user);
         $form->handleRequest($request);
@@ -119,5 +120,14 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register_brand.html.twig', [
             'brandForm' => $form->createView(),
         ]);
+    }
+
+        /**
+     * @Route("question", name="oauthUser", methods={"GET", "POST"})
+     */
+    public function registerOauthUser()
+    {
+
+        // TODO: CREATE FORM TO HANDLE COMPLETION OF OAUTH USERS REGISTRATION
     }
 }

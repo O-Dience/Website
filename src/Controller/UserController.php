@@ -5,13 +5,11 @@ namespace App\Controller;
 use App\Entity\SocialNetwork;
 use App\Entity\User;
 use App\Form\UserType;
-use App\Form\BrandType;
 use App\Entity\UserFav;
 use App\Entity\UserReport;
 use App\Entity\UserSocial;
 use App\Form\BrandEditType;
 use App\Form\InfluencerEditType;
-use App\Form\InfluencerType;
 use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
@@ -76,11 +74,9 @@ class UserController extends AbstractController
   
         if ($form->isSubmitted() && $form->isValid())
         {   
-           
-            $imageName = $imageUploader->getRandomFileName('jpg');
-            if($imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user")){
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
+            if($imageName){
                 $user->setPicture($imageName);
-                
             };
             $password = $form->get('password')->getData();
             if ($password != null)
@@ -88,6 +84,7 @@ class UserController extends AbstractController
                 $encodedPassword = $passwordEncoder->encodePassword($user, $password);
                 $user->setPassword($encodedPassword);
             }
+            $user->setUpdatedAt(new \DateTime());
 
             $this->getDoctrine()->getManager()->flush();
 
@@ -201,6 +198,8 @@ class UserController extends AbstractController
      */
     public function addUserSocial(User $user, Request $request){
 
+        $this->denyAccessUnlessGranted('add_social', $user);
+
         $userSocial = new UserSocial();
         $userSocial->setUser($user);
 
@@ -211,16 +210,54 @@ class UserController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($userSocial);
             $manager->flush();
-            return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
+            return $this->redirectToRoute('social_profile', ['id'=>$user->getId()]);
         }
 
-        return $this->render('user/add_social.html.twig', [
+        return $this->render('social/add_social.html.twig', [
             "form" => $form->createView(),
-            "user" => $user
         ]);
 
     }
 
+     /**
+     * @Route("/user/{id}/social/edit", name="social_edit", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
+     */
+    public function editUserSocial( UserSocial $userSocial,Request $request){
+
+        $this->denyAccessUnlessGranted('edit', $userSocial);
+
+
+        $form = $this->createForm(UserSocialType::class, $userSocial);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($userSocial);
+            $manager->flush();
+            return $this->redirectToRoute('social_profile', ['id'=>$userSocial->getUser()->getId()]);
+        }
+
+        return $this->render('social/edit_social.html.twig', [
+            "userSocial"=>$userSocial,
+            "form" => $form->createView(),
+        ]);
+
+    }
+
+
+    /** 
+    * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
+    */
+    public function showUserSocial(User $user){
+
+        $this->denyAccessUnlessGranted('show_social', $user);
+
+        return $this->render('social/social_profile.html.twig', [
+            "user" => $user
+        ]);
+        
+    }
+  
     /**
      * Report an user
      * 
