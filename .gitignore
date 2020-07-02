@@ -14,7 +14,6 @@
 /public/assets/images/social_picto/*
 /public/assets/images/image_announcement/*
 /public/assets/images/avatar_user/*
-!/public/assets/images/avatar_user/default/*
 ###< images ###
 
 ###> symfony/phpunit-bridge ###

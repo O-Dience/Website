@@ -1,6 +1,16 @@
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between fixed-top">
+<nav class="navbar navbar-expand-lg d-flex justify-content-between fixed-top 
+{% if (app.user) %}
+  {% if "ROLE_INFLUENCER" in app.user.roles %}
+  {{ "navbar-info bg-info" }}
+  {% elseif "ROLE_BRAND" in app.user.roles %}
+  {{ "navbar-dark bg-dark" }}
+  {% endif %}
+{% else %}
+{{" navbar-light bg-light"}}
+{% endif %}
+">
   <a class="navbar-brand" href=" {{ path('homepage') }}"><span class="brand__label">O'dience</span></a>
  {% if is_granted('IS_AUTHENTICATED_FULLY') %}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +22,7 @@
         <a class="nav-link" href="#">Mes messages </a>
       </li> #}
       {% if 'ROLE_INFLUENCER' in app.user.roles %}
-      <li class="nav-item {{ ( app.request.get('_route') == 'announcement_list') ? 'active' : '' }}">
+      <li class="nav-item {{ ( app.request.get('_route') == 'announcement_list') ? 'active text-light' : '' }}">
         <a class="nav-link" href="{{path('announcement_list')}}">LISTE DES ANNONCES</a>
       </li>
       <li class="nav-item {{ ( app.request.get('_route') == 'user_list') ? 'active' : '' }}">

@@ -49,9 +49,7 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         // TODO: Manage registering 
-        if (!$user->getId()){
-            return false;
-        }
+
         return true;
     }
 
@@ -69,6 +67,9 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
         }
         if (in_array( "ROLE_INFLUENCER", $user->getRoles() )){
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
+        }
+        if (in_array( "ROLE_ADMIN", $user->getRoles() )){
+            return new RedirectResponse($this->urlGenerator->generate('easyadmin'));
         }
     }
 
