@@ -123,3 +123,10 @@ body {
       text-decoration: none;
       color: black;
   }
+
+  .link_social {
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+    color: silver;
+    font-size: 15px;
+    text-transform: uppercase;
+  }
