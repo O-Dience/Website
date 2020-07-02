@@ -16,8 +16,9 @@
 
         <div class="col-md-9">
             <div class="profile-content">
-                <h2 class="mb-5 text-align-center">Bonjour {{ user.username }}, voici la liste de vos annonces favorites
+                <h2 class="mb-5 mt-2 text-center">Vos annonces préférées:
                 </h2>
+                <div class="overflow_dashboard">
                 {% for favorite in favorites %}
                 
                 <div class="favAnnouncement mb-2" data-id="{{favorite.id}}">
@@ -28,17 +29,20 @@
                         class="list-group-item list-group-item-action my-1">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">{{ favorite.announcement.title }}</h5>
-                            
-                            <small class="text-muted">{{ favorite.announcement.createdAt|date('d/m/Y') }} </small>
-                            
+                            {% if  favorite.announcement.updatedAt is empty %}
+                                <small class="text-muted">{{ favorite.announcement.createdAt|date('d/m/Y') }} </small>
+                            {% else %}
+                                <small class="text-muted">Annonce modifiée le {{ favorite.announcement.updatedAt|date('d/m/Y') }} </small>
+                            {% endif %}
                         </div>
-                        <p class="mb-1">{{ favorite.announcement.content }}</p>
+                        <p class="mb-1">{{ favorite.announcement.content |slice(0,100)}}...</p>
                         {% for category in favorite.announcement.categories %}
                         <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
                         {% endfor %}
                     </a>
                 </div>
                 {% endfor %}
+                </div>
             </div>
         </div>
     </div>

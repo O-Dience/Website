@@ -7,17 +7,15 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Image;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class BrandEditType extends AbstractType
@@ -28,6 +26,17 @@ class BrandEditType extends AbstractType
             ->add('username', TextType::class, ['constraints'=>[ new NotBlank([
                 'message'=> 'Veuillez saisir un nom d\'utilisateur'
             ])],'label'=>'Nom de votre entreprise'])
+            ->add(
+                'birthdate', 
+                BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de création"],)
+            ->add('categories', EntityType::class, [
+                'multiple'=>true,
+                'class' => Category::class,
+                'choice_label' => 'label'
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Présentation de votre entreprise/marque:',
+                'required' => false,])
             ->add('pictureFile', FileType::class, [
                 'label' => 'Photo de profil',
                 'mapped' => false,
@@ -41,9 +50,6 @@ class BrandEditType extends AbstractType
                     ])
                 ],
             ])
-            ->add(
-                'birthdate', 
-                BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de création"],)
             ->add('email', EmailType::class, ['label'=>'Votre e-mail'])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -53,17 +59,7 @@ class BrandEditType extends AbstractType
                 'mapped' => false,
                 'required' => false,
             ])
-            ->add('categories', EntityType::class, [
-                'multiple'=>true,
-                'class' => Category::class,
-                'choice_label' => 'label'
-            ]);
-            // ->add('userSocials', CollectionType::class, [
-            //     'entry_type' => UserSocialType::class,
-            //     'entry_options' => ['label' => false],
-            //     'allow_add' => true,
-            //     "by_reference" => false
-            // ])
+            ;
     
     }   
 
