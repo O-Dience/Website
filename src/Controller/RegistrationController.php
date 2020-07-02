@@ -26,6 +26,11 @@ class RegistrationController extends AbstractController
      */
     public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
     {
+
+        if ($this->getUser()) {
+            return $this->redirectToRoute('user_dashboard', ['id'=>$this->getUser()->getId()]);
+        }
+
         $user = new User();
         $form = $this->createForm(InfluencerType::class, $user);
         $form->handleRequest($request);
@@ -72,6 +77,10 @@ class RegistrationController extends AbstractController
      */
     public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
     {
+
+        if ($this->getUser()) {
+            return $this->redirectToRoute('user_dashboard', ['id'=>$this->getUser()->getId()]);
+        }
         $user = new User();
         $form = $this->createForm(BrandType::class, $user);
         $form->handleRequest($request);

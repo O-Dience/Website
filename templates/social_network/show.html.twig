@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SocialNetwork{% endblock %}
+
+{% block body %}
+    <h1>SocialNetwork</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ social_network.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ social_network.name }}</td>
+            </tr>
+            <tr>
+                <th>Picto</th>
+                <td>{{ social_network.picto }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ social_network.createdAt ? social_network.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ social_network.updatedAt ? social_network.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('social_network_index') }}">back to list</a>
+
+    <a href="{{ path('social_network_edit', {'id': social_network.id}) }}">edit</a>
+
+    {{ include('social_network/_delete_form.html.twig') }}
+{% endblock %}
