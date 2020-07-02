@@ -7,47 +7,60 @@
 {% endblock %}
 
 {% block body %}
-
 <div class="container-md ">
-    <div class="row profile">
+    <div class="row profile align-items-center">
         <div class="col-md-3">
             {% include 'partials/_profile_sidebar.html.twig' %}
         </div>
 
-        <div class="col-md-9">
-            <div class="profile-content">
-                <h2 class="mb-5 mt-2 text-center">Vos annonces préférées:
-                </h2>
-                <div class="overflow_dashboard">
+        <div class="col-md-9 {{ (favorites | length >= 3 ) ? 'overflow_dashboard' : '' }}">
+            <div class="profile-content bg-light">
+            {% if 'default' in user.picture or user.description is empty or user.userSocials | length == 0 %}
+                {% include 'user/influencer/empty_dashboard.html.twig' %}
+            {% endif %} 
+            {% if favorites | length > 0  %} 
+                <h2 class="mb-5 mt-2 text-center">Vos annonces préférées:</h2>    
+            {% else %}        
+                <h2 class="mb-5 mt-2 text-center">Vous n'avez pas d'annonce en favoris</h2>  
+            {% endif %}   
+                <div>
                 {% for favorite in favorites %}
-                
-                <div class="favAnnouncement mb-2" data-id="{{favorite.id}}">
-                <a href="{#{{path('api_v1_announcement_fav_delete', {'id': favorite.id}) }}#}" class="col-md-1 col-xs-1 well js-fav link__fav"> 
-                    <i class="fa fa-heart fa-lg "></i> 
-                </a>
-                    <a href="{{ path('announcement_show', {id:favorite.announcement.id }) }}"
-                        class="list-group-item list-group-item-action my-1">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{ favorite.announcement.title }}</h5>
-                            {% if  favorite.announcement.updatedAt is empty %}
-                                <small class="text-muted">{{ favorite.announcement.createdAt|date('d/m/Y') }} </small>
-                            {% else %}
-                                <small class="text-muted">Annonce modifiée le {{ favorite.announcement.updatedAt|date('d/m/Y') }} </small>
-                            {% endif %}
+                    <div class="favAnnouncement mb-2" data-id="{{favorite.id}}">
+                        <div class="list-group-item list-group-item-action my-1">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ favorite.announcement.title }}</h5>
+                                <div class="d-flex" >
+                                    <div>
+                                    <a href="#" class="col-md-1 col-xs-1 well js-fav link__fav"> 
+                                        <i class="fa fa-heart fa-lg "></i> 
+                                    </a>
+                                    </div>
+                                    <div>
+                                    {% if  favorite.announcement.updatedAt is empty %}
+                                        <small class="text-muted">Annonce publiée le {{ favorite.announcement.createdAt|date('d/m/Y') }} </small>
+                                    {% else %}
+                                        <small class="text-muted">Annonce modifiée le {{ favorite.announcement.updatedAt|date('d/m/Y') }} </small>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-1">{{ favorite.announcement.content |slice(0,100)}}...</p>
+                            <div class="d-flex row justify-content-between">
+                                <div class="ml-3">
+                                    {% for category in favorite.announcement.categories %}
+                                        <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
+                                    {% endfor %}
+                                </div>
+                                <a href="{{ path('announcement_show', {id:favorite.announcement.id }) }}" class="mr-3"> <small class="see_announcement"> Consulter l'annonce</small> </a>
+                            </div>
                         </div>
-                        <p class="mb-1">{{ favorite.announcement.content |slice(0,100)}}...</p>
-                        {% for category in favorite.announcement.categories %}
-                        <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
-                        {% endfor %}
-                    </a>
-                </div>
-                {% endfor %}
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block javascripts %}

@@ -2,12 +2,29 @@
 
 {% block body %}
 
-<div class="container-md ">
-	
+<div class="container mt-5">
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+	    <h4 class="card-title mt-3 text-center">Modifier un réseau</h4>
+	    {{ form_start(form) }}
+            <div class="form-group input-group">
+    	        <div class="input-group-prepend">
+		            <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+		        </div>
+		        {{ form_widget(form.social) }}
+	        </div> 
+            <div class="form-group input-group">
+		        <div class="input-group-prepend">
+		            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+		        </div>
+                {{ form_widget(form.link) }}
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Valider</button>
+            </div>   
+            {{ form_end(form) }}
+        </article>
+    </div>
+</div> 
 
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<button class="btn btn-primary" type="submit">Valider</button>
-{{ form_end(form) }}
-</div>
 {% endblock %}

@@ -18,7 +18,7 @@ class UserSocialType extends AbstractType
         $builder
             ->add('social', EntityType::class, [
                 "label"=>"Réseau à ajouter :",
-                'expanded'=>true,
+                'expanded'=>false,
                 'multiple'=>false, 
                 'class' => SocialNetwork::class,
                 'choice_label' => 'name'

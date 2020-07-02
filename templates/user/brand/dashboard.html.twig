@@ -12,12 +12,15 @@
 
 {% block body %}
 <div class="container-md ">
-    <div class="row profile">
+    <div class="row profile align-items-center">
 		<div class="col-md-3">
             {% include 'partials/_profile_sidebar.html.twig' %}
 		</div>
-		<div class="col-md-9">
-            <div class="profile-content">
+		<div class="col-md-9 {{ (user.announcements | length >= 3 ) ? 'overflow_dashboard' : '' }}">
+            <div class="profile-content bg-light">
+            {% if 'default' in user.picture or user.description is empty or user.userSocials | length == 0 %}
+                {% include 'user/brand/empty_dashboard.html.twig' %}
+            {% endif %}
                 <h2 class="mb-5">Bonjour {{ user.username }}, voici la liste de vos annonces visibles par les influenceurs</h2>
 			    {% for announcement in user.announcements %}
                 <div class="mb-2">
