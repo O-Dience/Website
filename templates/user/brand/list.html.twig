@@ -61,14 +61,14 @@
                                         </a>
                                     </div>
 
-                                    <p class="card-text">AJOUTER UNE DESCRIPTION / BIO DANS L'ENTITE USER ?</p>
+                                    <p class="card-text">{{brand.description | slice(0, 100)}}...</p>
                                     <a href="{{path('user_show', {id: brand.id, role: 'marque'})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
                                     {% if app.user and brand.isReportedByUser(app.user) %}
                                         <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
                                     {% else %}
                                         <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
                                     {% endif %}
-                                    <ul class="list-inline">
+                                    <ul class="list-inline mt-2">
                                         {% for social in brand.userSocials %}
                                         {% if social.social.name == 'Facebook' %}
                                         <li class="list-inline-item">

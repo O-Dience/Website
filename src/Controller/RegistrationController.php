@@ -26,6 +26,7 @@ class RegistrationController extends AbstractController
      */
     public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
     {
+ 
         $user = new User();
         $form = $this->createForm(InfluencerType::class, $user);
         $form->handleRequest($request);
