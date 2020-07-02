@@ -20,8 +20,6 @@ final class Version20200701161510 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE calendar');
-        $this->addSql('DROP TABLE event');
         $this->addSql('ALTER TABLE user ADD description LONGTEXT DEFAULT NULL');
     }
 

@@ -29,6 +29,21 @@ class AnnouncementReport
      */
     private $announcement;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_confirmed;
+
+    public function __construct()
+    {
+        $this->is_confirmed = false;
+    }
+
+    public function __toString()
+    {
+        return $this->reporter->__toString() . ' signale ' . $this->announcement->__toString();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +69,18 @@ class AnnouncementReport
     public function setAnnouncement(?Announcement $announcement): self
     {
         $this->announcement = $announcement;
+
+        return $this;
+    }
+
+    public function getIsConfirmed(): ?bool
+    {
+        return $this->is_confirmed;
+    }
+
+    public function setIsConfirmed(bool $is_confirmed): self
+    {
+        $this->is_confirmed = $is_confirmed;
 
         return $this;
     }

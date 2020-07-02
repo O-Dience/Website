@@ -60,6 +60,11 @@ class AnnouncementFav
         $this->favAt = new \DateTime;
     }
 
+    public function __toString()
+    {
+        return $this->user->__toString() . ' a mis en favori ' . $this->announcement->__toString();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

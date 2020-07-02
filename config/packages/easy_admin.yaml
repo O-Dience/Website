@@ -255,27 +255,83 @@ easy_admin:
                         }
                     ]
 
+        AnnouncementReport:
+            class: App\Entity\AnnouncementReport
+            label: 'Signalements Annonces'
+            list:
+                fields: 
+                    [
+                        { 
+                            property: 'reporter', 
+                            label: 'Signalé par' 
+                        },
+                        { 
+                            property: 'announcement', 
+                            label: 'Annonce signalée' 
+                        },
+                        { 
+                            property: 'is_confirmed', 
+                            label: 'Confirmé' 
+                        },
+                    ]
+
+            form:
+                fields:
+                    [
+                        { 
+                            property: 'reporter',
+                        },
+                        { 
+                            property: 'announcement',
+                        },
+                    ]
+        
+        UserReport:
+            class: App\Entity\UserReport
+            label: 'Signalements Utilisateurs'
+            list:
+                fields: 
+                    [
+                        { 
+                            property: 'reporter', 
+                            label: 'Signalé par' 
+                        },
+                        { 
+                            property: 'reportee', 
+                            label: 'Utilisateur signalé' 
+                        },
+                        { 
+                            property: 'is_confirmed', 
+                            label: 'Confirmé' 
+                        },
+                    ]
+
+            form:
+                fields:
+                    [
+                        { 
+                            property: 'reporter',
+                        },
+                        { 
+                            property: 'reportee',
+                        },
+                    ]
+
     design:
         menu:
-            [
-                { 
-                    entity: Announcement, 
-                    icon: 'newspaper-o',
-                },
-                { 
-                    entity: User, 
-                    icon: 'users',
-                },
-                { 
-                    entity: Category, 
-                    icon: 'anchor',
-                },
-                { 
-                    entity: SocialNetwork, 
-                    icon: 'mobile',
-                },
-            ]
-
+            - entity: Announcement
+              icon: 'newspaper-o'
+            - entity: User
+              icon: 'users'
+            - entity: Category
+              icon: 'anchor'
+            - entity: SocialNetwork
+              icon: 'mobile'
+            - label: 'Signalements'
+              icon: 'bullhorn'
+              children:
+                  - { entity: AnnouncementReport }
+                  - { entity: UserReport }
 
         brand_color: '#264653'
         assets:
