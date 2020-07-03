@@ -9,7 +9,6 @@ body {
 }
 
 .btn,
-.brand__label,
 h1,
 h2,
 h3,
@@ -39,4 +38,29 @@ h5 {
 
 .homepage__main__div--brand {
   color: #DA3343;
+}
+body .bg-dark{
+  background-color: #424242!important;;
+}
+
+.bg-info .brand__label {
+  font-family: 'Balsamiq Sans', cursive!important;
+  color: rgb(182, 41, 41)!important;
+}
+
+.bg-info .nav-item .nav-link{
+  color: white!important;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px!important;
+}
+
+.bg-dark .brand__label {
+  font-family: 'Balsamiq Sans', cursive!important;
+  color: rgb(182, 41, 41)!important;
+}
+
+.bg-dark .nav-item .nav-link{
+  color: white!important;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px!important;
 }

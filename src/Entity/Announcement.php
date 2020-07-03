@@ -97,7 +97,8 @@ class Announcement
         $this->status = true; // true = active
 
         $this->favorites = new ArrayCollection();
-        $this->reports = new ArrayCollection();       }
+        $this->reports = new ArrayCollection();       
+    }
 
     public function __toString()
     {

@@ -37,6 +37,10 @@ class RegistrationController extends AbstractController
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
             if($imageName){
                 $user->setPicture($imageName);
+            }else{
+                //Let's attribute a random pic to our new user
+                $picture = 'default/default'. rand(1,13).'.png';
+                $user->setPicture($picture);
             };
 
             // encode the plain password
@@ -73,6 +77,10 @@ class RegistrationController extends AbstractController
      */
     public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
     {
+
+        if ($this->getUser()) {
+            return $this->redirectToRoute('user_dashboard', ['id'=>$this->getUser()->getId()]);
+        }
         $user = new User();
         $form = $this->createForm(BrandType::class, $user);
         $form->handleRequest($request);
@@ -83,6 +91,10 @@ class RegistrationController extends AbstractController
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
             if($imageName){
                 $user->setPicture($imageName);
+            }else{
+                //Let's attribute a random pic to our new user
+                $picture = 'default/default-brand.png';
+                $user->setPicture($picture);
             };
 
             // encode the plain password
