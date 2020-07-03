@@ -8,13 +8,21 @@ body {
   background-repeat: no-repeat;
 }
 
-.btn,
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: 'Balsamiq Sans', cursive;
+.text-info{
+  color: #2a9d8f!important;
+}
+
+.bg-info{
+  background-color: #2a9d8f!important;
+}
+
+
+.text-danger{
+  color: #264653!important;
+}
+
+.bg-danger{
+  background-color: #264653!important;
 }
 
 .main__card {
@@ -37,13 +45,13 @@ h5 {
 
 .homepage__main__div--influencer {
   margin-top: 20px!important;
-  color: #17A2B8;
+  color: #2a9d8f!important;
   font-weight: 100;
   height: 40em;
 }
 .homepage__main__div--brand {
   margin-top: 20px!important;
-  color: #C82333;
+  color: #264653!important;
   font-weight: 100;
   height: 40em;
 }
