@@ -22,7 +22,7 @@
         <a class="nav-link" href="#">Mes messages </a>
       </li> #}
       {% if 'ROLE_INFLUENCER' in app.user.roles %}
-      <li class="nav-item {{ ( app.request.get('_route') == 'announcement_list') ? 'active text-light' : '' }}">
+      <li class="nav-item{{ ( app.request.get('_route') == 'announcement_list') ? 'active text-light' : '' }}">
         <a class="nav-link" href="{{path('announcement_list')}}">LISTE DES ANNONCES</a>
       </li>
       <li class="nav-item {{ ( app.request.get('_route') == 'user_list') ? 'active' : '' }}">

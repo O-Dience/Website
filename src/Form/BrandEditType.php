@@ -29,7 +29,8 @@ class BrandEditType extends AbstractType
             ])],'label'=>'Nom de votre entreprise'])
             ->add(
                 'birthdate', 
-                BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de création"],)
+                BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de création"
+            ])
             ->add('categories', EntityType::class, [
                 'multiple'=>true,
                 'class' => Category::class,
@@ -37,7 +38,12 @@ class BrandEditType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Présentation de votre entreprise/marque:',
-                'required' => false,])
+                'required' => false,
+                'attr'=>([ 
+                    'rows'=> 5 , 
+                    'cols'=> 40,
+                ])
+            ])
             ->add('pictureFile', FileType::class, [
                 'label' => 'Photo de profil',
                 'mapped' => false,
