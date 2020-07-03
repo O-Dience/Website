@@ -23,9 +23,11 @@
 				<div class="d-flex flex-justify-between text-center flex-wrap col-12">
 					
 					{% for socialProfile in user.userSocials %}
-					<div class="col-5 social__div mt-2 mb-5">
+					<div class="col-5 social__div mt-2 mb-5 mx-auto">
 						{% if socialProfile.social.name == 'Facebook' %}
-							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid" alt="">
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
 						<div>
 							<a href="{{ socialProfile.link }}">Mon Facebook </a>
 						</div>
@@ -36,7 +38,9 @@
 							</button>
 						</div>
 						{% elseif socialProfile.social.name == 'Twitch' %}
-						<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid" alt="">
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
 						<div>
 							<a href="{{ socialProfile.link }}"> Mon compte Twitch</a>
 						</div>
@@ -47,7 +51,9 @@
 							</button>
 						</div>
 						{% elseif socialProfile.social.name == 'Instagram' %}
-						<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid" alt="">
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
 						<div>
 							<a href="{{ socialProfile.link }}">Mon profil Insta </a>
 						</div>
@@ -58,7 +64,9 @@
 							</button>
 						</div>
 						{% elseif socialProfile.social.name == 'Twitter' %}
-						<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid" alt="">
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
 						<div>
 						<a href="{{ socialProfile.link }}">Mon compte Twitter </a>
 						</div>
@@ -69,7 +77,9 @@
 							</button>
 						</div>
 						{% elseif socialProfile.social.name == 'Snapchat' %}
-						<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid" alt="">
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
 						<div>
 							<a href="{{ socialProfile.link }}">
 						</div>

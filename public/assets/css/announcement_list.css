@@ -1,120 +1,50 @@
-.well {
-    margin-top:-20px;
-    background-color:#007FBD;
-    border:2px solid #0077B2;
-    text-align:center;
-    cursor:pointer;
-    font-size: 15px;
-    padding: 2px;
-    border-radius: 0px !important;
+.favtext {
+    font-size: 16px;
 }
 
-.well:hover {
-    margin-top:-20px;
-    background-color:#0077B2;
-    border:2px solid #0077B2;
-    text-align:center;
-    cursor:pointer;
-    font-size: 15px;
-    padding: 2px;
-    border-radius: 0px !important;
-    border-bottom : 2px solid rgba(97, 203, 255, 0.65);
+.show_link{
+    font-size: 16px;
+    color: rgb(12, 27, 31);;
 }
-
-.well, a {
-    color:white;
-}
-
-.weel, a:hover {
-    color: white;
-}
-
-body {
-font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-font-size: 14px;
-line-height: 1.42857143;
-color: #fff;
-background-color: #F1F1F1;
-}
-
-.body__list {
-    background-color: #fff;
-}
-
-
-
-.bg_blur
-{
-    background-image:url('http://data2.whicdn.com/images/139218968/large.jpg');
-    height: 200px;
-    background-size: cover;
-}
-
-.follow_btn {
+.show_link:hover {
+    color: #007bff;
     text-decoration: none;
-    position: absolute;
-    left: 25%;
-    top: 35%;
-    width: 35%;
-    height: 15%;
-    background-color: #007FBE;
-    padding-bottom: 10px;
-    color: #fff;
-    text-align: center;
-    font-size: 18px;
-    border: 4px solid #007FBE;
 }
 
-.follow_btn:hover {
+.link_fav{
+    font-size: 16px;
+    color: rgb(12, 27, 31);;
+}
+
+.link_fav:hover {
+    color: #007bff;
     text-decoration: none;
-    position: absolute;
-    left: 25%;
-    top: 35%;
-    width: 35%;
-    height: 15%;
-    background-color: #007FBE;
-    padding-bottom: 10px;
-    color: #fff;
-    text-align: center;
-    font-size: 18px;
-    border: 4px solid rgba(255, 255, 255, 0.8);
 }
 
-.header{
-    color : #808080;
-    margin-left:5%;
-    margin-top:10px;
+h3 {
+    font-size: 21px;
 }
 
-.picto{
-    width: 50%;
+.img_resize{
+    width: 25%;
 }
 
-.btn-style{
-    color: #fff;
-    background-color: #007FBE;
-    border-color: #adadad;
-    width: 33.3%;
+.background_color {
+    background-color: white;
+    border-color: #F5F5F5;
+    margin-bottom: 3px;
 }
 
-.btn-style:hover {
-    color: #333;
-    background-color: #3D5DE0;
-    border-color: #adadad;
-    width: 33.3%;
-   
+.border_announcement {
+    background-color: #F5F5F5;
+    padding: 0px 25px;
+}
+
+.btn_color {
+    background-color: #F5F5F5;
 }
 
 
-@media (max-width: 767px) {
-    .header{
-        text-align : center;
-    }
-    
-    
-    
-     .nav{
-        margin-top : 30px;
-    } 
+.btn_div {
+    margin-top: 30px;
 }
-

@@ -120,7 +120,9 @@ body{
     min-height: 460px;
   }
 
-
+.img_resize {
+  width: 25%;
+}
   .edit_social a {
       text-decoration: none;
       color: black;
