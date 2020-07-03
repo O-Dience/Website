@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Réinitialiser mot de passe{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"/>
+	<link rel="stylesheet" href="{{asset('assets/css/request_password.css')}}">
+{% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+{% for flashError in app.flashes('reset_password_error') %}
+    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+{% endfor %}   
+    {{ form_start(requestForm) }}
+        <h3>Réinitialisation du mot de passe</h3>
+
+    <div class="input-group px-2 my-2">
+        <div class="input-group-prepend">
+            <span class="input-group-text">
+                <i class="fas fa-envelope"></i>
+            </span>
+        </div>
+        {{ form_widget(requestForm.email) }}        
+    </div>
+    <button type="submit" class="btn btn-success mt-2">
+    <span class="glyphicon glyphicon-off"></span>
+        Envoyer l'e-mail
+    </button>
+    {{ form_end(requestForm) }}
+</div>
+{% endblock %}
+
+

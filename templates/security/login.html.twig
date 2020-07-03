@@ -20,14 +20,6 @@
 		{% if error %}
 			<div class="alert alert-danger mx-2 mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 		{% endif %}
-
-		{% if app.user %}
-			<div class="mb-3">
-				Connecté en tant que
-				{{ app.user.username }},
-				<a href="{{ path('app_logout') }}">Se déconnecter</a>
-			</div>
-		{% endif %}
 		<div class="Social__connection btn">
 			<a href="{{path('app_login_google')}}">
 				<div class="google-btn">
@@ -57,9 +49,17 @@
 			<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe">
 		</div>
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-		<button type="submit" class="btn btn-success">
+		<div>
+		<button type="submit" class="btn btn-success mr-2">
 			<span class="glyphicon glyphicon-off"></span>
 			Se connecter
         </button>
+		<button type="submit" class="btn btn-success ml-2">
+			<span class="glyphicon glyphicon-off"></span>
+			<a href="{{path('app_forgot_password_request')}}" class="link_password">Mot de passe oublié?</a>
+        </button>
+		</div>
+
+		
 	</form>
 {% endblock %}
