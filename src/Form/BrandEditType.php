@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class BrandEditType extends AbstractType
@@ -50,11 +51,21 @@ class BrandEditType extends AbstractType
                     ])
                 ],
             ])
-            ->add('email', EmailType::class, ['label'=>'Votre e-mail'])
+            ->add('email', EmailType::class, [
+                'constraints'=> [new NotBlank([
+                'message' => 'Veuillez entrer une adresse e-mail valide',
+            ])],'label'=>'Votre e-mail'])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux mots de passe doivent être identiques.',
-                'first_options'  => ['label' => 'Mot de passe'],
+                'first_options'  => ['constraints'=> [
+                new Length([
+                    'min' => 6,
+                    'minMessage' => 'Votre mot de passe nécessite au moins {{ limit }} caractères',
+                    // max length allowed by Symfony for security reasons
+                    'max' => 4096,
+                ]),
+            ],'label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Retapez votre mot de passe'],
                 'mapped' => false,
                 'required' => false,
@@ -70,3 +81,4 @@ class BrandEditType extends AbstractType
         ]);
     }
 }
+

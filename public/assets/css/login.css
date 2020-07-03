@@ -48,6 +48,15 @@ form {
   border-radius: 0.375rem;
 }
 
+.link_password {
+  color: white;
+}
+
+.link_password:hover {
+  color:white;
+  text-decoration: none;
+}
+
 @media (max-width: 576px) {
   form {
     width: 80%;

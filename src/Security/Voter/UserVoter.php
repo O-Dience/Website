@@ -13,7 +13,7 @@ class UserVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['show_social', 'add_social','edit', 'dashboard'])
+        return in_array($attribute, ['show_influencer', 'show_brand', 'show_social', 'add_social','edit', 'dashboard'])
             && $subject instanceof User;
     }
 
@@ -27,6 +27,16 @@ class UserVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
+            case 'show_influencer':
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_BRAND', $user->getRoles()) || $user == $userToCompare) {
+                    return true;
+                }
+                break;
+            case 'show_brand':
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_INFLUENCER', $user->getRoles()) || $user == $userToCompare) {
+                    return true;
+                }
+                break;
             case 'show_social':
                 if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userToCompare) {
                     return true;

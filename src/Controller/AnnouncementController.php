@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Announcement;
 use App\Entity\AnnouncementFav;
 use App\Entity\AnnouncementReport;
+use App\Entity\User;
 use App\Form\AnnouncementType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementReportRepository;
@@ -51,6 +52,7 @@ class AnnouncementController extends AbstractController
      */
     public function new(Request $request, ImageUploader $imageUploader): Response
     {
+           
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
@@ -82,6 +84,8 @@ class AnnouncementController extends AbstractController
      */
     public function show(Announcement $announcement): Response
     {
+        $this->denyAccessUnlessGranted('show', $announcement);
+
         return $this->render('announcement/show.html.twig', [
             'announcement' => $announcement
         ]);
@@ -129,7 +133,7 @@ class AnnouncementController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('announcement_index');
+        return $this->redirectToRoute('user_dashboard', ['id'=> $this->getUser()->getId()]);
     }
 
     /**
