@@ -1,11 +1,12 @@
-body {
-  background-image: url('../images/background_dashboard.png');
-  background-position: center;
+body{
+  background-image: url("../images/dashboard.jpg");
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background-position: bottom;
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
 }
-
 /* Profile container */
 .profile {
   margin: 20px 0;
@@ -15,6 +16,16 @@ body {
 .profile-sidebar {
   padding: 20px 0 10px 0;
   background: #fff;
+}
+
+.main__div {
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.10);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 3);
+  color: white;
+  width:100%;
+  height: 100vh;
+  padding-top: 30px;
 }
 
 .profile-userpic{

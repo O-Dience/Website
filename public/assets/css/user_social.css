@@ -1,12 +1,14 @@
-body {
-    background-image: url('../images/background_dashboard.png');
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-  
-  /* Profile container */
+body{
+  background-image: url("../images/dashboard.jpg");
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background-position: bottom;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Profile container */
   .profile {
     margin: 20px 0;
   }
