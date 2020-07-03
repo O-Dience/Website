@@ -39,7 +39,12 @@ class InfluencerEditType extends AbstractType
                 ])
             ->add('description', TextareaType::class, [
                 'label' => 'Présente toi en quelques mots:',
-                'required' => false,])
+                'required' => false,
+                'attr'=>([ 
+                    'rows'=> 5 , 
+                    'cols'=> 40,
+                ])
+                ])
             ->add('pictureFile', FileType::class, [
                 'label' => 'Photo de profil',
                 'mapped' => false,

@@ -69,7 +69,7 @@ body .bg-dark{
 
 .bg-info .brand__label {
   font-family: 'Balsamiq Sans', cursive!important;
-  color: rgb(182, 41, 41)!important;
+  color:white!important;
 }
 
 .bg-info .nav-item .nav-link{
@@ -80,7 +80,7 @@ body .bg-dark{
 
 .bg-dark .brand__label {
   font-family: 'Balsamiq Sans', cursive!important;
-  color: rgb(182, 41, 41)!important;
+  color: white!important;
 }
 
 .bg-dark .nav-item .nav-link{

@@ -7,14 +7,14 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-md ">
+<div class="container-md">
     <div class="row profile align-items-center">
-        <div class="col-md-3">
+        <div class="col-md-3 ">
             {% include 'partials/_profile_sidebar.html.twig' %}
         </div>
 
-        <div class="col-md-9 {{ (favorites | length >= 3 ) ? 'overflow_dashboard' : '' }}">
-            <div class="profile-content bg-light">
+        <div class="col-md-9 ">
+            <div class="profile-content bg-light overflow-rounded {{ (favorites | length >= 3 ) ? 'overflow_dashboard' : '' }}">
             {% if 'default' in user.picture or user.description is empty or user.userSocials | length == 0 %}
                 {% include 'user/influencer/empty_dashboard.html.twig' %}
             {% endif %} 

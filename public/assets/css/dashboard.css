@@ -12,6 +12,7 @@ body{
   margin: 20px 0;
 }
 
+
 /* Profile sidebar */
 .profile-sidebar {
   padding: 20px 0 10px 0;
@@ -28,15 +29,16 @@ body{
   padding-top: 30px;
 }
 
-.profile-userpic{
-  text-align: center;
+.profile-userpic {
+  display: flex;
+  justify-content: center;
 }
 
 .profile-userpic img {
-  float: none;
-  width: 75%;
+  max-width: 60%;
   height: auto;
   margin: 0 auto;
+  border-radius: 50%;
 }
 
 .profile-usertitle {
@@ -126,15 +128,22 @@ body{
 .profile-content {
   padding: 20px;
   background: #fff;
-  min-height: 460px;
+  min-height: 90vh;
+  min-width: 40vw;
+  border-radius: 20px;
 }
 
 .see_announcement {
   color: rgb(11, 11, 88);
 }
+
 /* Announcement list, overflow */
+.overflow-rounded{
+  border-radius: 50px;
+}
+
 .overflow_dashboard {
-  height:600px;
+  height: 90vh;
   overflow-y: scroll;
 }
 

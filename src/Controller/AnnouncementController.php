@@ -52,7 +52,7 @@ class AnnouncementController extends AbstractController
      */
     public function new(Request $request, ImageUploader $imageUploader): Response
     {
-           
+
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
