@@ -98,39 +98,39 @@ class UserController extends AbstractController
         ]);
     }
 
+    
     /**
      * @Route("/profil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
      */
-    public function show(User $user): Response
+    public function showInfluencer(User $user): Response
     {
 
-        if (in_array("ROLE_INFLUENCER", $user->getRoles()))
-        {
+        if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
+            $this->denyAccessUnlessGranted('show_influencer', $user);
+
+
             return $this->render('user/influencer/show.html.twig', [
                 'user' => $user,
             ]);
         }
-        
-        if (in_array("ROLE_BRAND", $user->getRoles()))
-        {
-            // Calculate overall favorites get from announcements
+
+        if (in_array("ROLE_BRAND", $user->getRoles())) {
+            $this->denyAccessUnlessGranted('show_brand', $user);
             $likes = 0;
-            foreach ( $user->getAnnouncements() as $announcement) {
-                $announcementLikes = count($announcement->getFavorites()) + 1;
+            foreach ($user->getAnnouncements() as $announcement) {
+                $announcementLikes = count($announcement->getFavorites());
                 $likes += $announcementLikes;
             };
             return $this->render('user/brand/show.html.twig', [
-                'user' => $user,
-                'likes' => $likes
-            ]);
+                        'user' => $user,
+                        'likes' => $likes
+                    ]);
         }
-
-        else
+            else
         {
             throw $this->createNotFoundException('Utilisateur introuvable');
         }
-
-    }
+    }   
 
     /**
      * @Route("/dashboard/{id}", name="user_dashboard", methods={"GET"}, requirements={"id": "\d+"})

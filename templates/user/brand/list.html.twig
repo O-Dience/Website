@@ -65,7 +65,7 @@
                                     {% else %}
                                     <p class="card-text">L'utilisateur n'a pas renseigné de description</p>
                                     {% endif %}
-                                    <a href="{{path('user_show', {id: brand.id, role: 'marque'})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
+                                    <a href="{{path('user_show', {id: brand.id})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
                                     {% if app.user and brand.isReportedByUser(app.user) %}
                                         <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
                                     {% else %}

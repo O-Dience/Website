@@ -3,9 +3,10 @@
 {% block title %} {{ parent() }} - Publier une annonce {% endblock %}
 
 {% block body %}
-    <h1>Publier une nouvelle annonce</h1>
+
 
     {{ include('announcement/_form.html.twig') }}
 
-    <a href="{{ path('announcement_list') }}">Liste des annonces</a>
+    
+</div>
 {% endblock %}

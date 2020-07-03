@@ -1,4 +1,51 @@
-{{ form_start(form) }}
+{# {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Soumettre l\'annonce') }}</button>
-{{ form_end(form) }}
+{{ form_end(form) }} #}
+
+
+
+<div class="container-md mt-5">
+	<div class="row profile align-items-center">
+		
+		<div class="card bg-light col-md-12">
+		<article class="card-body">
+		<h4 class="card-title mt-3 text-center">Nouvelle annonce </h4>
+		{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}	
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label>Titre de l'annonce</label>
+				{{form_widget(form.title)}}
+			</div>
+             <div class="form-group col-md-6">
+				<label>Image de l'annonce <em>(optionnel)</em></label>
+				{{form_widget(form.pictureFile)}}	
+			</div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group col-md-12">
+				<label>Détail de l'annonce</label>
+				{{form_widget(form.content)}}	
+			</div>
+        </div>     
+
+        <div class="form-row">
+			<div class="form-group col-md-6">
+				<label>Réseaux requis <em>(optionnel)</em></label>
+				{{form_widget(form.socialNetworks)}}
+			</div>
+             <div class="form-group col-md-6">
+				<label>Catégories</label>
+				{{form_widget(form.categories)}}	
+			</div>
+        </div>
+
+		<div class="d-flex justify-content-between">
+            <div class="form-group col-md-4">
+                <button type="submit" class="btn btn-primary btn-block"> Soumettre l'annonce </button>
+            </div>   
+            <a href="{{ path('homepage') }}" class="mt-2">Retour au tableau de bord</a>
+        </div>                                                                    
+		{{ form_end(form) }}
+
