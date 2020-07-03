@@ -64,3 +64,22 @@ body .bg-dark{
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px!important;
 }
+
+.deepshd {
+  color: white;
+  letter-spacing: .1em;
+  text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 1px 0 #2c2c2c, 0 2px 0 #2a2a2a, 0 2px 0 #282828, 0 3px 0 #262626, 0 3px 0 #242424, 0 3px 0 #222, 0 4px 0 #202020, 0 4px 0 #1e1e1e, 0 5px 0 #1c1c1c, 0 5px 0 #1a1a1a, 0 6px 0 #181818, 0 6px 0 #161616;
+  font-size: 60px;
+  padding: 80px 50px 10px 50px;
+  text-align: center;
+  text-rendering: optimizeLegibility;
+}
+
+.deepshd--small{
+  color: white;
+  letter-spacing: .1em;
+  text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 1px 0 #2c2c2c, 0 2px 0 #2a2a2a, 0 2px 0 #282828, 0 3px 0 #262626, 0 3px 0 #242424, 0 3px 0 #222, 0 4px 0 #202020, 0 4px 0 #1e1e1e, 0 5px 0 #1c1c1c, 0 5px 0 #1a1a1a, 0 6px 0 #181818, 0 6px 0 #161616;
+  font-size: 25px;
+  text-align: center;
+  text-rendering: optimizeLegibility;
+}
