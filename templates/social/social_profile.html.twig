@@ -3,18 +3,17 @@
 {% block title %}{{ parent() }} - {{ user.username }} - Réseaux sociaux{% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{{asset('assets/css/user_social.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
 {% endblock %}
 
 {% block body %}
 
-<div class="container-md ">
+<div class="container-md">
 	<div class="row profile align-items-center">
 		<div class="col-md-3">
 			{% include 'partials/_profile_sidebar.html.twig' %}
 		</div>
-
-		<div class="col-md-9  pb-3 pt-3">
+		<div class="col-md-9  pb-3 pt-3 profile-content">
 			<div class="social-content bg-light">
 				<h3 class="mb-3 text-center">La gestion de tes réseaux, c'est ici que ça se passe !</h3>
 				<div class="text-center mb-3">
