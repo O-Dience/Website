@@ -63,9 +63,15 @@ body {
 .homepage__main__div--brand {
   color: #DA3343;
 }
+
 body .bg-dark{
   background-color: #424242!important;;
 }
+
+body .bg-info{
+  background-color: #2A9D8F!important;;
+}
+
 
 .bg-info .brand__label {
   font-family: 'Balsamiq Sans', cursive!important;

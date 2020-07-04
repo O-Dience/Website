@@ -20,25 +20,8 @@
 
 <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
 
-    <h1 class="text-center">A vous de jouer !</h1>
-    <div class="d-flex mb-3">
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm d-none d-md-block" name="search" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0 d-none d-md-block" type="submit">Search</button>
-            <select name="category" id="category_label">
-                <option value="">Trier par catégorie</option>
-                 {% for category in categories %}
-                 <option value="{{category.id}}">{{category.label}}</option>
-                 {% endfor %}
-            </select>
-             <select name="socialNetwork" id="socialNetwork_name">
-                <option value="">Trier selon le réseau social</option>
-                 {% for socialNetwork in socialNetworks %}
-                 <option value="{{socialNetwork.id}}">{{socialNetwork.name}}</option>
-                 {% endfor %}
-            </select>
-        </form>
-    </div>
+    <h1 class="text-center text-info">A vous de jouer !</h1>
+    {% include 'partials/_filters.html.twig' %}
 {% for announcement in announcements %}
 	<div class="row panel">
 		<div class="body__list col-md-3 bg_blur d-none d-md-block">
