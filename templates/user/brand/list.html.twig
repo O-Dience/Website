@@ -13,11 +13,11 @@
 <section id="team" class="pb-5">
     <div class="container">
         <h5 class="section-title h1">Les Marques</h5>
-        <small>Ajouter menu des filtres, liens RS dynamiques</small>
+        {% include 'partials/_filters.html.twig' %}
         <div class="row">
         {% for brand in users %}
             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="col-xs-12 col-sm-6 col-md-4 panel">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -38,7 +38,7 @@
 
                                     <p class="card-text">
                                     {% for category in brand.categories %}
-                                    <span class="label label-info">{{ category.label }}</span>
+                                    <span class="badge badge-secondary" data-category-id="{{ category.id }}"> {{category.label}}</span>
                                     {% endfor %}
                                     </p>
                                     <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-plus"></i></a>
@@ -61,7 +61,7 @@
                                         </a>
                                     </div>
                                     {% if brand.description is not empty %}
-                                    <p class="card-text">{{brand.description | slice(0, 100)}}...</p>
+                                    <p class="card-text">{{ (brand.description) ? brand.description|slice(0, 100) : "Cet utilisateur n'a pas encore rempli sa bio, mais n'hésitez pas à consulter son profil "}}...</p>
                                     {% else %}
                                     <p class="card-text">L'utilisateur n'a pas renseigné de description</p>
                                     {% endif %}
@@ -73,37 +73,11 @@
                                     {% endif %}
                                     <ul class="list-inline mt-3">
                                         {% for social in brand.userSocials %}
-                                        {% if social.social.name == 'Facebook' %}
                                         <li class="list-inline-item">
                                             <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-facebook"></i>
+                                                <i class="fa fa-{{ social.social.name|lower }}"><span data-network-id="{{ social.social.id }}"></span></i>
                                             </a>
                                         </li>
-                                        {% elseif social.social.name == 'Twitter' %}
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-twitter"></i>
-                                            </a>
-                                        </li>
-                                        {% elseif social.social.name == 'Instagram' %}
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-instgram"></i>
-                                            </a>
-                                        </li>
-                                        {% elseif social.social.name == 'Twitch' %}
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-twitch"></i>
-                                            </a>
-                                        </li>
-                                        {% elseif social.social.name == 'Snapchat' %}
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-snapchat"></i>
-                                            </a>
-                                        </li>
-                                        {% endif %}
                                         {% endfor %}
                                     </ul>
                                 </div>

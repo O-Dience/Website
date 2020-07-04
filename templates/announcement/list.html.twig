@@ -82,6 +82,7 @@
 
 
 {% endblock %}
+
 {% block javascripts %}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
@@ -120,59 +121,6 @@
         });
     }
 
-    // Filters announcements by category
-    function filterByCategory(evt) {
-        categoryFilter = evt.target.value;
-        updateDisplay();
-    }
-
-    // Filters announcements by social network
-    function filterByNetwork(evt) {
-        networkFilter = evt.target.value;
-        updateDisplay();
-    }
-
-    // Updates display of announcements according to the filters
-    function updateDisplay() {
-        document.querySelectorAll('.panel').forEach(function(announcement){
-            let foundCategory = false;
-            let foundNetwork = false;
-            
-            if (categoryFilter == '') {
-                foundCategory = true;
-            }
-            else {
-                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
-                    if (categoryTag.dataset.categoryId == categoryFilter) {
-                        foundCategory = true;
-                    }
-                })
-            }
-
-            if (networkFilter == '') {
-                foundNetwork = true;
-            }
-            else {
-                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
-                    if (network.dataset.networkId == networkFilter) {
-                        foundNetwork = true;
-                    }
-                })
-            }
-            
-            if (foundCategory && foundNetwork) {
-                announcement.style.display = 'flex';
-                announcement.nextElementSibling.style.display = 'flex';
-            }
-            else {
-                announcement.style.display = 'none';
-                announcement.nextElementSibling.style.display = 'none';
-            }
-        })
-    }
-
-    document.getElementById('category_label').addEventListener('change', filterByCategory);
-    document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
     document.querySelectorAll('a.js-fav').forEach(function(link){
         link.addEventListener('click', onClickBtnFav)
     })
@@ -181,4 +129,5 @@
     })
     </script>
 {% endblock %}
+
            

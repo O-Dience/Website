@@ -52,6 +52,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $query->execute();
     }
 
+    /**
+     * @return User[] Returns an array of User objects depending on role
+     */
+    public function findByRoleAndSearch($role, $search)
+    {
+        if ($role === "brand"){
+            $role === ["ROLE_BRAND"];
+        }
+        elseif ($role === "influencer"){
+            $role === ["ROLE_INFLUENCER"];
+        }
+        //TODO: faire cette custom query
+    }
+
     public function findOneByEmail($email): ?User
     {
         return $this->createQueryBuilder('u')

@@ -5,7 +5,7 @@
 			<button class="btn btn-secondary my-2 my-sm-0 d-none d-md-block {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}" type="submit">Search</button>
 		</div>
 		<div class="filter__filters d-flex mt-2">
-			<select name="category" id="category_label" class="btn btn-secondary {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}">
+			<select name="category" id="category_label" class="btn btn-secondary mx-1 {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}">
 				<option value="">Trier par catégorie</option>
 				{% for category in categories %}
 					<option value="{{category.id}}">{{category.label}}</option>
@@ -20,3 +20,69 @@
 		</div>
 	</form>
 </div>
+
+{% block javascripts %}
+    <script>
+
+    let categoryFilter = '';
+    let networkFilter = '';
+		    // Filters announcements by category
+    function filterByCategory(evt) {
+        categoryFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Filters announcements by social network
+    function filterByNetwork(evt) {
+        networkFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Updates display of announcements according to the filters
+    function updateDisplay() {
+        document.querySelectorAll('.panel').forEach(function(announcement){
+            let foundCategory = false;
+            let foundNetwork = false;
+            
+            if (categoryFilter == '') {
+                foundCategory = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryFilter) {
+                        foundCategory = true;
+                    }
+                })
+            }
+
+            if (networkFilter == '') {
+                foundNetwork = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
+                    if (network.dataset.networkId == networkFilter) {
+                        foundNetwork = true;
+                    }
+                })
+            }
+            
+            if (foundCategory && foundNetwork) {
+
+							announcement.classList.remove("d-none")
+							announcement.nextElementSibling.classList.remove("d-none")
+              //announcement.style.display = 'flex';
+              //announcement.nextElementSibling.style.display = 'flex';
+            }
+            else {
+							announcement.classList.add("d-none")
+							announcement.nextElementSibling.classList.add("d-none")
+                // announcement.style.display = 'none';
+                // announcement.nextElementSibling.style.display = 'none';
+            }
+        })
+    }
+
+		document.getElementById('category_label').addEventListener('change', filterByCategory);
+    document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
+		</script>
+{% endblock %}
