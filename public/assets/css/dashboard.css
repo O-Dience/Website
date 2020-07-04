@@ -147,11 +147,9 @@ body{
   overflow-y: scroll;
 }
 
-
-
 .border_profil {
   background-color: rgba(86, 231, 86, 0.57);
-  padding: 10px 3px 5px 3px;
+  padding: 8px 2px 1px 2px;
   border: 1px solid rgba(215, 235, 215, 0,57);
   border-radius: 5px;
 }
@@ -165,6 +163,7 @@ body{
   border: 1px solid rgba(211, 201, 207, 0.64);
   border-radius: 5px;
 }
+
 
 .category__picto{
   border-radius: 50%;
@@ -186,6 +185,16 @@ body{
 
 .category__container--brand small{
   color: #424242;
+}
+
+.missing_info h4 {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+.missing_info p {
+  font-size: 14px;
+  margin-bottom: 0px;
 }
 
 @media (max-width: 1200px) {
