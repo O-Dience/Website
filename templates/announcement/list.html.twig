@@ -4,14 +4,12 @@
 
 
 {% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+
 <link href='{{asset('assets/css/announcement_list.css')}}' rel='stylesheet' type='text/css'>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 {% endblock %}
 
-{% block javascript %}
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-{% endblock %}
 
 {% block body %}
 
@@ -40,84 +38,85 @@
                         </select>
                     </form>
                 </div>
-                {% for announcement in announcements %}
-                <div class="list-group">
-                    <div href="#" class="list-group-item d-flex background_color">
-                        {% if announcement.image is not empty %} 
-                        <div class="media col-md-2">
-                            <figure class="float-left">
-                                <img class="media-object rounded img-fluid"  src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}">
-                            </figure>
-                        </div>
-                        {% elseif announcement.user.picture is not empty %}
-                        <div class="media col-md-2 mt-3">
-                            <figure class="float-left">
-                                <img class="media-object rounded img-fluid"  src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}">
-                            </figure>
-                        </div>
-                        {% endif %} 
-                        <div class="col-md-7">
-                           <div class="d-flex justify-content-between">
-                                <h3 class="">{{announcement.title}}
-                                    <em class="user_name">
-                                        <a href="{{path('user_show', {'id' : announcement.user.id})}}">({{announcement.user}})
-                                        </a>
-                                    </em>
-                                </h3>
-                                {% if announcement.updatedAt is not empty %}
-                                    <p class="font-italic text-black-50 d-flex flex-row-reverse mt-2"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
-                                {% else %}
-                                    <p class="font-italic text-black-50 d-flex flex-row-reverse mt-2"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
-                                {% endif %}
+                <div class="list_container ww-md-100pb-4 pl-2 pl-3 mx-auto">
+                    {% for announcement in announcements %}
+                    <div class="list-group panel">
+                        <div href="#" class="list-group-item d-flex background_color">
+                            {% if announcement.image is not empty %} 
+                            <div class="media col-md-2">
+                                <figure class="float-left">
+                                    <img class="media-object rounded img-fluid"  src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}">
+                                </figure>
                             </div>
-                            <p class="">{{announcement.content | slice (0, 150)}}...</p>
-                            <div class="d-flex justify-content-between col-md-8">
-                                <div class="d-flex">
-                                    {% for category in announcement.categories %}
-                                    <div class="d-flex flex-column mx-auto">
-                                        <div>
-                                            <span class="badge badge-secondary mt-2" data-category-id="{{ category.id }}"> {{category.label}}</span>
-                                        </div>
-                                        <div class="mx-auto">
-                                            <img src="{{asset('/assets/images/category_picto/') ~ category.picto}}" class="img_resize mt-2">
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                                <div class="d-flex mx-auto">
-                                    {% for network in announcement.socialNetworks %}
-                                    <div class="d-flex flex-column mx-auto">
-                                        <div class="mx-auto">
-                                            <span class="badge badge-secondary mt-2" data-network-id="{{ network.id }}"> {{network.name}}</span>
-                                        </div>
-                                        <div>
-                                            <img src="{{asset('/assets/images/social_picto/') ~ network.picto}}" class="img_resize mt-2">
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
+                            {% elseif announcement.user.picture is not empty %}
+                            <div class="media col-md-2 mt-3">
+                                <figure class="float-left">
+                                    <img class="media-object rounded img-fluid"  src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}">
+                                </figure>
                             </div>
-                        </div>
-                        <div class="col-md-3 text-center btn_div">
-                            <button type="button" class="btn btn-default btn-lg btn-block btn_color">
-                                <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="link_fav">   
-                                    {% if app.user and announcement.isFavByUser(app.user) %}
-                                    <i class="fa fa-heart fa-lg mr-2"></i> <span class="favtext">Dans vos favoris</span>
+                            {% endif %} 
+                            <div class="col-md-7">
+                            <div class="d-flex justify-content-between">
+                                    <h3 class="">{{announcement.title}}
+                                        <em class="user_name">
+                                            (<a href="{{path('user_show', {'id' : announcement.user.id})}}">{{announcement.user}}</a>)
+                                        </em>
+                                    </h3>
+                                    {% if announcement.updatedAt is not empty %}
+                                        <p class="font-italic text-black-50 d-flex flex-row-reverse"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
                                     {% else %}
-                                    <i class="fa fa-heart-o fa-lg mr-2"></i> <span class="favtext">Ajouter à vos favoris</span>
+                                        <p class="font-italic text-black-50 d-flex flex-row-reverse"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
                                     {% endif %}
-                                </a>
-                            </button>
-                            <button type="button" class="btn btn-default btn-lg btn-block btn_color">
-                                <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="show_link">
-                                    <i class="fa fa-eye fa-lg mr-2"></i> 
-                                    <span class="show_ann">Consulter l'annonce</span>
-                                </a>
-                            </button>
+                                </div>
+                                <p class="">{{announcement.content | slice (0, 150)}}...</p>
+                                <div class="d-flex justify-content-between col-md-8 mx-auto">
+                                    <div class="d-flex mx-auto">
+                                        {% for category in announcement.categories %}
+                                        <div class="d-flex flex-column mx-auto">
+                                            <div>
+                                                <span class="badge badge-secondary mt-2" data-category-id="{{ category.id }}"> {{category.label}}</span>
+                                            </div>
+                                            <div class="mx-auto ">
+                                                <img src="{{asset('/assets/images/category_picto/') ~ category.picto}}" class="img_resize mt-2">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="d-flex mx-auto">
+                                        {% for network in announcement.socialNetworks %}
+                                        <div class=" flex-column mx-auto">
+                                            <div class="mx-auto">
+                                                <span class="badge badge-secondary mt-2" data-network-id="{{ network.id }}"> {{network.name}}</span>
+                                            </div>
+                                            <div class="mx-auto">
+                                                <img src="{{asset('/assets/images/social_picto/') ~ network.picto}}" class="img_resize mt-2">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center btn_div">
+                                <button type="button" class="btn btn-default btn-lg btn-block btn_color w-60">
+                                    <a href="{{path('announcement_favorite', {'id': announcement.id}) }}"  class="link_fav js-fav">   
+                                        {% if app.user and announcement.isFavByUser(app.user) %}
+                                        <i class="fa fa-heart fa-lg mr-2  fav_color color_item"></i> <span class="favtext">Retirer des favoris</span>
+                                        {% else %}
+                                        <i class="fa fa-heart-o fa-lg mr-2 color_item"></i> <span class="favtext">Ajouter aux favoris</span>
+                                        {% endif %}
+                                    </a>
+                                </button>
+                                <button type="button" class="btn btn-default btn-lg btn-block btn_color">
+                                    <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="show_link">
+                                        <i class="fa fa-eye fa-lg mr-2"></i> 
+                                        <span class="show_ann">Consulter l'annonce</span>
+                                    </a>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {% endfor %}
+                    {% endfor %}  
+                <div>  
             </div>
         </div>
 	</div>
@@ -138,15 +137,19 @@
         const icone = this.querySelector('i');
         let favlink = evt.currentTarget;
         let favtext = this.querySelector('.favtext');
+        let changeColor = document.querySelector('.color_item')
 
         axios.get(url).then(function(response){
 
+            console.log(changeColor)
             if(icone.classList.contains('fa-heart-o')){
                 icone.classList.replace('fa-heart-o', 'fa-heart')
                 favtext.innerHTML = "Retirer des favoris";
+                changeColor.style.color = "red";
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
                 favtext.innerHTML = "Ajouter aux favoris";
+                changeColor.style.color = "black";
             }
         });
     }

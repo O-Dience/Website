@@ -46,6 +46,10 @@
 				Mes annonces favorites
 			</a>
 			{% endif %}
+			<a href="{{path('user_show', {id: app.user.id})}}" class="btn btn-primary  list-group-item {{ ( app.request.get('_route') == 'user_show') ? 'active' : 'text-dark' }}">
+				<i class="fa fa-user ml-1 mr-1" aria-hidden="true"></i>
+				Voir mon profil
+			</a>
 			<a href="{{path('user_edit', {id: app.user.id})}}" class="btn btn-primary  list-group-item {{ ( app.request.get('_route') == 'user_edit') ? 'active' : 'text-dark' }}">
 				<i class="fa fa-cog ml-1 mr-1" aria-hidden="true"></i>
 				Editer mon profil
