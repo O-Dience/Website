@@ -51,8 +51,8 @@ h3 {
 }
 
 .img_resize{
-    width: 25%;
-  
+    height:50px;
+    width:50px;
 }
 
 .background_color {
