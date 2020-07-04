@@ -15,28 +15,31 @@
 
 
 
-<div class="container mt-5">
-    <div class="row">
-		<div class="border_announcement" >
-        <h1 class="text-center mt-3">Liste des annonces</h1>
-            <div class="">
-                <div class="d-flex mb-5 mt-3">
-                    <form class="form-inline my-2 my-lg-0 mx-auto">
-                        <input class="form-control mr-sm d-none d-md-block" name="search" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0 d-none d-md-block" type="submit">Search</button>
-                        <select name="category" id="category_label">
-                            <option value="">Trier par catégorie</option>
-                            {% for category in categories %}
-                            <option value="{{category.id}}">{{category.label}}</option>
-                            {% endfor %}
-                        </select>
-                        <select name="socialNetwork" id="socialNetwork_name">
-                            <option value="">Trier selon le réseau social</option>
-                            {% for socialNetwork in socialNetworks %}
-                            <option value="{{socialNetwork.id}}">{{socialNetwork.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </form>
+<div class="container" style="margin-top: 20px; margin-bottom: 20px;">
+
+    <h1 class="text-center text-info">A vous de jouer !</h1>
+    {% include 'partials/_filters.html.twig' %}
+{% for announcement in announcements %}
+	<div class="row panel">
+		<div class="body__list col-md-3 bg_blur d-none d-md-block">
+    	  <div class="d-flex justify-content-around mt-3">
+                {% for category in announcement.categories %}
+                    
+                        <span class="badge badge-secondary" data-category-id="{{ category.id }}"> {{category.label}}</span>
+                    
+                {% endfor %}
+                {% for network in announcement.socialNetworks %}
+                    
+                        <span class="badge badge-secondary" data-network-id="{{ network.id }}"> {{network.name}}</span>
+                    
+                {% endfor %}
+            </div>
+		</div>
+        <div class=" body__list col-md-9 col-xs-12">
+            <div class="d-flex">
+                <div>
+                    <img src="http://lorempixel.com/output/people-q-c-100-100-1.jpg" class="img-thumbnail picture hidden-xs" />
+
                 </div>
                 <div class="list_container ww-md-100pb-4 pl-2 pl-3 mx-auto">
                     {% for announcement in announcements %}
@@ -166,59 +169,6 @@
         });
     }
 
-    // Filters announcements by category
-    function filterByCategory(evt) {
-        categoryFilter = evt.target.value;
-        updateDisplay();
-    }
-
-    // Filters announcements by social network
-    function filterByNetwork(evt) {
-        networkFilter = evt.target.value;
-        updateDisplay();
-    }
-
-    // Updates display of announcements according to the filters
-    function updateDisplay() {
-        document.querySelectorAll('.panel').forEach(function(announcement){
-            let foundCategory = false;
-            let foundNetwork = false;
-            
-            if (categoryFilter == '') {
-                foundCategory = true;
-            }
-            else {
-                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
-                    if (categoryTag.dataset.categoryId == categoryFilter) {
-                        foundCategory = true;
-                    }
-                })
-            }
-
-            if (networkFilter == '') {
-                foundNetwork = true;
-            }
-            else {
-                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
-                    if (network.dataset.networkId == networkFilter) {
-                        foundNetwork = true;
-                    }
-                })
-            }
-            
-            if (foundCategory && foundNetwork) {
-                announcement.style.display = 'flex';
-                announcement.nextElementSibling.style.display = 'flex';
-            }
-            else {
-                announcement.style.display = 'none';
-                announcement.nextElementSibling.style.display = 'none';
-            }
-        })
-    }
-
-    document.getElementById('category_label').addEventListener('change', filterByCategory);
-    document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
     document.querySelectorAll('a.js-fav').forEach(function(link){
         link.addEventListener('click', onClickBtnFav)
     })
@@ -226,4 +176,6 @@
         link.addEventListener('click', onClickBtnReport);
     })
     </script>
+
 {% endblock %}
+

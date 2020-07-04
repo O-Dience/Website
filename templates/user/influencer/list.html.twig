@@ -14,17 +14,11 @@
 <section id="team" class="pb-5">
     <div class="container">
         <h5 class="section-title h1">Les Influenceurs</h5>
-        <small>Ajouter menu des filtres, liens RS dynamiques</small>
-        <select id="category_filter">
-            <option value="">Filtrer par catégorie</option>
-            {% for category in categories %}
-                <option value="{{ category.id }}">{{ category.label }}</option>
-            {% endfor %}
-        </select>
+        {% include 'partials/_filters.html.twig' %}
         <div class="row">
         {% for influencer in users %}
             <!-- Team member -->
-            <div class="user_card_group col-xs-12 col-sm-6 col-md-4">
+            <div class="user_card_group col-xs-12 col-sm-6 col-md-4 panel">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -66,7 +60,7 @@
                                             {% endif %}
                                         </a>
                                     </div>
-                                    <p class="card-text">AJOUTER UNE DESCRIPTION / BIO DANS L'ENTITE USER ?</p>
+                                    <p class="card-text">{{ (influencer.description) ? influencer.description|slice(0, 100) : "Cet utilisateur n'a pas encore rempli sa bio, mais n'hésitez pas à consulter son profil "}}...</p>
                                     <a href="{{path('user_show', {id: influencer.id})}}" class="btn btn-primary btn-sm"><span class="text-white">Profil</span></a>
                                     {% if app.user and influencer.isReportedByUser(app.user) %}
                                         <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
@@ -75,9 +69,9 @@
                                     {% endif %}
                                     <ul class="list-inline">
                                         {% for social in influencer.userSocials %}
-                                        <li class="list-inline-item">
+                                        <li class="list-inline-item" data-network-id="{{ social.social.id }}">
                                             <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-facebook"></i>
+                                                <i class="fa fa-{{ social.social.name }}"></i>
                                             </a>
                                         </li>
                                         {% endfor %}
@@ -99,11 +93,8 @@
 {% block javascripts %}
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-    let categoryFilter = '';
-
     function onClickBtnFav(evt){
         evt.preventDefault()
         const url = this.href
@@ -136,36 +127,6 @@
         });
     }
 
-    // Filters influencers by category
-    function filterByCategory(evt) {
-        categoryFilter = evt.target.value;
-        updateDisplay();
-    }
-
-    // Updates display of influencers according to the filters
-    function updateDisplay() {
-        document.querySelectorAll('.user_card_group').forEach(function(user){
-            let foundCategory = false;
-            
-            if (categoryFilter == '') {
-                foundCategory = true;
-            }
-            else {
-                user.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
-                    if (categoryTag.dataset.categoryId == categoryFilter) {
-                        foundCategory = true;
-                    }
-                })
-            }
-            
-            if (foundCategory) {
-                user.style.display = 'block';
-            }
-            else {
-                user.style.display = 'none';
-            }
-        })
-    }
     document.getElementById('category_filter').addEventListener('change', filterByCategory);
         document.querySelectorAll('a.js-fav').forEach(function(link){
             link.addEventListener('click', onClickBtnFav)

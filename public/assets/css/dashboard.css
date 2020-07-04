@@ -147,8 +147,6 @@ body{
   overflow-y: scroll;
 }
 
-
-
 .border_profil {
   background-color: rgba(86, 231, 86, 0.57);
   padding: 8px 2px 1px 2px;
@@ -166,6 +164,29 @@ body{
   border-radius: 5px;
 }
 
+
+.category__picto{
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.picto__influencer{
+  border: solid #2A9D8F;
+}
+
+.picto__brand{
+  border: solid #424242;
+}
+
+.category__container--influencer small{
+  color: #2A9D8F;
+}
+
+.category__container--brand small{
+  color: #424242;
+}
+
 .missing_info h4 {
   font-size: 22px;
   margin-bottom: 2px;
@@ -175,7 +196,6 @@ body{
   font-size: 14px;
   margin-bottom: 0px;
 }
-
 
 @media (max-width: 1200px) {
   .overflow_dashboard{

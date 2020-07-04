@@ -14,7 +14,9 @@ use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\SocialNetworkRepository;
 use App\Repository\UserFavRepository;
+use App\Repository\UserRepository;
 use App\Service\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,24 +30,39 @@ class UserController extends AbstractController
     /**
      * @Route("/{role}/liste", name="user_list", methods={"GET"}, requirements={"role": "^(marque|influenceur|utilisateur)"})
      */
-    public function list($role, CategoryRepository $categoryRepository): Response
+    public function list($role, CategoryRepository $categoryRepository, SocialNetworkRepository $socialNetworkRepository, Request $request, UserRepository $userRepo): Response
     {
         if($role === "influenceur"){
             $role = "influencer";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_INFLUENCER"]');
+            // If search is done, we try to find a match by title, then if no match, find by content
+            $search = $request->query->get("search", null);
+
+            if ($search) {
+                $influencers = $userRepo->findByRoleAndSearch($role, $search);
+            }
         }
         elseif($role === "marque"){
             $role = "brand";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_BRAND"]');
+            // If search is done, we try to find a match by title, then if no match, find by content
+            $search = $request->query->get("search", null);
+
+            if ($search) {
+                $influencers = $userRepo->findByRoleAndSearch($role, $search);
+            }            
         }
         elseif($role === "user"){
             $role = "user";
             $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         }
         $categories = $categoryRepository->findAll();
+        $socialNetworks = $socialNetworkRepository->findAll();
+
         return $this->render('user/'.$role.'/list.html.twig', [
             "users" => $users,
-            'categories' => $categories
+            'categories' => $categories,
+            'socialNetworks' => $socialNetworks
         ]);
     }
 
