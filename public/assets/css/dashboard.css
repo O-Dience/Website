@@ -166,6 +166,27 @@ body{
   border-radius: 5px;
 }
 
+.category__picto{
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.picto__influenceur{
+  border: solid #2A9D8F;
+}
+
+.picto__brand{
+  border: solid #424242;
+}
+
+.category__container--influencer small{
+  color: #2A9D8F;
+}
+
+.category__container--brand small{
+  color: #424242;
+}
 
 @media (max-width: 1200px) {
   .overflow_dashboard{
