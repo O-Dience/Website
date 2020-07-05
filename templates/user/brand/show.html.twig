@@ -70,14 +70,14 @@
 						</div>
 						<div class="row">
 							{% for announcement in user.announcements %}
-								<div class="col-lg-6 mb-2 pr-lg-1 mx-auto">
+								<div class="col-lg-6 mb-2 pr-lg-1 mx-auto text-center border p-1">
 									{% if announcement.image is null %}
-										<img src="https://image.shutterstock.com/image-photo/pink-pineapple-concept-600w-1019030506.jpg" alt="" class="img-fluid rounded shadow-sm h-auto w-100">
+										<img src="{{asset('assets/images/announcement-default.png')}}" alt="" class="img-fluid rounded shadow-sm h-auto img__announcement">
 									{% else %}
-										<img src="{{asset('assets/images/image_announcement/')}}{{ announcement.image }}" alt="" class="img-fluid rounded shadow-sm">
+										<img src="{{asset('assets/images/image_announcement/')}}{{ announcement.image }}" alt="" class="img-fluid rounded shadow-sm img__announcement">
 									{% endif %}
 									<div class="ml-2 mr-2  announcement__details">
-										<h5>{{ announcement.title}}</h5>
+										<p>{{ announcement.title}}</p>
 										<a href="{{path('announcement_show', {'id' : announcement.id})}}" class="btn btn-info text-white">Détail</a>
 									</div>
 								</div>

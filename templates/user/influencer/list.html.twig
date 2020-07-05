@@ -24,7 +24,7 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p class=""><img class=" img-fluid profile-img" src="{{asset('assets/images/avatar_user/' ~ influencer.picture ) }}" alt="card image"></p>
+                                    <p class=""><img class="img-fluid profile-img" src="{{asset('assets/images/avatar_user/' ~ influencer.picture ) }}" alt="card image"></p>
                                     <div>
                                     <h4 class="card-title">{{influencer.username}}</h4>
                                       {# <a href="{{path('user_favorite', {'id': influencer.id}) }}" class="col-md-6 col-xs-4 well js-fav">
@@ -75,7 +75,7 @@
                                     <ul class="list-inline mt-3">
                                         {% for social in influencer.userSocials %}
                                         <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
+                                            <a class="social-icon text-xs-center" target="_blank" href="{{ social.link }}">
                                                 <i class="fa fa-{{ social.social.name|lower }}"><span data-network-id="{{ social.social.id }}"></span></i>
                                             </a>
                                         </li>
