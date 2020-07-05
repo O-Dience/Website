@@ -241,6 +241,21 @@ easy_admin:
                         { 
                             property: 'username',
                         },
+                        { 
+                            property: 'email',
+                        },
+                        { 
+                            property: 'password',
+                        },
+                        { 
+                            property: 'birthdate',
+                            type_options: {
+                                'widget': 'single_text', 
+                                'attr': {
+                                    'class': 'datepicker'
+                                    }
+                            }
+                        },
                         {
                             property: 'roles',
                             type: 'choice',
