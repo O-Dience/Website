@@ -36,13 +36,14 @@ class UserController extends AbstractController
         if($role === "influenceur"){
             $role = "influencer";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_INFLUENCER"]');
-            // If search is done, we try to find a match by title, then if no match, find by content
+            // If search is done, we try to find a match by username
             $search = $request->query->get("search", null);
 
             if ($search) {
-                $influencers = $userRepo->findByRoleAndSearch($role, $search);
+                $users = $userRepo->searchInfluencerByUsername($search);
             }
         }
+
         elseif($role === "marque"){
             
             $role = "brand";
@@ -51,8 +52,8 @@ class UserController extends AbstractController
             $search = $request->query->get("search", null);
 
             if ($search) {
-                $influencers = $userRepo->findByRoleAndSearch($role, $search);
-            }            
+                $users = $userRepo->searchBrandByUsername($search);
+            }        
         }
         elseif($role === "user"){
             $role = "user";
@@ -79,17 +80,42 @@ class UserController extends AbstractController
 
         if ( in_array( "ROLE_INFLUENCER", $user->getRoles() ) ){
             $form = $this->createForm(InfluencerEditType::class, $user);
+
+            $form->handleRequest($request);
+  
+            if ($form->isSubmitted() && $form->isValid())
+            {   
+                $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
+                if($imageName){
+                    $user->setPicture($imageName);
+                };
+                $password = $form->get('password')->getData();
+                if ($password != null)
+                {
+                    $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+                    $user->setPassword($encodedPassword);
+                }
+                $user->setUpdatedAt(new \DateTime());
+    
+                $this->getDoctrine()->getManager()->flush();
+    
+                return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
+            }
+    
+    
+            return $this->render('user/influencer/edit.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user
+            ]);
+
         }
+
+
+
         elseif ( in_array( "ROLE_BRAND", $user->getRoles() ) ){
             $form = $this->createForm(BrandEditType::class, $user);
-        }
-        else{
-            $form = $this->createForm(UserType::class, $user);
-        }
 
-      
-
-        $form->handleRequest($request);
+            $form->handleRequest($request);
   
         if ($form->isSubmitted() && $form->isValid())
         {   
@@ -111,10 +137,12 @@ class UserController extends AbstractController
         }
 
 
-        return $this->render('user/edit.html.twig', [
+        return $this->render('user/brand/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user
         ]);
+        }
+
     }
 
     

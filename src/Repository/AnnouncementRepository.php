@@ -72,6 +72,9 @@ class AnnouncementRepository extends ServiceEntityRepository
         return $qb;
     }
 
+
+
+
    
     public function searchByTitle($title){
         $builder = $this->createQueryBuilder('announcement');
@@ -83,9 +86,9 @@ class AnnouncementRepository extends ServiceEntityRepository
         $query = $builder->getQuery();
         $result = $query->execute();
         return $result;
-        
     }
 
+ 
     public function searchByContent($content){
         $builder = $this->createQueryBuilder('announcement');
         $builder->where(

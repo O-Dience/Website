@@ -85,12 +85,12 @@
                             </div>
                         </div>
                         <div class="col-md-3 text-center btn_div">
-                            <button type="button" class="btn btn-default btn-lg btn-block btn_color w-60">
+                            <button type="button" class="btn btn-default btn-lg btn-block btn_color w-60 mt-2">
                                 <a href="{{path('announcement_favorite', {'id': announcement.id}) }}"  class="link_fav js-fav">   
                                     {% if app.user and announcement.isFavByUser(app.user) %}
-                                    <i class="fa fa-heart fa-lg mr-2  fav_color color_item"></i> <span class="favtext">Retirer des favoris</span>
+                                    <i class="fa fa-heart fa-lg mr-2 "></i> <span class="favtext">Retirer des favoris</span>
                                     {% else %}
-                                    <i class="fa fa-heart-o fa-lg mr-2 color_item"></i> <span class="favtext">Ajouter aux favoris</span>
+                                    <i class="fa fa-heart-o fa-lg mr-2"></i> <span class="favtext">Ajouter aux favoris</span>
                                     {% endif %}
                                 </a>
                             </button>
@@ -179,17 +179,17 @@
         const icone = this.querySelector('i');
         let favlink = evt.currentTarget;
         let favtext = this.querySelector('.favtext');
-        let changeColor = document.querySelector('.color_item')
+        
 
         axios.get(url).then(function(response){
             if(icone.classList.contains('fa-heart-o')){
                 icone.classList.replace('fa-heart-o', 'fa-heart')
                 favtext.innerHTML = "Retirer des favoris";
-                changeColor.style.color = "red";
+                
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
                 favtext.innerHTML = "Ajouter aux favoris";
-                changeColor.style.color = "black";
+                
             }
         });
     }

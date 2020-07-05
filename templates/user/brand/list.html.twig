@@ -17,7 +17,7 @@
         <div class="row">
         {% for brand in users %}
             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4 panel">
+            <div class="col-xs-12 col-sm-6 col-md-4 panel mx-auto">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -37,7 +37,7 @@
                                     </div>  
 
                                     <p class="card-text">
-                                    <div class="profile-usertitle-job d-flex justify-content-center">	
+                                    <div class="profile-usertitle-job d-flex justify-content-center ">	
                                         {% for category in brand.categories %}
                                         <div class="d-flex flex-column mx-1">
                                             <img src="{{ asset('assets/images/category_picto/' ~ category.picto) }}" alt="{{ category.label }}" class="category__picto mx-auto">
@@ -66,11 +66,9 @@
                                     </div>
                                     <p class="card-text">{{ (brand.description) ? brand.description|slice(0, 100) : "Cet utilisateur n'a pas encore rempli sa bio, mais n'hésitez pas à consulter son profil "}}...</p>
                                     <a href="{{path('user_show', {id: brand.id})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
-                                    {# {% if app.user and brand.isReportedByUser(app.user) %}
-                                        <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
-                                    {% else %}
-                                        <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
-                                    {% endif %} #}
+                                    {% if app.user and brand.isReportedByUser(app.user) %}
+                                        <a href="" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
+                                    {% endif %}
                                     <ul class="list-inline mt-3">
                                         {% for social in brand.userSocials %}
                                         <li class="list-inline-item">
@@ -201,8 +199,3 @@
     document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
 		</script>
 {% endblock %}
-
-
-
-
-

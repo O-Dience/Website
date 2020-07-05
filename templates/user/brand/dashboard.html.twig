@@ -10,8 +10,8 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 {% endblock %}
 
-{% block body %}
-<div class="container-md ">
+{# {% block body %}
+<div class="container-md">
     <div class="row profile align-items-center">
 		<div class="col-md-3">
             {% include 'partials/_profile_sidebar.html.twig' %}
@@ -22,30 +22,100 @@
                 {% include 'user/brand/empty_dashboard.html.twig' %}
             {% endif %}
             {% if user.announcements | length > 0 %}
-                <h2 class="mb-5 text-center">Vos annonces en ligne</h2>
+            <h2 class="mb-5 text-center">Vos annonces en ligne</h2>
             {% else %}
-            <div class="text-center">
-                <h2 class=" text-center">Vous n'avez pas encore posté d'annonce</h2>
-                <a href="{{path('announcement_new')}}" class="mb-5 link__announcement">Créer une annonce</a>
-            </div>
-            {% endif %}
-			    {% for announcement in user.announcements %}
-                <div class="mb-2">
-            <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="list-group-item list-group-item-action my-1">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ announcement.title }}</h5>
-                    <small class="text-muted">{{ announcement.createdAt|date('d/m/Y') }}</small>
+                <div class="text-center">
+                    <h2 class=" text-center">Vous n'avez pas encore posté d'annonce</h2>
+                    <a href="{{path('announcement_new')}}" class="mb-5 link__announcement">Créer une annonce</a>
                 </div>
-                <p class="mb-1">{{ announcement.content | slice (0,100)}}</p>
-                {% for category in announcement.categories %}
-                    <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
+                {% endif %}
+                {% for announcement in user.announcements %}
+                <div class="mb-2">
+                    <div  class="list-group-item list-group-item-action my-1">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ announcement.title }}</h5>
+                            <small class="text-muted">{{ announcement.createdAt|date('d/m/Y') }}</small>
+                        </div>
+                        <p class="mb-1">{{ announcement.content | slice (0,180)}}...</p>
+                        {% for category in announcement.categories %}
+                            <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
+                        {% endfor %}
+                    </div>
+                </div>
                 {% endfor %}
-            </a>
-            </div>
-        {% endfor %}
             </div>
 		</div>
 	</div>
-</div>
+</div> #}
 
+
+
+
+
+
+
+{% block body %}
+<div class="container-md">
+    <div class="row profile align-items-center">
+        <div class="col-md-3 ">
+            {% include 'partials/_profile_sidebar.html.twig' %}
+        </div>
+
+        <div class="col-md-9 ">
+            <div class="profile-content bg-light overflow-rounded {{ (user.announcements | length >= 3 ) ? 'overflow_dashboard' : '' }}">
+            {% if 'default' in user.picture or user.description is empty or user.userSocials | length == 0 %}
+                {% include 'user/influencer/empty_dashboard.html.twig' %}
+            {% endif %} 
+            {% if user.announcements | length > 0  %} 
+                <h2 class="mb-5 mt-2 text-center">Vos annonces en ligne</h2>    
+            {% else %}        
+                <h2 class="mb-5 mt-2 text-center">Vous n'avez pas postée d'annonce</h2>  
+            {% endif %}   
+                <div>
+                {% for announcement in user.announcements %}
+                    <div class="favAnnouncement mb-2" data-id="{{announcement.id}}">
+                        <div class="list-group-item  my-1">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ announcement.title }}</h5>
+                                <div class="d-flex flex-row-reverse" >
+                                    <div>
+                                        <a href="{{path('announcement_edit', {'id': announcement.id})}}" class="col-md-1 col-xs-1 well js-fav link__fav"> 
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </a>                                
+                                    </div>
+                                    <div>
+                                    {% if  announcement.updatedAt is empty %}
+                                        <small class="text-muted">Annonce publiée le {{ announcement.createdAt|date('d/m/Y') }} </small>
+                                    {% else %}
+                                        <small class="text-muted">Annonce modifiée le {{ announcement.updatedAt|date('d/m/Y') }} </small>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-1">{{ announcement.content |slice(0,180)}}...</p>
+                            <div class="d-flex row justify-content-between">
+                                <div class="ml-3">
+                                    {% for category in announcement.categories %}
+                                        <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
+                                    {% endfor %}
+                                </div>
+                                <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="mr-3"> <small class="see_announcement"> Aperçu de l'annonce</small> </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+
+
+
+
+
+
+
+{# {% endblock %} #}
