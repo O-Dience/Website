@@ -1,6 +1,12 @@
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 #team {
-    background: #eee !important;
+    background-image: url('../images/dashboard.jpg');
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0px 25px;
+    min-width: 100%
 }
 
 .btn-primary:hover,
@@ -25,6 +31,7 @@ section .section-title {
     text-align: center;
     color: #007b5e;
     margin-bottom: 50px;
+    padding-top: 50px;
     text-transform: uppercase;
 }
 
@@ -124,9 +131,14 @@ section .section-title {
     color: #007b5e !important;
 }
 
-.frontside .card .card-body img {
+.frontside .card .card-body .profile-img {
     width: 120px;
     height: 120px;
     border-radius: 50%;
 }
 
+.category__picto{
+    height: 25px!important;
+    width: 25px!important;
+    border-radius: 50%;
+}
