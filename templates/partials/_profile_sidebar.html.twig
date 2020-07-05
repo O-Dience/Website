@@ -28,7 +28,7 @@
 <div class="profile-userbuttons">
 	{% if app.user.userFavorites is not empty %}
 		<p>Vous avez
-			{{ user.userFavorites | length }}
+			{{ app.user.userFavorites | length }}
 			coups de coeur !</p>
 	{% endif %}
 </div>

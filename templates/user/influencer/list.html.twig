@@ -61,17 +61,17 @@
                                         </a>
                                     </div>
                                     <p class="card-text">{{ (influencer.description) ? influencer.description|slice(0, 100) : "Cet utilisateur n'a pas encore rempli sa bio, mais n'hésitez pas à consulter son profil "}}...</p>
-                                    <a href="{{path('user_show', {id: influencer.id})}}" class="btn btn-primary btn-sm"><span class="text-white">Profil</span></a>
+                                    <a href="{{path('user_show', {id: influencer.id})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
                                     {% if app.user and influencer.isReportedByUser(app.user) %}
                                         <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
                                     {% else %}
                                         <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
                                     {% endif %}
-                                    <ul class="list-inline">
+                                    <ul class="list-inline mt-3">
                                         {% for social in influencer.userSocials %}
-                                        <li class="list-inline-item" data-network-id="{{ social.social.id }}">
+                                        <li class="list-inline-item">
                                             <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-{{ social.social.name }}"></i>
+                                                <i class="fa fa-{{ social.social.name|lower }}"><span data-network-id="{{ social.social.id }}"></span></i>
                                             </a>
                                         </li>
                                         {% endfor %}
@@ -93,16 +93,14 @@
 {% block javascripts %}
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-
-
-   let categoryFilter = '';
+    let categoryFilter = '';
     let networkFilter = '';
-		    // Filters announcements by category
+	// Filters announcements by category
     function filterByCategory(evt) {
         categoryFilter = evt.target.value;
         updateDisplay();
@@ -156,29 +154,23 @@
                 // announcement.nextElementSibling.style.display = 'none';
             }
         })
+    }
 
-
-
-
-
-    function onClickBtnFav(evt){
+        function onClickBtnFav(evt){
         evt.preventDefault()
         const url = this.href
         const icone = this.querySelector('i');
         let favlink = evt.currentTarget;
-        
+        let favtext = this.querySelector('.favtext');
 
         axios.get(url).then(function(response){
-
-            if(icone.classList.contains('fa-heart-o') ){
+            if(icone.classList.contains('fa-heart-o')){
                 icone.classList.replace('fa-heart-o', 'fa-heart')
-              
-
+                favtext.innerHTML = "Retirer des favoris";
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
-                
+                favtext.innerHTML = "Ajouter aux favoris";
             }
-
         });
     }
 
@@ -194,16 +186,19 @@
             }
         });
     }
-
         document.querySelectorAll('a.js-fav').forEach(function(link){
-            link.addEventListener('click', onClickBtnFav)
-        })
-        document.querySelectorAll('a.js-report').forEach(function(link){
-            link.addEventListener('click', onClickBtnReport);
-        })
-    }
-    	document.getElementById('category_label').addEventListener('change', filterByCategory);
+        link.addEventListener('click', onClickBtnFav)
+    })
+    document.querySelectorAll('a.js-report').forEach(function(link){
+        link.addEventListener('click', onClickBtnReport);
+    })
+
+		document.getElementById('category_label').addEventListener('change', filterByCategory);
     document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
-    
-    </script>
+		</script>
 {% endblock %}
+
+
+
+
+

@@ -32,6 +32,7 @@ class UserController extends AbstractController
      */
     public function list($role, CategoryRepository $categoryRepository, SocialNetworkRepository $socialNetworkRepository, Request $request, UserRepository $userRepo): Response
     {
+
         if($role === "influenceur"){
             $role = "influencer";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_INFLUENCER"]');
@@ -43,6 +44,7 @@ class UserController extends AbstractController
             }
         }
         elseif($role === "marque"){
+            
             $role = "brand";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_BRAND"]');
             // If search is done, we try to find a match by title, then if no match, find by content

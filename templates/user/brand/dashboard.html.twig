@@ -36,7 +36,7 @@
                     <h5 class="mb-1">{{ announcement.title }}</h5>
                     <small class="text-muted">{{ announcement.createdAt|date('d/m/Y') }}</small>
                 </div>
-                <p class="mb-1">{{ announcement.content }}</p>
+                <p class="mb-1">{{ announcement.content | slice (0,100)}}</p>
                 {% for category in announcement.categories %}
                     <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
                 {% endfor %}
