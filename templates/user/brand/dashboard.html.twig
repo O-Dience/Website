@@ -79,6 +79,11 @@
                                 <h5 class="mb-1">{{ announcement.title }}</h5>
                                 <div class="d-flex flex-row-reverse" >
                                     <div>
+                                        <a href="{{path('announcement_edit', {'id': announcement.id})}}" class="col-md-1 col-xs-1 well js-fav link__fav"> 
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </a>                                
+                                    </div>
+                                    <div>
                                     {% if  announcement.updatedAt is empty %}
                                         <small class="text-muted">Annonce publiée le {{ announcement.createdAt|date('d/m/Y') }} </small>
                                     {% else %}

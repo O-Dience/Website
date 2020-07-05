@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="col-md-3 text-center btn_div">
-                            <button type="button" class="btn btn-default btn-lg btn-block btn_color w-60">
+                            <button type="button" class="btn btn-default btn-lg btn-block btn_color w-60 mt-2">
                                 <a href="{{path('announcement_favorite', {'id': announcement.id}) }}"  class="link_fav js-fav">   
                                     {% if app.user and announcement.isFavByUser(app.user) %}
                                     <i class="fa fa-heart fa-lg mr-2 "></i> <span class="favtext">Retirer des favoris</span>

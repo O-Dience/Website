@@ -7,6 +7,7 @@ use App\Form\InfluencerType;
 use App\Form\BrandType;
 use App\Service\ImageUploader;
 use DateTime;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,11 +58,11 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            $email = (new Email())
+            $email = (new TemplatedEmail ())
             ->from('contact.odience@gmail.com')
             ->to($user->getEmail())
-            ->subject('Bienvenue sur O\'Dience')
-            ->html('<p>Vous êtes bien inscrit !</p>');
+            ->subject('Inscription confirmée')
+            ->htmlTemplate('registration/influencer_email.html.twig');
             $mailer->send($email);
 
             return $this->redirectToRoute('app_login');
@@ -111,11 +112,11 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            $email = (new Email())
+            $email = (new TemplatedEmail())
             ->from('contact.odience@gmail.com')
             ->to($user->getEmail())
-            ->subject('Bienvenue sur O\'Dience')
-            ->html('<p>Vous êtes bien inscrit sur notre site !</p>');
+            ->subject('Inscription confirmée')
+            ->htmlTemplate('registration/brand_email.html.twig');
             $mailer->send($email);
 
             return $this->redirectToRoute('app_login');

@@ -85,10 +85,12 @@ class AnnouncementController extends AbstractController
     /**
      * @Route("/{id}", name="show", methods={"GET", "POST"})
      */
-    public function show(Announcement $announcement, Request $request, MailerInterface $mailer): Response
+    public function show(Announcement $announcement, CategoryRepository $catRepo, Request $request, MailerInterface $mailer): Response
     {
 
+        $similarAnnouncements = $catRepo->findAnnouncementByCategory($announcement);
         $this->denyAccessUnlessGranted('show', $announcement);
+        dump($similarAnnouncements);
 
         // Contact form handling
         $senderMessage = $request->request->get('txtMsg');
@@ -109,6 +111,7 @@ class AnnouncementController extends AbstractController
 
 
         return $this->render('announcement/show.html.twig', [
+            'similarAnnouncements'=> $similarAnnouncements,
             'announcement' => $announcement
         ]);
     }

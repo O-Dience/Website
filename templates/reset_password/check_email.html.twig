@@ -2,7 +2,22 @@
 
 {% block title %}{{ parent() }} - E-mail envoyé{% endblock %}
 
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"/>
+	<link rel="stylesheet" href="{{asset('assets/css/check_email.css')}}">
+{% endblock %}
+
 {% block body %}
-    <p> Un e-mail contenant un lien pour la réinitialisation de votre mot de passe vient de vous être envoyé, ce lien expirera dans {{ tokenLifetime|date('g') }} heures.</p>
-    <p>Si vous n'avez pas reçu de mail, pensez à vérifier dans vos courriers indésirables ou<a href="{{ path('app_forgot_password_request') }}"> renvoyer l'e-mail </a>.</p>
+<div class="container-fluid d-flex">
+    <div class="password_page pr-3 pl-3">
+		<div class="mb-3">
+			<h1 style="color:#495057;" >E-mail envoyé !</h1>
+		</div>
+        <div class=" mx-auto my-auto align-middle text_email">
+            <p> Un e-mail contenant un lien pour la réinitialisation de votre mot de passe vient de vous être envoyé, ce lien expirera dans {{ tokenLifetime|date('g') }} heures. </br>
+            Si vous n'avez pas reçu de mail, pensez à vérifier dans vos courriers indésirables ou<a href="{{ path('app_forgot_password_request') }}"> renvoyer l'e-mail </a>.</p>
+        </div>	
+	</div>
+</div>
 {% endblock %}
