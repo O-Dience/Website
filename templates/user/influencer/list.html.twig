@@ -18,7 +18,7 @@
         <div class="row">
         {% for influencer in users %}
             <!-- Team member -->
-            <div class="user_card_group col-xs-12 col-sm-6 col-md-4 panel">
+            <div class="user_card_group col-xs-12 col-sm-6 col-md-4 panel mx-auto">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -67,11 +67,9 @@
                                     </div>
                                     <p class="card-text">{{ (influencer.description) ? influencer.description|slice(0, 100) : "Cet utilisateur n'a pas encore rempli sa bio, mais n'hésitez pas à consulter son profil "}}...</p>
                                     <a href="{{path('user_show', {id: influencer.id})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
-{#                                     {% if app.user and influencer.isReportedByUser(app.user) %}
-                                        <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
-                                    {% else %}
-                                        <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
-                                    {% endif %} #}
+                                    {% if app.user and influencer.isReportedByUser(app.user) %}
+                                        <div href="{{ path('user_report', {id:influencer.id}) }}" class=" btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></div>
+                                    {% endif %} 
                                     <ul class="list-inline mt-3">
                                         {% for social in influencer.userSocials %}
                                         <li class="list-inline-item">

@@ -90,7 +90,6 @@ class AnnouncementController extends AbstractController
 
         $similarAnnouncements = $catRepo->findAnnouncementByCategory($announcement);
         $this->denyAccessUnlessGranted('show', $announcement);
-        dump($similarAnnouncements);
 
         // Contact form handling
         $senderMessage = $request->request->get('txtMsg');
