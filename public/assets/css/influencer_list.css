@@ -33,6 +33,10 @@ section .section-title {
     background: #ffffff;
 }
 
+#team {
+    min-height: 100vh;
+}
+
 .image-flip:hover .backside,
 .image-flip.hover .backside {
     -webkit-transform: rotateY(0deg);

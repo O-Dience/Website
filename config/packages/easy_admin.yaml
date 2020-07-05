@@ -150,6 +150,10 @@ easy_admin:
                             property: 'announcements', 
                             label: 'Annonces liés' 
                         },
+                        { 
+                            property: 'userSocials', 
+                            label: 'Utilisateurs liés' 
+                        },
                     ]
                 actions:
                     [

@@ -78,7 +78,7 @@
 									{% endif %}
 									<div class="ml-2 mr-2  announcement__details">
 										<h5>{{ announcement.title}}</h5>
-										<a class="btn btn-info text-white">Détail</a>
+										<a href="{{path('announcement_show', {'id' : announcement.id})}}" class="btn btn-info text-white">Détail</a>
 									</div>
 								</div>
 							{% endfor %}

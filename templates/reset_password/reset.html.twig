@@ -12,13 +12,21 @@
 <div class="container">
 {{ form_start(resetForm) }}
     <h3 class="mb-3">Changer votre mot de passe</h3>
+    {% for passwordField in resetForm.plainPassword %}
+    <div class="input-group px-2 my-2 ">
     
-    {{ form_widget(resetForm.plainPassword) }}
-    <button type="submit" class="btn btn-success mt-2">
+        <div class="input-group-prepend mx-auto">
+           
+             {{ form_row(passwordField) }}
+        </div>
+       
+    </div>   
+    {% endfor %}
+    <button type="submit" class="btn btn-success mt-2 col-md-3">
     <span class="glyphicon glyphicon-off"></span>
-        Valider
+    Valider
     </button>
-    {{ form_end(resetForm) }}
+{{ form_end(resetForm) }}
 </div>
 {% endblock %}
 

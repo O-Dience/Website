@@ -13,7 +13,7 @@
 		<div class="col-md-3">
 			{% include 'partials/_profile_sidebar.html.twig' %}
 		</div>
-		<div class="col-md-9  pb-3 pt-3 profile-content">
+		<div class="col-md-9  pb-3 pt-3 profile-content  bg-light">
 			<div class="social-content bg-light">
 				<h3 class="mb-3 text-center">La gestion de tes réseaux, c'est ici que ça se passe !</h3>
 				<div class="text-center mb-3">
@@ -22,17 +22,25 @@
 				<div class="d-flex flex-justify-between text-center flex-wrap col-12">
 					
 					{% for socialProfile in user.userSocials %}
-					<div class="col-5 social__div mt-2 mb-5">
+					<div class="col-5 social__div mt-2 mb-5 mx-auto">
 						{% if socialProfile.social.name == 'Facebook' %}
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
+						<div>
 							<a href="{{ socialProfile.link }}">Mon Facebook </a>
+						</div>
 						<div data-id={{socialProfile.id}} >
-							<button class="delete_social"> supprimer </button>
+							<button class="delete_social"> Supprimer </button>
 							<button class="edit_social">
 								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
 							</button>
 						</div>
 						{% elseif socialProfile.social.name == 'Twitch' %}
-						<div >
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
+						<div>
 							<a href="{{ socialProfile.link }}"> Mon compte Twitch</a>
 						</div>
 						<div data-id={{socialProfile.id}} >
@@ -43,6 +51,9 @@
 						</div>
 						{% elseif socialProfile.social.name == 'Instagram' %}
 						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
+						<div>
 							<a href="{{ socialProfile.link }}">Mon profil Insta </a>
 						</div>
 						<div data-id={{socialProfile.id}} >
@@ -52,7 +63,12 @@
 							</button>
 						</div>
 						{% elseif socialProfile.social.name == 'Twitter' %}
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
+						<div>
 						<a href="{{ socialProfile.link }}">Mon compte Twitter </a>
+						</div>
 						<div data-id={{socialProfile.id}} >
 							<button class="delete_social"> supprimer </button>
 							<button class="edit_social">
@@ -60,7 +76,12 @@
 							</button>
 						</div>
 						{% elseif socialProfile.social.name == 'Snapchat' %}
-						<a href="{{ socialProfile.link }}">
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize" alt="">
+						</div>
+						<div>
+							<a href="{{ socialProfile.link }}">
+						</div>
 							Mon compte Snapchat
 						</a>
 						<div data-id={{socialProfile.id}} >
