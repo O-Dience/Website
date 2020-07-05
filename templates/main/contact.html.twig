@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	- Contact
+{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+{% endblock %}
+{% block javascripts %}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% endblock %}
+{% block body %}
+<div class="container-fluid homepage__main__div">
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb40 text-center">
+                <h1 class="page-title">LA TEAM</h1>
+                <!-- /.section-title -->
+            </div>
+        </div>
+        <div class="row">
+            <!-- team-block -->
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 mb30">
+                <div data-aos="fade-up" class="team-block">
+                    <div class="team-img">
+                        <a href="#">
+                            <img src="{{asset('assets/images/jeremyboubal.jpg')}}" alt="" class="img-fluid img__profile__contact">
+                            <div class="social-media">
+                                <a href="https://twitter.com/kalevapuro?s=03" class="social-icon-box"><i class="fab fa-twitter"></i></a>
+                                <br>
+                                <a href="https://github.com/Jeremybbl" class="social-icon-box"><i class="fab fa-github"></i></a>
+                                <br>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="team-content">
+                        <h4>Jérémy Boubal</h4>
+                        <h5>SCRUM master</h5>
+                    </div>
+                </div>
+            </div>
+            <!-- /.team-block -->
+            <!-- team-block -->
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 mb30">
+                <div data-aos="fade-up" class="team-block">
+                    <div class="team-img">
+                        <a href="#">
+                            <img src="https://easetemplate.com/free-website-templates/practical/images/team_img_3.jpg" alt="" class="img-fluid img__profile__contact">
+                            <div class="social-media">
+                                <a href="#" class="social-icon-box"><i class="fab fa-facebook-f"></i></a>
+                                <br>
+                                <a href="#" class="social-icon-box"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="team-content">
+                        <h4>Jose B. Banks</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- /.team-block -->
+            <!-- team-block -->
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 mb30">
+                <div data-aos="fade-up" class="team-block">
+                    <div class="team-img">
+                        <a href="#">
+                            <img src="https://easetemplate.com/free-website-templates/practical/images/team_img_4.jpg" alt="" class="img-fluid img__profile__contact rounded">
+                            <div class="social-media">
+                                <a href="#" class="social-icon-box"><i class="fab fa-facebook-f"></i></a>
+                                <br>
+                                <a href="#" class="social-icon-box"><i class="fab fa-twitter"></i></a>
+                                <br>
+                                <a href="#" class="social-icon-box"><i class="fab fa-google-plus-g"></i></a>
+                                <br>
+                                <a href="#" class="social-icon-box"><i class="fab fa-pinterest-p"></i></a>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="team-content">
+                        <h4>Craig K. Tackitt</h4>
+                    </div>
+                </div>
+               <!-- /.team-block -->
+            </div>
+          </div>            
+        </div>
+      </div>
+  </div>
+</div>
+{% endblock %}

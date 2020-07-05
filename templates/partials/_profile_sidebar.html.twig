@@ -38,30 +38,30 @@
 <div class="profile-usermenu">
 	<ul class="list-group">
 		{% if ( 'ROLE_BRAND' in app.user.roles) %}
-			<a href="{{path('user_dashboard', {id: app.user.id})}}" class="btn btn-primary   list-group-item {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : 'text-dark' }}">
+			<a href="{{path('user_dashboard', {id: app.user.id})}}" class="btn btn-primary list-group-item p-1  {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : 'text-dark' }}">
 				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
 				Mes annonces en ligne
 			</a>
-			<a href="{{path('announcement_new', {id: app.user.id})}}" class="btn btn-primary  list-group-item {{ ( app.request.get('_route') == 'announcement_new') ? 'active' : 'text-dark' }}">
+			<a href="{{path('announcement_new', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1  {{ ( app.request.get('_route') == 'announcement_new') ? 'active' : 'text-dark' }}">
 				<i class="fa fa-edit ml-1 mr-1" aria-hidden="true"></i>
 				Créer une annonce
 			</a>
 		{% elseif ( 'ROLE_INFLUENCER' in user.roles) %}
-			<a href="{{path('user_dashboard', {id: app.user.id})}}" class="btn btn-primary  list-group-item {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : 'text-dark' }}">
+			<a href="{{path('user_dashboard', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1 {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : 'text-dark' }}">
 				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
 				Mes annonces favorites
 			</a>
 
 			{% endif %}
-			<a href="{{path('user_show', {id: app.user.id})}}" class="btn btn-primary  list-group-item {{ ( app.request.get('_route') == 'user_show') ? 'active' : 'text-dark' }}">
+			<a href="{{path('user_show', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1  {{ ( app.request.get('_route') == 'user_show') ? 'active' : 'text-dark' }}">
 				<i class="fa fa-user ml-1 mr-1" aria-hidden="true"></i>
 				Voir mon profil
 			</a>
-			<a href="{{path('user_edit', {id: app.user.id})}}" class="btn btn-primary  list-group-item {{ ( app.request.get('_route') == 'user_edit') ? 'active' : 'text-dark' }}">
+			<a href="{{path('user_edit', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1  {{ ( app.request.get('_route') == 'user_edit') ? 'active' : 'text-dark' }}">
 				<i class="fa fa-cog ml-1 mr-1" aria-hidden="true"></i>
 				Editer mon profil
 			</a>
-			<a href="{{path('social_profile', {id: app.user.id})}}" class="btn btn-primary  list-group-item {{ ( app.request.get('_route') == 'social_profile') ? 'active' : 'text-dark' }}">
+			<a href="{{path('social_profile', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1  {{ ( app.request.get('_route') == 'social_profile') ? 'active' : 'text-dark' }}">
 				<i class="fa fa-mobile ml-1 mr-1" aria-hidden="true"></i>
 				Gérer mes réseaux sociaux
 			</a>

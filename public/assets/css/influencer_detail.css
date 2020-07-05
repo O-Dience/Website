@@ -69,6 +69,10 @@ a .material-icons {
     z-index: 3;
 }
 
+.profile-page{
+    background-color: #3C4858;
+}
+
 .profile-page .profile {
     text-align: center;
 }
