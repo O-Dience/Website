@@ -1,6 +1,15 @@
-.gray-bg {
-    background-color: #dfcccc;
-    height: auto;
+body {
+  background-image: url('../images/dashboard.jpg');
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 50px 25px;
+  min-height: 100vh;
+}
+
+.form__container{
+  padding: 35px!important;
 }
 /* edit button */
 
@@ -183,10 +192,42 @@ img {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.image__announcement {
+  max-height: 15em;
+  width: auto;
+  margin-bottom: 1em;
+}
+
+.contact-form{
+  background: #fff;
+}
+.contact-form .form-control{
+  border-radius:1rem;
+}
+.contact-image{
+  text-align: center;
+}
+.contact-image img{
+  border-radius: 6rem;
+  width: 11%;
+  margin-top: -3%;
+  transform: rotate(29deg);
+}
+.contact-form form{
+  padding: 14%;
+}
+.contact-form form .row{
+  margin-bottom: -7%;
+}
+.contact-form h3{
+  margin-bottom: 8%;
+  margin-top: -10%;
+  text-align: center;
+}
+
 
 @media only screen and (min-width : 992px) {
     .gray-bg {
-        background-color: #dfcccc;
         height: 100vh;
       
     }
@@ -195,7 +236,6 @@ img {
 @media only screen and (min-width : 1200px) {
     /* your desktop css */
     .gray-bg {
-        background-color: #dfcccc;
         height: 100vh;
     }
 }

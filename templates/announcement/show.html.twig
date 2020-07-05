@@ -16,8 +16,8 @@
                 <div class="col-lg-8 m-15px-tb">
                     <article class="article ">
                     {% if announcement.image is not empty %}
-                        <div class="article-img">
-                            <img src="https://via.placeholder.com/800x350/87CEFA/000000" title="" alt="">
+                        <div class="article-img text-center">
+                            <img src="{{ asset("assets/images/image_announcement/" ~ announcement.image ) }}" class="image__announcement" alt="">
                         </div>
                     {% endif %}
                         <div class="article-title">
@@ -74,6 +74,40 @@
                             <p>{{announcement.content}}</p>
                         </div>
                     </article>
+
+                    <!-- CONTACT FORM-->
+                    <div class="container contact-form rounded">
+            <div class="contact-image">
+                <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact"/>
+            </div>
+            <form method="post" class="form__container" name="contact__form">
+                <h3 class="mt-1">Intéressé ? Contactez nous!</h3>
+               <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" name="txtName" class="form-control d-none" placeholder="Your Name *" value="{{ app.user.username }}" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="txtEmail" class="form-control d-none" placeholder="Your Email *" value="{{ app.user.email }}" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <textarea name="txtMsg" class="form-control" placeholder="Votre message *" style="width: 100%; height: 150px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="btnSubmit" class="btn btn-success" value="Envoyer" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+</div>
+
+
+
+
+
+
                 </div>
             <!-- end announcement -->
                 <div class="col-lg-4 m-15px-tb blog-aside ">
