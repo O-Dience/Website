@@ -26,7 +26,7 @@
                 <div>
                 {% for favorite in favorites %}
                     <div class="favAnnouncement mb-2" data-id="{{favorite.id}}">
-                        <div class="list-group-item list-group-item-action my-1">
+                        <div class="list-group-item  my-1">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ favorite.announcement.title }}</h5>
                                 <div class="d-flex flex-row-reverse" >
@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="mb-1">{{ favorite.announcement.content |slice(0,100)}}...</p>
+                            <p class="mb-1">{{ favorite.announcement.content |slice(0,180)}}...</p>
                             <div class="d-flex row justify-content-between">
                                 <div class="ml-3">
                                     {% for category in favorite.announcement.categories %}

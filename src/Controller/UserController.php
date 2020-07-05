@@ -40,7 +40,7 @@ class UserController extends AbstractController
             $search = $request->query->get("search", null);
 
             if ($search) {
-                $influencers = $userRepo->findByRoleAndSearch($role, $search);
+                $users = $userRepo->findByRoleAndSearch($role, $search);
             }
         }
         elseif($role === "marque"){
