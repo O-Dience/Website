@@ -43,7 +43,7 @@
 				Mes annonces en ligne
 			</a>
 			<a href="{{path('announcement_new', {id: app.user.id})}}" class="btn btn-primary  list-group-item {{ ( app.request.get('_route') == 'announcement_new') ? 'active' : 'text-dark' }}">
-				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
+				<i class="fa fa-edit ml-1 mr-1" aria-hidden="true"></i>
 				Créer une annonce
 			</a>
 		{% elseif ( 'ROLE_INFLUENCER' in user.roles) %}

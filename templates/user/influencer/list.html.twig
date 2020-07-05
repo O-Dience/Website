@@ -24,26 +24,31 @@
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="{{asset('assets/images/avatar_user/' ~ influencer.picture ) }}" alt="card image"></p>
+                                    <p class=""><img class=" img-fluid profile-img" src="{{asset('assets/images/avatar_user/' ~ influencer.picture ) }}" alt="card image"></p>
                                     <div>
                                     <h4 class="card-title">{{influencer.username}}</h4>
-                                      <a href="{{path('user_favorite', {'id': influencer.id}) }}" class="col-md-6 col-xs-4 well js-fav">
-                                            {% if app.user and influencer.isFavByUser(app.user) %}
+                                      {# <a href="{{path('user_favorite', {'id': influencer.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+                                             {% if app.user and influencer.isFavByUser(app.user) %}
                                                 <i class="fa fa-heart fa-lg "></i> 
                                             {% else %}
                                             <i class="fa fa-heart-o fa-lg "></i>
                                             {% endif %}
-                                        </a>
+                                        </a> #}
                                     </div>
 
 
                                     <p class="card-text">
-                                    {% for category in influencer.categories %}
-                                    <span class="label label-info" data-category-id="{{ category.id }}">{{ category.label }}</span>
-                                    {% endfor %}
+                                    <div class="profile-usertitle-job d-flex justify-content-center">	
+                                        {% for category in influencer.categories %}
+                                        <div class="d-flex flex-column mx-1">
+                                            <img src="{{ asset('assets/images/category_picto/' ~ category.picto) }}" alt="{{ category.label }}" class="category__picto mx-auto">
+                                            <small>{{ category.label }}</small>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+
                                     </p>
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -62,11 +67,11 @@
                                     </div>
                                     <p class="card-text">{{ (influencer.description) ? influencer.description|slice(0, 100) : "Cet utilisateur n'a pas encore rempli sa bio, mais n'hésitez pas à consulter son profil "}}...</p>
                                     <a href="{{path('user_show', {id: influencer.id})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
-                                    {% if app.user and influencer.isReportedByUser(app.user) %}
+{#                                     {% if app.user and influencer.isReportedByUser(app.user) %}
                                         <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
                                     {% else %}
                                         <a href="{{ path('user_report', {id:influencer.id}) }}" class="btn btn-danger btn-sm js-report user-not-reported"><span class="text-white">Signaler</span></a>
-                                    {% endif %}
+                                    {% endif %} #}
                                     <ul class="list-inline mt-3">
                                         {% for social in influencer.userSocials %}
                                         <li class="list-inline-item">
