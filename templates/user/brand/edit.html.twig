@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	- Edition de profil
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-md">
+	<div class="row profile align-items-center">
+		<div class="col-md-3">
+			{% include 'partials/_profile_sidebar.html.twig' %}
+		</div>
+		
+		<div class="card bg-light col-md-9 profile-content">
+		<article class="card-body mx-auto">
+		<h4 class="card-title mt-3 text-center">Editer mon profil</h4>
+		{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}	
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label>Nom de votre entreprise</label>
+				{{form_widget(form.username)}}
+			</div>
+			<div class="form-group col-md-6">
+				<label>Votre e-mail</label>
+				{{form_errors(form.email)}}
+				{{form_widget(form.email)}}   
+			</div>
+			{% for passwordField in form.password %}
+			<div class="form-group col-md-6">
+				{{form_label(passwordField)}} 
+				{{form_widget(passwordField)}}
+			</div>
+			{% endfor %}
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<div class="form-group col-row-12">
+					<label>Date de création</label>
+					{{form_widget(form.birthdate)}}	
+				</div>
+				<div class="form-group col-row-12">
+					<label>Avatar</label>
+					{{form_widget(form.pictureFile)}}	
+				</div>
+			</div>	
+			<div class="form-group col-md-6">
+				<label class="mt-4">Domaine d'activité</label>
+				{{form_widget(form.categories)}}
+			</div>
+		</div>
+		<div class="form-group">
+			<label>Présentez vous </label>
+			{{form_errors(form.description)}}
+			{{form_widget(form.description)}}
+				
+		</div>
+		<div class="form-group col-md-4 mx-auto">
+			<button type="submit" class="btn btn-primary btn-block"> Enregistrer modification </button>
+		</div>                                                                       
+		{{ form_end(form) }}
+
+
+{% endblock %}

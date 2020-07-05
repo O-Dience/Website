@@ -13,7 +13,7 @@ class AnnouncementVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['edit', 'delete'])
+        return in_array($attribute, ['show','edit', 'delete'])
             && $subject instanceof Announcement;
     }
 
@@ -27,6 +27,11 @@ class AnnouncementVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
+            case 'show':
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_INFLUENCER', $user->getRoles()) || $user == $announcement->getUser()) {
+                    return true;
+                }
+                break;
             case 'edit':
                 if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $announcement->getUser()) {
                     return true;

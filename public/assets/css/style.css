@@ -8,14 +8,21 @@ body {
   background-repeat: no-repeat;
 }
 
-.btn,
-.brand__label,
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: 'Balsamiq Sans', cursive;
+.text-info {
+  color: #2a9d8f !important;
+}
+
+.bg-info {
+  background-color: #2a9d8f !important;
+}
+
+
+.text-danger {
+  color: #264653 !important;
+}
+
+.bg-danger {
+  background-color: #264653 !important;
 }
 
 .main__card {
@@ -31,4 +38,151 @@ h5 {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.10);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 3);
   color: white;
+  width: 100%;
+  height: 100vh;
+  padding-top: 30px;
 }
+
+.homepage__main__div--influencer {
+  margin-top: 20px !important;
+  color: #2a9d8f !important;
+  font-weight: 100;
+  height: 40em;
+}
+
+.homepage__main__div--brand {
+  margin-top: 20px !important;
+  color: #264653 !important;
+  font-weight: 100;
+  height: 40em;
+}
+
+.form__right {
+  overflow-y: scroll;
+  height: 100%;
+}
+
+.homepage__main__div--brand {
+  color: #DA3343;
+}
+
+body .bg-dark {
+  background-color: #424242 !important;
+  ;
+}
+
+body .bg-info {
+  background-color: #2A9D8F !important;
+  ;
+}
+
+
+.bg-info .brand__label {
+  font-family: 'Balsamiq Sans', cursive !important;
+  color: white !important;
+}
+
+.bg-info .nav-item .nav-link {
+  color: white !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px !important;
+}
+
+.bg-dark .brand__label {
+  font-family: 'Balsamiq Sans', cursive !important;
+  color: white !important;
+}
+
+.bg-dark .nav-item .nav-link {
+  color: white !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px !important;
+}
+
+.deepshd {
+  color: white;
+  letter-spacing: .1em;
+  text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 1px 0 #2c2c2c, 0 2px 0 #2a2a2a, 0 2px 0 #282828, 0 3px 0 #262626, 0 3px 0 #242424, 0 3px 0 #222, 0 4px 0 #202020, 0 4px 0 #1e1e1e, 0 5px 0 #1c1c1c, 0 5px 0 #1a1a1a, 0 6px 0 #181818, 0 6px 0 #161616;
+  font-size: 60px;
+  padding: 80px 50px 10px 50px;
+  text-align: center;
+  text-rendering: optimizeLegibility;
+}
+
+.deepshd--small {
+  color: white;
+  letter-spacing: .1em;
+  text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 1px 0 #2c2c2c, 0 2px 0 #2a2a2a, 0 2px 0 #282828, 0 3px 0 #262626, 0 3px 0 #242424, 0 3px 0 #222, 0 4px 0 #202020, 0 4px 0 #1e1e1e, 0 5px 0 #1c1c1c, 0 5px 0 #1a1a1a, 0 6px 0 #181818, 0 6px 0 #161616;
+  font-size: 25px;
+  text-align: center;
+  text-rendering: optimizeLegibility;
+}
+
+/** CONTACT **/
+
+.content {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.mb40 {
+  margin-bottom: 40px;
+}
+
+.img__profile__contact{
+  max-width: 100%;
+  height: auto;
+}
+
+.team-img {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.team-img img {
+  width: 100%;
+}
+
+.team-img img.border {
+  border-color: #fff !important;
+}
+
+.social-media {
+  position: absolute;
+  bottom: 36px;
+  opacity: 0;
+}
+
+.social-icon-box {
+  margin-bottom: 5px;
+  background-color: #193e6b;
+  width: 46px;
+  height: 46px;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 15px 19px 26px 16px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.team-img:hover .social-media {
+  opacity: 1;
+  transition: 2s ease;
+}
+
+.team-block.active .social-media {
+  opacity: 1;
+  transition: 2s ease;
+}
+
+/** /CONTACT **/
+
+/** FOOTER **/
+.app__footer{
+  width: 100%;
+  margin: 0;
+  padding: 2em;
+  background-color: #161616;
+  color: white;
+}
+/** /FOOTER **/

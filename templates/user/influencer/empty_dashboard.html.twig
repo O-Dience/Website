@@ -1,0 +1,33 @@
+{% if ('default' in user.picture or user.description is empty or user.userSocials | length == 0 ) %}
+
+<h2 class="text-center mt-1 mb-3"> Bienvenue chez O'dience, {{user.username}} ! </h2>
+
+{% endif %}
+
+
+<div class="border_profil mb-3" >
+
+<div class="missing_info ">
+<h4 class="text-center"> N'oublies pas de compléter ton profil !</h4>
+
+
+
+{% if 'default' in user.picture %}
+
+<p> Tu as une photo de toi plus jolie que l'avatar qu'on t'a proposé? On t'en voudras absolument pas si tu décides d'en changer, promis !</p>
+
+{% endif %}
+
+{% if user.description is empty %}
+
+<p>Si des valeurs te tiennent à coeur, que tu es fan de roman à l'eau de rose ou spécialisé dans le speedrunning, fonce remplir ta description. </p>
+
+{% endif %}
+
+{% if  user.userSocials| length == 0 %}
+
+<p> Penses à rajouter tes réseaux sociaux :)  </p>
+
+{% endif %}
+</div>
+</div>

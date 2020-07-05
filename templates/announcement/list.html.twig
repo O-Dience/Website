@@ -2,66 +2,207 @@
 
 {% block title %} {{ parent() }} - Liste des annonces{% endblock %}
 
+
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+
+<link href='{{asset('assets/css/announcement_list.css')}}' rel='stylesheet' type='text/css'>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+
 {% block body %}
 
-<div class="container-fluid  sm-w-100">
-    <h1 class="text-center">A vous de jouer !</h1>
-    <p> Ici, vous retrouverez toutes les annonces postées par les marques </p>
-    <div class="d-flex ">
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm d-none d-md-block" name="search" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0 d-none d-md-block" type="submit">Search</button>
-            <select name="category" id="category_label">
-                <option value="">Trier par catégorie</option>
-                 {% for category in categories %}
-                 <option value="{{category.id}}">{{category.label}}</option>
-                 {% endfor %}
-            </select>
-             <select name="socialNetwork" id="socialNetwork_name">
-                <option value="">Trier selon le réseau social</option>
-                 {% for socialNetwork in socialNetworks %}
-                 <option value="{{socialNetwork.id}}">{{socialNetwork.name}}</option>
-                 {% endfor %}
-            </select>
-        </form>
-    </div>
-    {% for announcement in announcements %}
-    <div class="card mt-4  sm-w-100">
-    {# <div class="mt-5"> #}
-    <h3 class=" col-sm"><a href="{{path('announcement_show', {id : announcement.id }) }}"> {{ announcement.title }}</a></h3>
-    {# </div> #}
-    {# <p>{{ announcement.image }}</p>  #}
-    <div class="d-flex justify-content-between">
-        <div class="col-sm row">
-            <div>
-                {% for category in announcement.categories %}
-                    
-                        <span class="badge badge-secondary"> {{category.label}}</span>
-                    
-                {% endfor %}
-                {% for network in announcement.socialNetworks %}
-                    
-                        <span class="badge badge-secondary"> {{network.name}}</span>
-                    
-                {% endfor %}
-            </div>
+<div class="container-fluid">
+    <div class="row main__div">
+        <div class="border_announcement w-100 pb-5" >
+        <h1 class="text-center text-info mt-5">Liste des annonces</h1>
+        {% include 'partials/_filters.html.twig' %}
+            <div class="list_container ww-md-100pb-4 pl-2 pl-3 mx-auto">
+            {% for announcement in announcements %}
+                <div class="list-group panel col-xl-10 mx-auto">
+                    <div href="#" class="list-group-item d-flex background_color">
+                    {% if announcement.image is not empty %} 
+                        <div class="media col-md-2">
+                            <figure class="float-left">
+                                <img class="media-object rounded img-fluid"  src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}">
+                            </figure>
+                        </div>
+                        {% elseif announcement.user.picture is not empty %}
+                        <div class="media col-md-2 mt-3">
+                            <figure class="float-left">
+                                <img class="media-object rounded img-fluid"  src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}">
+                            </figure>
+                        </div>
+                        {% endif %} 
+                        <div class="col-md-7 d-flex flex-column">
+                            <div>
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="">{{announcement.title}}
+                                        <em class="user_name">
+                                            (<a href="{{path('user_show', {'id' : announcement.user.id})}}">{{announcement.user}}</a>)
+                                        </em>
+                                    </h3>
+                                    {% if announcement.updatedAt is not empty %}
+                                        <p class="font-italic text-black-50 d-flex flex-row-reverse"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
+                                    {% else %}
+                                        <p class="font-italic text-black-50 d-flex flex-row-reverse"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
+                                    {% endif %}
+                                </div>
+                                <p class="">{{announcement.content | slice (0, 150)}}...</p>
+                            </div>
+                            <div class="d-flex justify-content-between col-md-8 mx-auto">
+                                <div class="d-flex flex-column mx-auto">
+                                    <small>Catégories</small>
+                                    <div class="d-flex">
+                                        {% for category in announcement.categories %}
+                                        <div class="d-flex flex-column mx-auto">
+                                            <div>
+                                                <span data-category-id="{{ category.id }}"> </span>
+                                            </div>
+                                            <div class="mx-auto ">
+                                                <img src="{{asset('/assets/images/category_picto/') ~ category.picto}}" class="img_resize mt-2">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column mx-auto">
+                                    <small>Plateformes requises</small>
+                                    <div class="d-flex">
+                                        {% for network in announcement.socialNetworks %}
+                                        <div class=" flex-row mx-auto">
+                                            <div class="mx-auto">
+                                                <span class="d-none" data-network-id="{{ network.id }}"></span>
+                                            </div>
+                                            <div class="mx-auto">
+                                                <img src="{{asset('/assets/images/social_picto/') ~ network.picto}}" class="img_resize mt-2">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center btn_div">
+                            <button type="button" class="btn btn-default btn-lg btn-block btn_color w-60 mt-2">
+                                <a href="{{path('announcement_favorite', {'id': announcement.id}) }}"  class="link_fav js-fav">   
+                                    {% if app.user and announcement.isFavByUser(app.user) %}
+                                    <i class="fa fa-heart fa-lg mr-2 "></i> <span class="favtext">Retirer des favoris</span>
+                                    {% else %}
+                                    <i class="fa fa-heart-o fa-lg mr-2"></i> <span class="favtext">Ajouter aux favoris</span>
+                                    {% endif %}
+                                </a>
+                            </button>
+                            <button type="button" class="btn btn-default btn-lg btn-block btn_color">
+                                <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="show_link">
+                                    <i class="fa fa-eye fa-lg mr-2"></i> 
+                                    <span class="show_ann">Consulter l'annonce</span>
+                                </a>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                 {% if announcement.updatedAt  is not empty %}
-               <p class="col-sm"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
-               {% else %}
-               <p class="col-sm"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
-               {% endif %}
-        <div>
-                <a href="{{ path('announcement_show', {'id': announcement.id}) }}">Consulter l'annonce</a>
-                <a href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier l'annonce</a>
-            
-        </div>   
-    </div>
-    </div>
-    {% else %}
-            
-                <p colspan="8">no records found</p>
-    {% endfor %}
-    <a href="{{ path('announcement_new') }}">Créer une annonce</a>
+                {% endfor %}  
+            <div>  
+        </div>
+	</div>
 </div>
+
 {% endblock %}
+
+{% block javascripts %}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+    let categoryFilter = '';
+    let networkFilter = '';
+		    // Filters announcements by category
+    function filterByCategory(evt) {
+        categoryFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Filters announcements by social network
+    function filterByNetwork(evt) {
+        networkFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Updates display of announcements according to the filters
+    function updateDisplay() {
+        document.querySelectorAll('.panel').forEach(function(announcement){
+            let foundCategory = false;
+            let foundNetwork = false;
+            
+            if (categoryFilter == '') {
+                foundCategory = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryFilter) {
+                        foundCategory = true;
+                    }
+                })
+            }
+
+            if (networkFilter == '') {
+                foundNetwork = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
+                    if (network.dataset.networkId == networkFilter) {
+                        foundNetwork = true;
+                    }
+                })
+            }
+            
+            if (foundCategory && foundNetwork) {
+
+							announcement.classList.remove("d-none")
+							announcement.nextElementSibling.classList.remove("d-none")
+              //announcement.style.display = 'flex';
+              //announcement.nextElementSibling.style.display = 'flex';
+            }
+            else {
+							announcement.classList.add("d-none")
+							announcement.nextElementSibling.classList.add("d-none")
+                // announcement.style.display = 'none';
+                // announcement.nextElementSibling.style.display = 'none';
+            }
+        })
+    }
+
+        function onClickBtnFav(evt){
+        evt.preventDefault()
+        const url = this.href
+        const icone = this.querySelector('i');
+        let favlink = evt.currentTarget;
+        let favtext = this.querySelector('.favtext');
+        
+
+        axios.get(url).then(function(response){
+            if(icone.classList.contains('fa-heart-o')){
+                icone.classList.replace('fa-heart-o', 'fa-heart')
+                favtext.innerHTML = "Retirer des favoris";
+                
+            } else{
+                icone.classList.replace('fa-heart', 'fa-heart-o')
+                favtext.innerHTML = "Ajouter aux favoris";
+                
+            }
+        });
+    }
+
+        document.querySelectorAll('a.js-fav').forEach(function(link){
+        link.addEventListener('click', onClickBtnFav)
+    })
+    document.querySelectorAll('a.js-report').forEach(function(link){
+        link.addEventListener('click', onClickBtnReport);
+    })
+
+		document.getElementById('category_label').addEventListener('change', filterByCategory);
+    document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
+		</script>
+{% endblock %}
+

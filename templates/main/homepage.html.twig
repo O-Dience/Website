@@ -7,7 +7,8 @@
 
 {% block body %}
 	<div class="container-fluid d-flex flex-column align-items-center h-100 homepage__main__div">
-		<h1 class="d-none d-md-block my-auto">A vot' service m'sieurs, dames !</h1>
+		<h2 class="deepshd">Bienvenue sur O'dience !</h2>
+		<p class="deepshd--small"> Votre app de mise en relation entre marques et micro-influenceurs</p>
 		<!-- Desktop Version -->
 		<div class="d-flex justify-content-around my-auto">
 			<div class="card d-none d-md-block col-5 text-info">
@@ -43,5 +44,9 @@
 				</div>
 			</div>
 		</div>
+	</div>
+
+	 {% include 'partials/_footer.html.twig' %}
+
 		<!-- /Mobile Version -->
 	{% endblock %}

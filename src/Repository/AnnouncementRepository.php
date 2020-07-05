@@ -61,14 +61,19 @@ class AnnouncementRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();*/
         $qb = $this->createQueryBuilder('announcement')
-        ->leftJoin('announcement.likedByUsers', 'likers')
-        ->addSelect('likers')
-        ->where('likers.id = :id')
+        ->leftJoin('announcement.id', 'id')
+        ->addSelect('fav')
+        ->leftJoin('announcement.user', 'user')
+        ->addSelect('user')
+        ->where('user.id = :id')
         ->setParameter('id', $id)
         ->getQuery()
         ->execute();
         return $qb;
     }
+
+
+
 
    
     public function searchByTitle($title){
@@ -81,9 +86,9 @@ class AnnouncementRepository extends ServiceEntityRepository
         $query = $builder->getQuery();
         $result = $query->execute();
         return $result;
-        
     }
 
+ 
     public function searchByContent($content){
         $builder = $this->createQueryBuilder('announcement');
         $builder->where(

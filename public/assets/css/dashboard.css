@@ -1,11 +1,17 @@
-body {
-  background: #F1F3FA;
+body{
+  background-image: url("../images/dashboard.jpg");
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background-position: bottom;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
-
 /* Profile container */
 .profile {
   margin: 20px 0;
 }
+
 
 /* Profile sidebar */
 .profile-sidebar {
@@ -13,15 +19,26 @@ body {
   background: #fff;
 }
 
-.profile-userpic{
-  text-align: center;
+.main__div {
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.10);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 3);
+  color: white;
+  width:100%;
+  height: 100vh;
+  padding-top: 30px;
+}
+
+.profile-userpic {
+  display: flex;
+  justify-content: center;
 }
 
 .profile-userpic img {
-  float: none;
-  width: 75%;
+  max-width: 60%;
   height: auto;
   margin: 0 auto;
+  border-radius: 50%;
 }
 
 .profile-usertitle {
@@ -111,5 +128,91 @@ body {
 .profile-content {
   padding: 20px;
   background: #fff;
-  min-height: 460px;
+  min-height: 90vh;
+  min-width: 40vw;
+  border-radius: 20px;
+}
+
+.see_announcement {
+  color: rgb(11, 11, 88);
+}
+
+/* Announcement list, overflow */
+.overflow-rounded{
+  border-radius: 50px;
+}
+
+.overflow_dashboard {
+  height: 90vh;
+  overflow-y: scroll;
+}
+
+.border_profil {
+  background-color: rgba(86, 231, 86, 0.57);
+  padding: 8px 2px 1px 2px;
+  border: 1px solid rgba(215, 235, 215, 0,57);
+  border-radius: 5px;
+}
+
+.missing_info{
+  width: 98%;
+  padding: 5px 5px;
+  margin: auto;
+  background-color: white;
+  margin-bottom: 10px;
+  border: 1px solid rgba(211, 201, 207, 0.64);
+  border-radius: 5px;
+}
+
+
+.category__picto{
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.picto__influencer{
+  border: solid #2A9D8F;
+}
+
+.picto__brand{
+  border: solid #424242;
+}
+
+.category__container--influencer small{
+  color: #2A9D8F;
+}
+
+.category__container--brand small{
+  color: #424242;
+}
+
+.missing_info h4 {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+.missing_info p {
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+
+/* SOCIAL NETWORK EDITION */
+
+.social__div{
+  border: solid #2A9D8F 1px;
+  padding: 2em
+}
+
+.img_resize--socials{
+  height: 5em;
+  width: 5em;
+}
+/* /SOCIAL NETWORK EDITION */
+
+@media (max-width: 1200px) {
+  .overflow_dashboard{
+      overflow: hidden;
+      height: auto;
+  }
 }

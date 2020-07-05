@@ -19,6 +19,23 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+
+
+
+    public function findAnnouncementByCategory($id){
+        $qb = $this->createQueryBuilder('category')
+        ->where('category.id = :id')
+        ->setParameter('id', $id)
+        ->leftJoin('category.announcements', 'announcement')
+        ->addSelect('announcement')
+        ->setMaxResults(3)
+        ->getQuery()
+        ->execute();
+        return $qb;
+    }
+
+
+
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */
@@ -35,6 +52,8 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
 
     /*
     public function findOneBySomeField($value): ?Category

@@ -3,15 +3,24 @@
 namespace App\Controller;
 
 use App\Entity\Announcement;
+use App\Entity\AnnouncementFav;
+use App\Entity\AnnouncementReport;
+use App\Entity\User;
 use App\Form\AnnouncementType;
+use App\Repository\AnnouncementFavRepository;
+use App\Repository\AnnouncementReportRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SocialNetworkRepository;
 use App\Service\ImageUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @Route("/annonce", name="announcement_")
@@ -46,6 +55,7 @@ class AnnouncementController extends AbstractController
      */
     public function new(Request $request, ImageUploader $imageUploader): Response
     {
+
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
@@ -63,7 +73,7 @@ class AnnouncementController extends AbstractController
             $entityManager->persist($announcement);
             $entityManager->flush();
 
-            return $this->redirectToRoute('announcement_list');
+            return $this->redirectToRoute('user_dashboard', ['id' => $this->getUser()->getId()]);
         }
 
         return $this->render('announcement/new.html.twig', [
@@ -73,11 +83,34 @@ class AnnouncementController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET", "POST"})
      */
-    public function show(Announcement $announcement): Response
+    public function show(Announcement $announcement, CategoryRepository $catRepo, Request $request, MailerInterface $mailer): Response
     {
+
+        $similarAnnouncements = $catRepo->findAnnouncementByCategory($announcement);
+        $this->denyAccessUnlessGranted('show', $announcement);
+
+        // Contact form handling
+        $senderMessage = $request->request->get('txtMsg');
+        if ($senderMessage) {
+
+            $email = (new Email())
+            ->from($request->request->get('txtEmail'))
+            ->to($announcement->getUser()->getEmail())
+            ->subject('O\'Dience - ' . $request->request->get('txtName') . ' veut en savoir plus sur votre annonce !')
+            ->html('
+                <p><b>Annonce: ' . $announcement->getTitle() . '</b></p>
+                <p>' .$senderMessage. '</p>
+            
+            ');
+            $mailer->send($email);
+        }
+
+
+
         return $this->render('announcement/show.html.twig', [
+            'similarAnnouncements'=> $similarAnnouncements,
             'announcement' => $announcement
         ]);
     }
@@ -124,6 +157,77 @@ class AnnouncementController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('announcement_index');
+        return $this->redirectToRoute('user_dashboard', ['id'=> $this->getUser()->getId()]);
+    }
+
+    /**
+     * 
+     * add or remove an announcement to the favorites
+     * 
+     * @Route("/{id}/favoris", name="favorite")
+     *
+     * @param Announcement $announcement
+     * @param ObjectManager $manager
+     * @param AnnouncementFavRepository $favRepo
+     * @return Response
+     */
+    public function favorites(Announcement $announcement, EntityManagerInterface $manager, AnnouncementFavRepository $favRepo): Response
+    {
+        $user =$this->getUser();
+
+        if(!$user){
+
+        return $this->json(['code'=>403, 'message'=>'Unauthorizer'], 403);
+
+        }
+        if ($announcement->isFavByUser($user)){
+            $favorite = $favRepo->findOneBy([
+                'announcement'=>$announcement,
+                'user'=>$user
+            ]);
+            
+            $manager->remove($favorite);
+            $manager->flush();
+
+            return $this->json(['code'=>200, 'message'=> 'L\'annonce '.  $announcement->getTitle() . ' a été retirée de vos favoris !'], 200);
+        }
+
+        $favorite = new AnnouncementFav();
+        $favorite->setAnnouncement($announcement);
+        $favorite->setUser($user);
+
+        $manager->persist($favorite);
+        $manager->flush();
+        return $this->json(['code'=>200, 'message'=> 'L\'annonce '.  $announcement->getTitle() . ' a été ajoutée à vos favoris !'], 200);
+    }
+
+    /**
+     * Report an announcement
+     * 
+     * @Route("/{id}/signaler", name="report")
+     * 
+     * @param Announcement $announcement
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function report(Announcement $announcement, EntityManagerInterface $manager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['code' => 403, 'message' => 'Unauthorized'], 403);
+        }
+
+        if ($announcement->isReportedByUser($user)) {
+            return $this->json(['code' => 200, 'message '=> 'Vous avez déjà signalé cette annonce !'], 200);
+        }
+
+        $report = new AnnouncementReport();
+        $report->setAnnouncement($announcement);
+        $report->setReporter($user);
+
+        $manager->persist($report);
+        $manager->flush();
+        return $this->json(['code' => 200, 'message' => 'L\'annonce '. $announcement->getTitle() . ' a été signalée par ' . $user->getUsername() . '.'], 200);
     }
 }

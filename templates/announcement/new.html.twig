@@ -1,11 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - Publier une annonce {% endblock %}
+{% block title %}
+	{{ parent() }}
+	- Publier une annonce
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
+{% endblock %}
 
 {% block body %}
-    <h1>Publier une nouvelle annonce</h1>
 
-    {{ include('announcement/_form.html.twig') }}
+	<div class="container-md">
+		<div class="row profile align-items-center">
+			<div class="col-md-3">
+				{% include 'partials/_profile_sidebar.html.twig' %}
+			</div>
 
-    <a href="{{ path('announcement_list') }}">Liste des annonces</a>
-{% endblock %}
+			<div class="card bg-light col-md-9 profile-content">
+				<article class="card-body">
+					<h4 class="card-title mt-3 text-center">Nouvelle annonce
+					</h4>
+					{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label>Titre de l'annonce</label>
+							{{form_widget(form.title)}}
+						</div>
+						<div class="form-group col-md-6">
+							<label>Image de l'annonce
+								<em>(optionnel)</em>
+							</label>
+							{{form_widget(form.pictureFile)}}
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col-md-12">
+							<label>Détail de l'annonce</label>
+							{{form_widget(form.content)}}
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label>Réseaux requis
+								<em>(optionnel)</em>
+							</label>
+							{{form_widget(form.socialNetworks)}}
+						</div>
+						<div class="form-group col-md-6">
+							<label>Catégories</label>
+							{{form_widget(form.categories)}}
+						</div>
+					</div>
+					<div class="form-group col-md-4 mx-auto">
+						<button type="submit" class="btn btn-primary btn-block">
+							Publier l'annonce
+						</button>
+					</div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+
+		{% endblock %}

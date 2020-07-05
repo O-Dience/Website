@@ -2,11 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserSocialRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserSocialRepository::class)
+ * @ApiResource(
+ * normalizationContext={"groups"={"userSocial:read"}},
+ *      itemOperations={
+ *      "delete"={
+ *      "path"="/v1/user/social/{id}",
+ *      "security" = "is_granted('delete_userSocial', object)",  
+ *      }
+ *    }     
+ * )
  */
 class UserSocial
 {
@@ -14,25 +27,36 @@ class UserSocial
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"userSocial:read"})
      */
     private $id;
 
+
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Groups({"userSocial:read"})
      */
     private $link;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userSocials")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"userSocial:read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=SocialNetwork::class, inversedBy="userSocials")
-     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"userSocial:read"})
      */
     private $social;
+
+
+    public function __toString(){
+
+        return (string) $this->social->getName();
+    }
 
     public function getId(): ?int
     {
@@ -44,7 +68,7 @@ class UserSocial
         return $this->link;
     }
 
-    public function setLink(string $link): self
+    public function setLink(?string $link): self
     {
         $this->link = $link;
 
