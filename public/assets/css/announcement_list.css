@@ -59,6 +59,7 @@ h3 {
     background-color: white;
     border-color: #F5F5F5;
     margin-bottom: 3px;
+    padding: 2em;
    
 }
 
@@ -72,11 +73,20 @@ a.nav-link {
     min-height: 100vh;
     min-width: 100%;
     margin: auto;
+    overflow-y: scroll;
     
 }
 
+.list-group{
+    margin-top: 2em;
+}
+
 .border_announcement {
-    background-color: #F5F5F5;
+    background-image: url('../images/dashboard.jpg');
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
     padding: 0px 25px;
     min-width: 100%
 }
