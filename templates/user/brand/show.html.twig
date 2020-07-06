@@ -30,7 +30,7 @@
 				</div>
 				<div class="d-flex flex-column align-items-center justify-content-between mb-3 mx-auto">
 					<h2 class="my-5"> Profil</h2>
-					<p class="mb-0 text-center mx-5">{{ user.description }}</p>
+					<p class="mb-0 text-center mx-5">{{ user.description | nl2br }}</p>
 				</div>
 				<div class="bg-light p-4 d-flex justify-content-end text-center">
 					<ul class="list-inline mb-0">
@@ -71,9 +71,7 @@
 						<div class="row">
 							{% for announcement in user.announcements %}
 								<div class="col-lg-6 mb-2 pr-lg-1 mx-auto text-center border p-1">
-									{% if announcement.image is null %}
-										<img src="{{asset('assets/images/announcement-default.png')}}" alt="" class="img-fluid rounded shadow-sm h-auto img__announcement">
-									{% else %}
+									{% if announcement.image %}
 										<img src="{{asset('assets/images/image_announcement/')}}{{ announcement.image }}" alt="" class="img-fluid rounded shadow-sm img__announcement">
 									{% endif %}
 									<div class="ml-2 mr-2  announcement__details">

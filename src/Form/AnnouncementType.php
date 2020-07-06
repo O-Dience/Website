@@ -31,7 +31,7 @@ class AnnouncementType extends AbstractType
                 'constraints'=>[ new NotBlank([
                 'message'=> 'Précisez ce que vous recherchez']),
                 new Length([
-                    'min' => 200,
+                    'min' => 50,
                     'minMessage' => 'La description de l\'annonce nécessite au moins {{ limit }} caractères',
                     // max length allowed by Symfony for security reasons
                     'max' => 4096,
