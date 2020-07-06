@@ -43,6 +43,15 @@ body {
   padding-top: 30px;
 }
 
+.edit__main__div {
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.10);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 3);
+  width: 100%;
+  height: 100vh;
+  padding-top: 30px;
+}
+
 .homepage__main__div--influencer {
   margin-top: 20px !important;
   color: #2a9d8f !important;

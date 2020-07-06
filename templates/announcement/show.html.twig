@@ -15,11 +15,11 @@
         <!--- Announcement -->
             <div class="col-lg-8 m-15px-tb">
                 <article class="article ">
-                {% if announcement.image is not empty %}
+                <!-- {% if announcement.image is not empty %} -->
                     <div class="article-img text-center">
                         <img src="{{ asset("assets/images/image_announcement/" ~ announcement.image ) }}" class="image__announcement" alt="">
                     </div>
-                {% endif %}
+                    {% endif %}
                     <div class="article-title">
                         <div class="d-flex justify-content-between">
                             {% if announcement.categories | length == 1 %}
@@ -71,7 +71,7 @@
                             {% endif %}
                         </div>
                         <div class="article-content">
-                            <p>{{announcement.content}}</p>
+                            <p>{{ announcement.content | nl2br }}</p>
                         </div>
                     </div>
                 </article>
