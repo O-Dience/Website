@@ -66,7 +66,7 @@
 								{% if user.userSocials %}
 									{% for social in user.userSocials %}
 									<div class="row mt-1 d-flex flex-column mx-auto">
-										<span>{{ social.social.name}} : <a href="{{ social.link }}">{{ social.link }}</a></span>
+										<span>{{ social.social.name}} : <a href="{{ social.link }}" target="_blank">{{ social.link }}</a></span>
 									</div>
 									{% endfor %}
 								{% endif %}
