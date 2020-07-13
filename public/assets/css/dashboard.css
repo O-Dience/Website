@@ -210,7 +210,7 @@ body{
 }
 /* /SOCIAL NETWORK EDITION */
 
-@media (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
   .overflow_dashboard{
       overflow: hidden;
       height: auto;
