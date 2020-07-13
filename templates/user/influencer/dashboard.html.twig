@@ -1,19 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/dashboard.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ user.username }} - Tableau de bord{% endblock %}
-
-{% block stylesheets %}
-<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
-{% endblock %}
-
-{% block body %}
-<div class="container-md">
-    <div class="row profile align-items-center">
-        <div class="col-md-3 ">
-            {% include 'partials/_profile_sidebar.html.twig' %}
-        </div>
-
-        <div class="col-md-9 ">
+{% block content %}
             <div class="profile-content bg-light overflow-rounded {{ (favorites | length >= 3 ) ? 'overflow_dashboard' : '' }}">
             {% if 'default' in user.picture or user.description is empty or user.userSocials | length == 0 %}
                 {% include 'user/influencer/empty_dashboard.html.twig' %}
@@ -58,9 +45,7 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
 {% endblock %}
 
 {% block javascripts %}

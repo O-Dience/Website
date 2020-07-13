@@ -56,7 +56,7 @@
 							<i class="fa fa-edit ml-1 mr-1" aria-hidden="true"></i>
 							Créer une annonce
 						</a>
-					{% elseif ( 'ROLE_INFLUENCER' in user.roles) %}
+					{% elseif ( 'ROLE_INFLUENCER' in app.user.roles) %}
 						<a href="{{path('user_dashboard', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1 {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : 'text-dark' }}">
 							<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
 							Mes annonces favorites
