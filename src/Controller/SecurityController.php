@@ -32,7 +32,7 @@ class SecurityController extends AbstractController
      */
     public function googleAuth(UrlGeneratorInterface $generator)
     {
-        $url = $generator->generate('app_register_influencer', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $generator->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new RedirectResponse('https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=online&response_type=code&redirect_uri='. $url .'&client_id='.$this->googleClient);
     }

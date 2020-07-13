@@ -10,59 +10,14 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 {% endblock %}
 
-{# {% block body %}
-<div class="container-md">
-    <div class="row profile align-items-center">
-		<div class="col-md-3">
-            {% include 'partials/_profile_sidebar.html.twig' %}
-		</div>
-		<div class="col-md-9 {{ (user.announcements | length >= 3 ) ? 'overflow_dashboard' : '' }}">
-            <div class="profile-content bg-light">
-            {% if 'default' in user.picture or user.description is empty or user.userSocials | length == 0 %}
-                {% include 'user/brand/empty_dashboard.html.twig' %}
-            {% endif %}
-            {% if user.announcements | length > 0 %}
-            <h2 class="mb-5 text-center">Vos annonces en ligne</h2>
-            {% else %}
-                <div class="text-center">
-                    <h2 class=" text-center">Vous n'avez pas encore posté d'annonce</h2>
-                    <a href="{{path('announcement_new')}}" class="mb-5 link__announcement">Créer une annonce</a>
-                </div>
-                {% endif %}
-                {% for announcement in user.announcements %}
-                <div class="mb-2">
-                    <div  class="list-group-item list-group-item-action my-1">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{ announcement.title }}</h5>
-                            <small class="text-muted">{{ announcement.createdAt|date('d/m/Y') }}</small>
-                        </div>
-                        <p class="mb-1">{{ announcement.content | slice (0,180)}}...</p>
-                        {% for category in announcement.categories %}
-                            <small class="text-muted">{% if not loop.first %}, {% endif %}{{ category.label }}</small>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-		</div>
-	</div>
-</div> #}
-
-
-
-
-
-
 
 {% block body %}
-<div class="container-md">
-    <div class="row profile align-items-center">
-        <div class="col-md-3 ">
+<div class="container-xl px-0 px-md-5 dashboard__container">
+    <div class="d-flex flex-column flex-lg-row align-items-center">
             {% include 'partials/_profile_sidebar.html.twig' %}
-        </div>
 
-        <div class="col-md-9 ">
-            <div class="profile-content bg-light overflow-rounded {{ (user.announcements | length >= 3 ) ? 'overflow_dashboard' : '' }}">
+        <div class="col-lg-9 px-0 px-md-2">
+            <div class="profile-content bg-light {{ (user.announcements | length >= 3 ) ? 'overflow_dashboard' : '' }}">
             {% if 'default' in user.picture or user.description is empty or user.userSocials | length == 0 %}
                 {% include 'user/influencer/empty_dashboard.html.twig' %}
             {% endif %} 

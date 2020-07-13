@@ -34,7 +34,7 @@ class GoogleUserProvider
     public function loadUserFromGoogle(string $code)
     {
 
-        $redirectUri = $this->generator->generate('app_register_influencer', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $redirectUri = $this->generator->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         //get json config to use in the request
         $response = $this->httpClient->request('GET', 'https://accounts.google.com/.well-known/openid-configuration');
