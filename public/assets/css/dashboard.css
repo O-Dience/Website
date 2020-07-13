@@ -13,6 +13,7 @@ body{
 .dashboard__container{
   margin-top: 5em;
   margin-bottom: 2em;
+  min-height: 90vh;
 }
 
 .profile-sidebar {
@@ -125,7 +126,6 @@ body{
 
 .profile-content {
   padding: 20px;
-  background: #fff;
 }
 
 .see_announcement {
@@ -219,6 +219,6 @@ body{
 .profile-content {
   min-height: 90vh;
   min-width: 40vw;
-  border-radius: 20px;
 }
+
 }

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ app.user.username }} - Tableau de bord{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
+{% endblock %}
+
+{% block body %}
+<div class="container-xl px-0 px-md-5 dashboard__container">
+    <div class="d-flex flex-column flex-lg-row align-items-center">
+        {% include 'partials/_profile_sidebar.html.twig' %}
+        <div class="col-lg-9 px-0 px-md-2">
+        {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
