@@ -1,17 +1,17 @@
 <div class="mt-5 mb-3">
 	<form class="form-inline my-2 my-lg-0 d-flex flex-column justify-content-center">
 		<div class="filter__search d-flex mb-2">
-			<input class="form-control mr-sm d-none d-md-block" name="search" type="search" placeholder="Search" aria-label="Search">
-			<button class="btn btn-secondary my-2 my-sm-0 d-none d-md-block {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}" type="submit">Search</button>
+			<input class="form-control mr-sm" name="search" type="search" placeholder="Search" aria-label="Search">
+			<button class="btn btn-secondary mx-1 {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}" type="submit">Search</button>
 		</div>
-		<div class="filter__filters d-flex mb-3 mt-1">
-			<select name="category" id="category_label" class="btn btn-secondary mx-1 {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}">
+		<div class="filter__filters d-flex flex-column flex-sm-row mb-3 mt-1">
+			<select name="category" id="category_label" class="btn btn-secondary mx-1 my-1 {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}">
 				<option value="">Trier par catégorie</option>
 				{% for category in categories %}
 					<option value="{{category.id}}">{{category.label}}</option>
 				{% endfor %}
 			</select>
-			<select name="socialNetwork" id="socialNetwork_name" class="btn btn-secondary {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}">
+			<select name="socialNetwork" id="socialNetwork_name" class="btn btn-secondary mx-1 my-1 {{("ROLE_INFLUENCER" in app.user.roles) ? 'bg-info' : 'bg-danger' }}">
 				<option value="">Trier selon le réseau social</option>
 				{% for socialNetwork in socialNetworks %}
 					<option value="{{socialNetwork.id}}">{{socialNetwork.name}}</option>
