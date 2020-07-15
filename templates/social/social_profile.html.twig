@@ -1,29 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/dashboard.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ user.username }} - Réseaux sociaux{% endblock %}
-
-{% block stylesheets %}
-<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
-{% endblock %}
-
-{% block body %}
-
-<div class="container-md">
-	<div class="row profile align-items-center">
-		<div class="col-md-3">
-			{% include 'partials/_profile_sidebar.html.twig' %}
-		</div>
-		<div class="col-md-9  pb-3 pt-3 profile-content  bg-light">
+{% block content %}
+		<div class="rounded pb-3 pt-3 profile-content  bg-light">
 			<div class="social-content bg-light">
 				<h3 class="mb-5 text-center">La gestion de tes réseaux, c'est ici que ça se passe !</h3>
 				<div class="text-center mb-3">
-						<a href="{{ path('social_add', {id:user.id }) }}" class="link_social btn btn-primary">Ajouter un nouveau profil</a>
-					</div>
+					<a href="{{ path('social_add', {id:user.id }) }}" class="link_social btn btn-primary">Ajouter un nouveau profil</a>
+				</div>
 				<div class="d-flex flex-justify-around text-center flex-wrap col-12">
-					
 					{% for socialProfile in user.userSocials %}
 					<div class="col-xl-12 social__div my-2 mx-auto d-flex justify-content-between align-items-center">
-						
 						<div>
 							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize--socials" alt="">
 						</div>
@@ -47,5 +33,4 @@
 {% block javascripts %}
 <script src="{{asset('assets/js/api.js')}}"></script>
 <script src="{{asset('assets/js/social.js')}}"></script>
-
 {% endblock %}

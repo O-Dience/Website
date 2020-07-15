@@ -9,13 +9,13 @@
 {% endblock %}
 
 {% block body %}
-<div class="blog-single gray-bg">
-    <div class="container">
-        <div class="row align-items-start ">
-        <!--- Announcement -->
-            <div class="col-lg-8 m-15px-tb">
-                <article class="article ">
-                <!-- {% if announcement.image is not empty %} -->
+<div class="blog-single gray-bg mt-5">
+    <div class="col-12 mx-lg-auto">
+        <div class="row align-items-start justify-content-around px-md-3 px-lg-5">
+            <!--- Announcement -->
+            <div class="col-12 col-xl-7 px-0">
+                <article class="article px-3 px-sm-4 px-md-5">
+                    {% if announcement.image is not empty %}    
                     <div class="article-img text-center">
                         <img src="{{ asset("assets/images/image_announcement/" ~ announcement.image ) }}" class="image__announcement" alt="">
                     </div>
@@ -23,34 +23,34 @@
                     <div class="article-title">
                         <div class="d-flex justify-content-between">
                             {% if announcement.categories | length == 1 %}
-                            <h6>Catégorie:
+                            <h6 class="text-left">Catégorie:<br>
                             {% else %}
-                            <h6>Catégories:
+                            <h6 class="text-left">Catégories:<br>
                             {% endif %}
                             {% for category in announcement.categories %}
-                                <span class="require">{% if not loop.first %}, {% endif %} {{category.label}}</span>
+                                <span class="require">{% if not loop.first %}<br> {% endif %} {{category.label}}</span>
                             {% endfor %}
                             </h6>
                             {% if announcement.socialNetworks | length <= 1 %}
-                            <h6>Média requis:
+                            <h6 class="text-right">Média requis:<br>
                             {% else %}
-                            <h6>Médias requis:
+                            <h6 class="text-right">Médias requis:<br>
                             {% endif %}
                             {% for socialNetwork in announcement.socialNetworks %}
-                                <span class="require">{% if not loop.first %}/ {% endif %} {{socialNetwork.name}}</span>
+                                <span class="require">{% if not loop.first %}<br> {% endif %} {{socialNetwork.name}}</span>
                             {% endfor %}
                             </h6>
                         </div>
-                        <div class="d-flex justify-content-between">
-                        <h2>{{announcement.title}}</h2> 
-                        <!-- if author of announcement show delete and edit button or fav icone if not author of announcement -->
-                            <div class="d-flex align-text-bottom">
+                        <div class="d-flex flex-column flex-lg-row justify-content-between">
+                            <h2 class="text-center">{{announcement.title}}</h2> 
+                            <!-- if author of announcement show delete and edit button or fav icone if not author of announcement -->
+                            <div class="d-flex justify-content-center align-items-center">
                                 {% if is_granted('edit', announcement) %}
-                                    <a class="edit_button" href="{{ path('announcement_edit', {'id': announcement.id}) }}"><button class="btn-primary">Modifier</button></a>
+                                    <a class="btn btn-success mx-1" href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier</a>
                                 {% elseif is_granted('edit', announcement) == false %}
                                     <a href="{{path('announcement_favorite', {'id': announcement.id}) }}" class="col-4 well js-fav">
                                 {% if app.user and announcement.isFavByUser(app.user) %}
-                                    <i class="fa fa-heart fa-lg "></i> 
+                                    <i class="fa fa-heart fa-lg"></i> 
                                 {% else %}
                                     <i class="fa fa-heart-o fa-lg "></i> 
                                 {% endif %}
@@ -64,64 +64,66 @@
                         </div>
                         <div>
                             {% if announcement.updatedAt  is not empty %}
-                            <p class="font-italic text-black-50"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d/m/Y à H:i') : '' }}</p>
+                            <p class="font-italic text-black-50 text-center"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d/m/Y à H:i') : '' }}</p>
                             {% else %}
-                            <p class="font-italic text-black-50"> Publiée le
+                            <p class="font-italic text-black-50 text-center"> Publiée le
                             {{ announcement.createdAt ? announcement.createdAt|date('d/m/Y à H:i') : '' }}</p>
                             {% endif %}
                         </div>
                         <div class="article-content">
-                            <p>{{ announcement.content | nl2br }}</p>
+                            <p class="text-justify">{{ announcement.content | nl2br }}</p>
                         </div>
                     </div>
                 </article>
                 <!-- CONTACT FORM-->
-                <div class="container contact-form rounded">
+                <div class="contact-form rounded mt-5">
                     <div class="contact-image">
                         <img src="https://image.ibb.co/kUagtU/rocket_contact.png" alt="rocket_contact"/>
                     </div>
-                    <form method="post" class="form__container" name="contact__form">
-                    <h3 class="mt-1">Intéressé ? Contactez nous!</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="text" name="txtName" class="form-control d-none" placeholder="Your Name *" value="{{ app.user.username }}" />
+                    <form method="post" class="py-2 px-2 px-md-5" name="contact__form">
+                        <h3 class="mt-1">Intéressé ? Contactez nous!</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" name="txtName" class="form-control d-none" placeholder="Your Name *" value="{{ app.user.username }}" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="txtEmail" class="form-control d-none" placeholder="Your Email *" value="{{ app.user.email }}" />
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" name="txtEmail" class="form-control d-none" placeholder="Your Email *" value="{{ app.user.email }}" />
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <textarea name="txtMsg" class="form-control" placeholder="Votre message *" style="width: 100%; height: 150px;"></textarea>
+                                </div>
+                                <div class="form-group text-center">
+                                    <input type="submit" name="btnSubmit" class="btn btn-success" value="Envoyer" />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <textarea name="txtMsg" class="form-control" placeholder="Votre message *" style="width: 100%; height: 150px;"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" name="btnSubmit" class="btn btn-success" value="Envoyer" />
-                            </div>
-                        </div>
-                    </div>
                     </form>
                 </div>
             </div>
             <!-- end announcement -->
-            <div class="col-lg-4 m-15px-tb blog-aside ">
-            <!-- Announcement author -->
-                <div class="widget widget-author">
+
+
+            <div class="col-12 col-xl-3 blog-aside px-0 mt-5">
+                <!-- Announcement author -->
+                <div class="widget widget-author px-3 px-sm-4 px-md-5 px-xl-2">
                     <div class="widget-title">
                         <h3>Détail de l'annonceur</h3>
                     </div>
                     <div class="widget-body">
-                        <div class="media align-items-center">                            
+                        <div class="media d-flex flex-column align-items-center">                            
                             <div class="avatar">
                                 <img <img src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}"  title="" alt="">
                             </div>
-                            <div class="media-body">
-                                <h6>{{announcement.user.username }}
-                                <a href="{{path('user_show', {id: announcement.user.id })}}"><span class="user_profile">(voir profil)</span></a>
+                            <div class="d-flex flex-column ">
+                                <h6 class="d-block text-center">{{announcement.user.username }}
+                                <a href="{{path('user_show', {id: announcement.user.id })}}" class="d-block"><span class="user_profile">(voir profil)</span></a>
                                 </h6>
                             </div>
                         </div>
-                        <p> {{announcement.user.description }}</p>
+                        <p class="text-justify"> {{announcement.user.description }}</p>
                     </div>
                 </div>
                 <!-- End of announcement author -->
@@ -135,7 +137,7 @@
                         <div class="latest-post-aside media">
                             <div class="lpa-left media-body">
                                 <div class="lpa-title">
-                                    <h5><a href="{{ path('announcement_report', {id:announcement.id }) }}" class="js-report ann-not-reported">
+                                    <h5 class="text-center"><a href="{{ path('announcement_report', {id:announcement.id }) }}" class="js-report ann-not-reported">
                                     {% if app.user and announcement.isReportedByUser(app.user) %}
                                         <span class="ann-reported">Annonce signalée !</span>
                                     {% else %}
@@ -148,7 +150,7 @@
                         <div class="latest-post-aside media">
                             <div class="lpa-left media-body">
                                 <div class="lpa-title">
-                                    <h5><a href="{{ path('user_report', {id:announcement.user.id }) }}" class="js-report user-not-reported">
+                                    <h5 class="text-center"><a href="{{ path('user_report', {id:announcement.user.id }) }}" class="js-report user-not-reported">
                                     {% if app.user and announcement.user.isReportedByUser(app.user) %}
                                         <span class="ann-reported">Signalé !
                                     {% else %}
