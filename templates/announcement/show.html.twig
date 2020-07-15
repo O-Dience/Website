@@ -44,9 +44,9 @@
                         <div class="d-flex flex-column flex-lg-row justify-content-between">
                             <h2 class="text-center">{{announcement.title}}</h2> 
                             <!-- if author of announcement show delete and edit button or fav icone if not author of announcement -->
-                            <div class="d-flex justify-content-center align-text-bottom text-center">
+                            <div class="d-flex justify-content-center align-items-center">
                                 {% if is_granted('edit', announcement) %}
-                                    <a class="edit_button" href="{{ path('announcement_edit', {'id': announcement.id}) }}"><button class="btn-primary">Modifier</button></a>
+                                    <a class="btn btn-success mx-1" href="{{ path('announcement_edit', {'id': announcement.id}) }}">Modifier</a>
                                 {% elseif is_granted('edit', announcement) == false %}
                                     <a href="{{path('announcement_favorite', {'id': announcement.id}) }}" class="col-4 well js-fav">
                                 {% if app.user and announcement.isFavByUser(app.user) %}

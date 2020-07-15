@@ -9,15 +9,6 @@ body {
 
 /* edit button */
 
-.edit_button {
-    color: white;
-    margin-top: 20px;
-    margin-right: 5px;
-}
-.edit_button:hover {
-    color: white;
-    text-decoration: none;
-}
 
 .js-fav {
     margin-top: 20px;
