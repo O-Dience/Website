@@ -5,19 +5,19 @@
 {% endblock %}
 {% block stylesheets %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link rel="stylesheet" href="{{asset('assets/css/influencer_list.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/user_list.css')}}">
 {% endblock %}
 
 {% block body %}
 <!-- Team -->
-<section id="team" class="pb-5">
-    <div class="container">
-        <h5 class="section-title h1">Les Marques</h5>
+<section id="team" class="pb-5 px-0 px-sm-2">
+    <div class="container-fluid container-lg mt-5">
+        <h5 class="section-title h2">Les Marques</h5>
         {% include 'partials/_filters.html.twig' %}
         <div class="row">
         {% for brand in users %}
             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4 panel mx-auto">
+            <div class="col-xs-12 col-md-6 col-xl-4 panel mx-auto">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
@@ -94,7 +94,6 @@
 
 {% block javascripts %}
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

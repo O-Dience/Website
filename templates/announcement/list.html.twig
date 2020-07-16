@@ -13,46 +13,53 @@
 
 {% block body %}
 
-<div class="container-fluid">
-    <div class="row main__div">
+<div class="container-fluid list__wrapper">
+    <div class="row main__div mt-5">
         <div class="border_announcement w-100 pb-5" >
-        <h1 class="text-center text-info mt-5">Liste des annonces</h1>
-        {% include 'partials/_filters.html.twig' %}
-            <div class="list_container ww-md-100pb-4 pl-2 pl-3 mx-auto">
-            {% for announcement in announcements %}
-                <div class="list-group panel col-xl-10 mx-auto">
-                    <div href="#" class="list-group-item d-flex background_color">
-                    {% if announcement.image is not empty %} 
-                        <div class="media col-md-2">
-                            <figure class="float-left">
+            <h1 class="text-center text-info h2 mt-5">Liste des annonces</h1>
+            {% include 'partials/_filters.html.twig' %}
+            <div class="col-lg-11 col-xl-9 mx-lg-auto">
+                {% for announcement in announcements %}
+                <div class="list-group panel my-2">
+                    <div href="#" class="list-group-item d-flex flex-column align-items-center justify-content-center flex-md-row bg-white mb-1 p-3">
+
+                        {# PICTURE #}
+                        {% if announcement.image is not empty %} 
+                        <div class="media d-flex justify-content-center">
+                            <figure class="">
                                 <img class="media-object rounded img-fluid"  src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}">
                             </figure>
                         </div>
                         {% elseif announcement.user.picture is not empty %}
-                        <div class="media col-md-2 mt-3">
-                            <figure class="float-left">
+                        <div class="media d-flex justify-content-center">
+                            <figure class="">
                                 <img class="media-object rounded img-fluid"  src="{{asset('/assets/images/avatar_user/') ~ announcement.user.picture}}">
                             </figure>
                         </div>
-                        {% endif %} 
-                        <div class="col-md-7 d-flex flex-column">
-                            <div>
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="">{{announcement.title}}
-                                        <em class="user_name">
-                                            (<a href="{{path('user_show', {'id' : announcement.user.id})}}">{{announcement.user}}</a>)
-                                        </em>
+                        {% endif %}
+                        {# /PICTURE #}
+
+                        <div class=" d-flex flex-column align-items-center px-md-5 announcement__content">
+                            {# CONTENT #}
+                            <div class="">
+                                <div class="d-flex flex-column flex-md-row justify-content-between">
+                                    <h3 class="h4 text-centertext-md-left">{{announcement.title}}
+                                    <em class="user_name">
+                                        (<a href="{{path('user_show', {'id' : announcement.user.id})}}">{{announcement.user}}</a>)
+                                    </em>        
                                     </h3>
                                     {% if announcement.updatedAt is not empty %}
-                                        <p class="font-italic text-black-50 d-flex flex-row-reverse"> Annonce modifiée le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
+                                        <p class="font-italic text-black-50 d-flex flex-md-row-reverse text-left text-md-right announcement__date"> Modifié le {{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }} </p>
                                     {% else %}
-                                        <p class="font-italic text-black-50 d-flex flex-row-reverse"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
+                                        <p class="font-italic text-black-50 d-flex flex-md-row-reverse text-left text-md-right announcement__date"> Publiée le {{ announcement.createdAt ? announcement.createdAt|date('d-m-Y à H:i') : '' }}</p>
                                     {% endif %}
                                 </div>
-                                <p class="">{{ announcement.content | slice (0, 150) }}...</p>
+                                <p class="d-none d-sm-block">{{ announcement.content | slice (0, 150) }}...</p>
                             </div>
-                            <div class="d-flex justify-content-between col-md-8 mx-auto">
-                                <div class="d-flex flex-column mx-auto">
+                            {# /CONTENT #}
+                            {# CATEGORIES AND SOCIALS #}
+                            <div class="d-flex flex-column flex-md-row w-100 justify-content-around align-items-between">
+                                <div class="d-flex flex-column">
                                     <small>Catégories</small>
                                     <div class="d-flex">
                                         {% for category in announcement.categories %}
@@ -67,7 +74,7 @@
                                         {% endfor %}
                                     </div>
                                 </div>
-                                <div class="d-flex flex-column mx-auto">
+                                <div class="d-flex flex-column">
                                     <small>Plateformes requises</small>
                                     <div class="d-flex">
                                         {% for network in announcement.socialNetworks %}
@@ -83,24 +90,23 @@
                                     </div>
                                 </div>
                             </div>
+                            {# /CATEGORIES AND SOCIALS #}
                         </div>
-                        <div class="col-md-3 text-center btn_div">
-                            <button type="button" class="btn btn-default btn-lg btn-block btn_color w-60 mt-2">
-                                <a href="{{path('announcement_favorite', {'id': announcement.id}) }}"  class="link_fav js-fav">   
-                                    {% if app.user and announcement.isFavByUser(app.user) %}
-                                    <i class="fa fa-heart fa-lg mr-2 "></i> <span class="favtext">Retirer des favoris</span>
-                                    {% else %}
-                                    <i class="fa fa-heart-o fa-lg mr-2"></i> <span class="favtext">Ajouter aux favoris</span>
-                                    {% endif %}
-                                </a>
-                            </button>
-                            <button type="button" class="btn btn-default btn-lg btn-block btn_color">
-                                <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="show_link">
-                                    <i class="fa fa-eye fa-lg mr-2"></i> 
-                                    <span class="show_ann">Consulter l'annonce</span>
-                                </a>
-                            </button>
+                        {# BUTTONS #}
+                        <div class=" my-2 my-md-0 d-flex flex-column justify-content-center">
+                            <a href="{{path('announcement_favorite', {'id': announcement.id}) }}"  class="link_fav js-fav btn btn-info btn-sm btn-block btn_color w-60 my-1">   
+                                {% if app.user and announcement.isFavByUser(app.user) %}
+                                <i class="fa fa-heart fa-lg mr-2 "></i> <span class="favtext">Retirer des favoris</span>
+                                {% else %}
+                                <i class="fa fa-heart-o fa-lg mr-2"></i> <span class="favtext">Ajouter aux favoris</span>
+                                {% endif %}
+                            </a>
+                            <a href="{{ path('announcement_show', {id:announcement.id }) }}" class="btn btn-info btn-sm btn-block btn_color w-60 my-1">
+                                <i class="fa fa-eye fa-lg mr-2"></i> 
+                                <span class="show_ann">Consulter l'annonce</span>
+                            </a>
                         </div>
+                        {# /BUTTONS #}
                     </div>
                 </div>
                 {% endfor %}  
