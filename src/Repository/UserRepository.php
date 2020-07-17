@@ -52,6 +52,34 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $query->execute();
     }
 
+    public function searchInfluencerByUsername( $username){
+        $builder = $this->createQueryBuilder('user');
+        $builder->where(
+            $builder->expr()->like('user.username', ":username")
+        );
+        $builder->setParameter('username', "%$username%");
+        $builder->andHaving('user.roles = :role');
+        $builder->setParameter('role', '["ROLE_INFLUENCER"]' );
+        $query = $builder->getQuery();
+        $result = $query->execute();
+        return $result;
+    }
+
+    public function searchBrandByUsername( $username){
+        $builder = $this->createQueryBuilder('user');
+        $builder->where(
+            $builder->expr()->like('user.username', ":username")
+        );
+        $builder->setParameter('username', "%$username%");
+        $builder->andHaving('user.roles = :role');
+        $builder->setParameter('role', '["ROLE_BRAND"]' );
+        $query = $builder->getQuery();
+        $result = $query->execute();
+        return $result;
+    }
+
+
+
     public function findOneByEmail($email): ?User
     {
         return $this->createQueryBuilder('u')
@@ -61,6 +89,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getOneOrNullResult()
         ;
     }
+
   
 /*     public function findUserFavoriteAnnouncements($id)
     {

@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid d-flex flex-column align-items-center h-100 homepage__main__div">
+	<div class="container-fluid d-flex flex-column justify-content-center px-5 homepage__main__div">
 		<h2 class="deepshd">Bienvenue sur O'dience !</h2>
 		<p class="deepshd--small"> Votre app de mise en relation entre marques et micro-influenceurs</p>
 		<!-- Desktop Version -->
-		<div class="d-flex justify-content-around my-auto">
+		<div class="d-flex justify-content-around my-md-auto">
 			<div class="card d-none d-md-block col-5 text-info">
 				<div class="card-body text-center  ">
 					<h5 class="card-title">Influenceur</h5>
@@ -30,19 +30,22 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- /Desktop Version -->
-	<!-- Mobile Version -->
-	<div class="container-fluid d-flex flex-column align-items-center">
-		<div class="card main__card d-md-none">
-			<div class="card-body text-center">
-				<h1 class=>O'dience</h1>
-				<p class="card-text">O'dience propose une plateforme unique pour mettre en relation entreprises et micro-influenceurs pour centraliser l'information et rendre plus efficace  les campagnes marketing sur tous les réseaux sociaux</p>
-				<div class="d-flex justify-content-between">
-					<a href="{{ path('app_register_influencer') }}" class="btn btn-info m-3">Je suis un influenceur</a>
-					<a href="{{ path('app_register_brand') }}" class="btn btn-info m-3">Je suis une entreprise</a>
+		<!-- /Desktop Version -->
+		<!-- Mobile Version -->
+		<div class="d-flex flex-column mt-5 mb-5">
+			<div class="card d-md-none">
+				<div class="card-body text-center">
+					<h4 class="text-dark">Inscription</h4>
+					<p class="card-text text-dark">O'dience propose une plateforme unique pour mettre en relation entreprises et micro-influenceurs pour centraliser l'information et rendre plus efficace  les campagnes marketing sur tous les réseaux sociaux</p>
+					<div class="d-flex flex-column justify-content-between">
+						<a href="{{ path('app_register_influencer') }}" class="btn btn-info m-3">Je suis un influenceur</a>
+						<a href="{{ path('app_register_brand') }}" class="btn btn-info m-3">Je suis une entreprise</a>
+					</div>
 				</div>
 			</div>
 		</div>
 		<!-- /Mobile Version -->
+	</div>
+
+		
 	{% endblock %}

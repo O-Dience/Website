@@ -1,48 +1,52 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-{{ parent() }} - Influenceurs
+{{ parent() }} - Les marques
 {% endblock %}
 {% block stylesheets %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link rel="stylesheet" href="{{asset('assets/css/influencer_list.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/user_list.css')}}">
 {% endblock %}
 
 {% block body %}
 <!-- Team -->
-<section id="team" class="pb-5">
-    <div class="container">
-        <h5 class="section-title h1">Les Marques</h5>
-        <small>Ajouter menu des filtres, liens RS dynamiques</small>
+<section id="team" class="pb-5 px-0 px-sm-2">
+    <div class="container-fluid container-lg mt-5">
+        <h5 class="section-title h2">Les Marques</h5>
+        {% include 'partials/_filters.html.twig' %}
         <div class="row">
         {% for brand in users %}
             <!-- Team member -->
-            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="col-xs-12 col-md-6 col-xl-4 panel mx-auto">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="{{asset('assets/images/avatar_user/' ~ brand.picture ) }}" alt="card image"></p>
+                                    <p><img class="img-fluid profile-img" src="{{asset('assets/images/avatar_user/' ~ brand.picture ) }}" alt="card image"></p>
 
                                     <div>
                                     <h4 class="card-title"><span class="text-danger">{{brand.username}}</span></h4> 
-                                     <a href="{{path('user_favorite', {'id': brand.id}) }}" class="col-md-6 col-xs-4 well js-fav">
+{#                                      <a href="{{path('user_favorite', {'id': brand.id}) }}" class="col-md-6 col-xs-4 well js-fav">
                                             {% if app.user and brand.isFavByUser(app.user) %}
                                                 <i class=" fa fa-heart fa-lg "></i> 
                                             {% else %}
                                             <i class="fa fa-heart-o fa-lg "></i>
                                             {% endif %}
-                                        </a>
+                                        </a> #}
                                     </div>  
 
                                     <p class="card-text">
-                                    {% for category in brand.categories %}
-                                    <span class="label label-info">{{ category.label }}</span>
-                                    {% endfor %}
+                                    <div class="profile-usertitle-job d-flex justify-content-center ">	
+                                        {% for category in brand.categories %}
+                                        <div class="d-flex flex-column mx-1">
+                                            <img src="{{ asset('assets/images/category_picto/' ~ category.picto) }}" alt="{{ category.label }}" class="category__picto mx-auto">
+                                            <small>{{ category.label }}</small>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
                                     </p>
                                     <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-plus"></i></a>
-                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -60,50 +64,18 @@
                                             {% endif %}
                                         </a>
                                     </div>
-                                    {% if brand.description is not empty %}
-                                    <p class="card-text">{{brand.description | slice(0, 100)}}...</p>
-                                    {% else %}
-                                    <p class="card-text">L'utilisateur n'a pas renseigné de description</p>
-                                    {% endif %}
+                                    <p class="card-text">{{ (brand.description) ? brand.description|slice(0, 100) : "Cet utilisateur n'a pas encore rempli sa bio, mais n'hésitez pas à consulter son profil "}}...</p>
                                     <a href="{{path('user_show', {id: brand.id})}}" class="btn btn-danger btn-sm"><span class="text-white">Profil</span></a>
                                     {% if app.user and brand.isReportedByUser(app.user) %}
-                                        <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
-                                    {% else %}
-                                        <a href="{{ path('user_report', {id:brand.id}) }}" class="btn btn-danger btn-sm js-report user -not-reported"><span class="text-white">Signaler</span></a>
+                                        <a href="" class="btn btn-danger btn-sm js-report user-reported"><span class="text-white">Signalé !</span></a>
                                     {% endif %}
                                     <ul class="list-inline mt-3">
                                         {% for social in brand.userSocials %}
-                                        {% if social.social.name == 'Facebook' %}
                                         <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-facebook"></i>
+                                            <a class="social-icon text-xs-center" target="_blank" href="{{ social.link }}">
+                                                <i class="fa fa-{{ social.social.name|lower }}"><span data-network-id="{{ social.social.id }}"></span></i>
                                             </a>
                                         </li>
-                                        {% elseif social.social.name == 'Twitter' %}
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-twitter"></i>
-                                            </a>
-                                        </li>
-                                        {% elseif social.social.name == 'Instagram' %}
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-instgram"></i>
-                                            </a>
-                                        </li>
-                                        {% elseif social.social.name == 'Twitch' %}
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-twitch"></i>
-                                            </a>
-                                        </li>
-                                        {% elseif social.social.name == 'Snapchat' %}
-                                        <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="#">
-                                                <i class="fa fa-snapchat"></i>
-                                            </a>
-                                        </li>
-                                        {% endif %}
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -122,30 +94,84 @@
 
 {% block javascripts %}
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
 
-    function onClickBtnFav(evt){
+    let categoryFilter = '';
+    let networkFilter = '';
+	// Filters announcements by category
+    function filterByCategory(evt) {
+        categoryFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Filters announcements by social network
+    function filterByNetwork(evt) {
+        networkFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Updates display of announcements according to the filters
+    function updateDisplay() {
+        document.querySelectorAll('.panel').forEach(function(announcement){
+            let foundCategory = false;
+            let foundNetwork = false;
+            
+            if (categoryFilter == '') {
+                foundCategory = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryFilter) {
+                        foundCategory = true;
+                    }
+                })
+            }
+
+            if (networkFilter == '') {
+                foundNetwork = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
+                    if (network.dataset.networkId == networkFilter) {
+                        foundNetwork = true;
+                    }
+                })
+            }
+            
+            if (foundCategory && foundNetwork) {
+
+							announcement.classList.remove("d-none")
+							announcement.nextElementSibling.classList.remove("d-none")
+              //announcement.style.display = 'flex';
+              //announcement.nextElementSibling.style.display = 'flex';
+            }
+            else {
+							announcement.classList.add("d-none")
+							announcement.nextElementSibling.classList.add("d-none")
+                // announcement.style.display = 'none';
+                // announcement.nextElementSibling.style.display = 'none';
+            }
+        })
+    }
+
+        function onClickBtnFav(evt){
         evt.preventDefault()
         const url = this.href
         const icone = this.querySelector('i');
         let favlink = evt.currentTarget;
-        
+        let favtext = this.querySelector('.favtext');
 
         axios.get(url).then(function(response){
-
-            if(icone.classList.contains('fa-heart-o') ){
+            if(icone.classList.contains('fa-heart-o')){
                 icone.classList.replace('fa-heart-o', 'fa-heart')
-              
-
+                favtext.innerHTML = "Retirer des favoris";
             } else{
                 icone.classList.replace('fa-heart', 'fa-heart-o')
-                
+                favtext.innerHTML = "Ajouter aux favoris";
             }
-
         });
     }
 
@@ -161,12 +187,14 @@
             }
         });
     }
-
         document.querySelectorAll('a.js-fav').forEach(function(link){
-            link.addEventListener('click', onClickBtnFav)
-        })
-        document.querySelectorAll('a.js-report').forEach(function(link){
-            link.addEventListener('click', onClickBtnReport);
-        })
-    </script>
+        link.addEventListener('click', onClickBtnFav)
+    })
+    document.querySelectorAll('a.js-report').forEach(function(link){
+        link.addEventListener('click', onClickBtnReport);
+    })
+
+		document.getElementById('category_label').addEventListener('change', filterByCategory);
+    document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
+		</script>
 {% endblock %}

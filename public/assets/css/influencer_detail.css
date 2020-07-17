@@ -69,13 +69,17 @@ a .material-icons {
     z-index: 3;
 }
 
+.profile-page{
+    background-color: #3C4858;
+}
+
 .profile-page .profile {
     text-align: center;
 }
 
 .profile-page .profile img {
-    max-width: 160px;
-    width: 100%;
+    width: 150px;
+    height: 150px;
     margin: 0 auto;
     -webkit-transform: translate3d(0,-50%,0);
     -moz-transform: translate3d(0,-50%,0);

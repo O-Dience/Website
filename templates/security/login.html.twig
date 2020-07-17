@@ -5,15 +5,15 @@
 
 {% block stylesheets %}
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"/>
-	<link rel="stylesheet" href="{{asset('assets/css/login.css')}}">
+	<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 {% endblock %}
 {% block javascript %}
 	<script src="https://apis.google.com/js/platform.js" async defer></script>
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid homepage__main__div">
-	<form method="post" class="px-0">
+<div class="container-fluid d-flex flex-column justify-content-center homepage__main__div">
+	<form method="post" class="w-100 px-sm-3 px-md-5 login__form">
 		<div>
 			<h1 style="color:#495057;">Connexion</h1>
 		</div>
@@ -50,18 +50,17 @@
 			<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe">
 		</div>
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-		<div>
-		<button type="submit" class="btn btn-success mr-2">
-			<span class="glyphicon glyphicon-off"></span>
-			Se connecter
-        </button>
-		<button type="submit" class="btn btn-success ml-2">
-			<span class="glyphicon glyphicon-off"></span>
-			<a href="{{path('app_forgot_password_request')}}" class="link_password">Mot de passe oublié?</a>
-        </button>
+
+		<div class="d-flex flex-column">
+			<button type="submit" class="btn btn-success mx-5">
+				<span class="glyphicon glyphicon-off"></span>
+				Se connecter
+			</button>
+			<a href="{{path('app_forgot_password_request')}}" class="">Mot de passe oublié?</a>
 		</div>
 
 		
 	</form>
 	</div>
+	 
 {% endblock %}

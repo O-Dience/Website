@@ -1,76 +1,26 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/dashboard.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ user.username }} - Réseaux sociaux{% endblock %}
-
-{% block stylesheets %}
-<link rel="stylesheet" href="{{asset('assets/css/user_social.css')}}">
-{% endblock %}
-
-{% block body %}
-
-<div class="container-md ">
-	<div class="row profile align-items-center">
-		<div class="col-md-3">
-			{% include 'partials/_profile_sidebar.html.twig' %}
-		</div>
-
-		<div class="col-md-9  pb-3 pt-3">
+{% block content %}
+		<div class="rounded pb-3 pt-3 profile-content  bg-light">
 			<div class="social-content bg-light">
-				<h3 class="mb-3 text-center">La gestion de tes réseaux, c'est ici que ça se passe !</h3>
+				<h3 class="mb-5 text-center">La gestion de tes réseaux, c'est ici que ça se passe !</h3>
 				<div class="text-center mb-3">
-						<a href="{{ path('social_add', {id:user.id }) }}" class="link_social">Ajouter un nouveau profil</a>
-					</div>
-				<div class="d-flex flex-justify-between text-center flex-wrap col-12">
-					
+					<a href="{{ path('social_add', {id:user.id }) }}" class="link_social btn btn-primary">Ajouter un nouveau profil</a>
+				</div>
+				<div class="d-flex flex-justify-around text-center flex-wrap col-12">
 					{% for socialProfile in user.userSocials %}
-					<div class="col-5 social__div mt-2 mb-5">
-						{% if socialProfile.social.name == 'Facebook' %}
-							<a href="{{ socialProfile.link }}">Mon Facebook </a>
-						<div data-id={{socialProfile.id}} >
-							<button class="delete_social"> supprimer </button>
-							<button class="edit_social">
-								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
-							</button>
-						</div>
-						{% elseif socialProfile.social.name == 'Twitch' %}
-						<div >
-							<a href="{{ socialProfile.link }}"> Mon compte Twitch</a>
-						</div>
-						<div data-id={{socialProfile.id}} >
-							<button class="delete_social"> supprimer </button>
-							<button class="edit_social">
-								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
-							</button>
-						</div>
-						{% elseif socialProfile.social.name == 'Instagram' %}
+					<div class="col-xl-12 social__div my-2 mx-auto d-flex justify-content-between align-items-center">
 						<div>
-							<a href="{{ socialProfile.link }}">Mon profil Insta </a>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize--socials" alt="">
+						</div>
+						<div>
+							<a href="{{ socialProfile.link }}" target="_blank">Mon {{ socialProfile.social.name }} </a>
 						</div>
 						<div data-id={{socialProfile.id}} >
-							<button class="delete_social"> supprimer </button>
-							<button class="edit_social">
-								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
+							<button class="delete_social btn btn-danger"> Supprimer </button>
+								<a href="{{path('social_edit', {id: socialProfile.id}) }}" class="btn btn-primary">Modifier</a>
 							</button>
 						</div>
-						{% elseif socialProfile.social.name == 'Twitter' %}
-						<a href="{{ socialProfile.link }}">Mon compte Twitter </a>
-						<div data-id={{socialProfile.id}} >
-							<button class="delete_social"> supprimer </button>
-							<button class="edit_social">
-								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
-							</button>
-						</div>
-						{% elseif socialProfile.social.name == 'Snapchat' %}
-						<a href="{{ socialProfile.link }}">
-							Mon compte Snapchat
-						</a>
-						<div data-id={{socialProfile.id}} >
-							<button class="delete_social"> supprimer </button>
-							<button class="edit_social">
-								<a href="{{path('social_edit', {id: socialProfile.id}) }}">Modifier</a>
-							</button>
-						</div>
-						{% endif %}
 					</div>
 					{% endfor %}
 				</div>
@@ -83,5 +33,4 @@
 {% block javascripts %}
 <script src="{{asset('assets/js/api.js')}}"></script>
 <script src="{{asset('assets/js/social.js')}}"></script>
-
 {% endblock %}

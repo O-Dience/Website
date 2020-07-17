@@ -1,32 +1,28 @@
+/** GENERAL **/
 body {
   background-image: url('../images/background.jpg');
-  height: 100vh;
   font-family: 'Roboto', sans-serif;
   background-position: center;
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
+  width: 100%;
 }
 
-.text-info{
-  color: #2a9d8f!important;
+.text-info {
+  color: #2a9d8f !important;
 }
 
-.bg-info{
-  background-color: #2a9d8f!important;
+.bg-info {
+  background-color: #2a9d8f !important;
 }
 
-
-.text-danger{
-  color: #264653!important;
+.text-danger {
+  color: #264653 !important;
 }
 
-.bg-danger{
-  background-color: #264653!important;
-}
-
-.main__card {
-  margin-top: 20vh;
+.bg-danger {
+  background-color: #264653 !important;
 }
 
 .user-card {
@@ -38,72 +34,304 @@ body {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.10);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 3);
   color: white;
-  width:100%;
-  height: 100vh;
-  padding-top: 30px;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 5em;
 }
 
-.homepage__main__div--influencer {
-  margin-top: 20px!important;
-  color: #2a9d8f!important;
-  font-weight: 100;
-  height: 40em;
-}
-.homepage__main__div--brand {
-  margin-top: 20px!important;
-  color: #264653!important;
-  font-weight: 100;
-  height: 40em;
+body .bg-dark {
+  background-color: #424242 !important;
+  ;
 }
 
-.form__right{
-  overflow-y: scroll;
-  height: 100%;
-}
-.homepage__main__div--brand {
-  color: #DA3343;
-}
-body .bg-dark{
-  background-color: #424242!important;;
+body .bg-info {
+  background-color: #2A9D8F !important;
+  ;
 }
 
 .bg-info .brand__label {
-  font-family: 'Balsamiq Sans', cursive!important;
-  color:white!important;
+  font-family: 'Balsamiq Sans', cursive !important;
+  color: white !important;
 }
 
-.bg-info .nav-item .nav-link{
-  color: white!important;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 14px!important;
+.bg-info .nav-item .nav-link {
+  color: white !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px !important;
 }
 
 .bg-dark .brand__label {
-  font-family: 'Balsamiq Sans', cursive!important;
-  color: white!important;
+  font-family: 'Balsamiq Sans', cursive !important;
+  color: white !important;
 }
 
-.bg-dark .nav-item .nav-link{
-  color: white!important;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 14px!important;
+.bg-dark .nav-item .nav-link {
+  color: white !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px !important;
 }
+/** /GENERAL **/
 
+
+
+/** HOMEPAGE **/
 .deepshd {
   color: white;
   letter-spacing: .1em;
-  text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 1px 0 #2c2c2c, 0 2px 0 #2a2a2a, 0 2px 0 #282828, 0 3px 0 #262626, 0 3px 0 #242424, 0 3px 0 #222, 0 4px 0 #202020, 0 4px 0 #1e1e1e, 0 5px 0 #1c1c1c, 0 5px 0 #1a1a1a, 0 6px 0 #181818, 0 6px 0 #161616;
-  font-size: 60px;
-  padding: 80px 50px 10px 50px;
+  text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5);
+  font-size: 2em;
   text-align: center;
   text-rendering: optimizeLegibility;
 }
 
-.deepshd--small{
+.deepshd--small {
   color: white;
   letter-spacing: .1em;
-  text-shadow: 0 -1px 0 #fff, 0 1px 0 #2e2e2e, 0 1px 0 #2c2c2c, 0 2px 0 #2a2a2a, 0 2px 0 #282828, 0 3px 0 #262626, 0 3px 0 #242424, 0 3px 0 #222, 0 4px 0 #202020, 0 4px 0 #1e1e1e, 0 5px 0 #1c1c1c, 0 5px 0 #1a1a1a, 0 6px 0 #181818, 0 6px 0 #161616;
-  font-size: 25px;
+  text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,.5);
+  font-size: 1em;
   text-align: center;
   text-rendering: optimizeLegibility;
+}
+/** /HOMEPAGE **/
+
+
+
+/** REGISTRATION **/
+
+.container-fluid{
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.form__right {
+  margin-top: 4em!important;
+}
+
+.homepage__main__div--influencer {
+  margin-top: 20px !important;
+  color: #2a9d8f !important;
+}
+
+.homepage__main__div--brand {
+  margin-top: 1em !important;
+  color: #264653 !important;
+}
+
+.badge{
+  white-space: normal!important;
+}
+
+/** /REGISTRATION **/
+
+
+
+/** LOGIN **/
+
+.google-btn {
+  width: 184px;
+  height: 42px;
+  background-color: #4285F4;
+  border-radius: 2px;
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .25);
+}
+
+.google-icon-wrapper {
+  position: absolute;
+  margin-top: 1px;
+  margin-left: 1px;
+  width: 40px;
+  height: 40px;
+  border-radius: 2px;
+  background-color: white;
+}
+
+.google-icon {
+  position: absolute;
+  margin-top: 11px;
+  margin-left: -8px;
+  width: 18px;
+  height: 18px;
+}
+
+.btn-text {
+  float: right;
+  margin: 11px 2px 0 0;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  font-family: "Roboto";
+}
+
+.google-btn:hover {
+  box-shadow: 0 0 6px #4285F4;
+}
+.google-btn:active {
+  background: #4285F4;
+}
+
+.login__form {
+  background-color: white;
+  padding: 2em;
+  text-align: center;
+  margin: 2.5em auto 0 auto;
+  border-radius: 0.375rem;
+  max-width: 750px;
+}
+
+/** /LOGIN **/
+
+
+
+/** CONTACT **/
+
+.content {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.mb40 {
+  margin-bottom: 40px;
+}
+
+.img__profile__contact{
+  max-width: 100%;
+  height: auto;
+}
+
+.team-img {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.team-img img {
+  width: 100%;
+}
+
+.team-img img.border {
+  border-color: #fff !important;
+}
+
+.social-media {
+  position: absolute;
+  bottom: 36px;
+  opacity: 0;
+}
+
+.social-icon-box {
+  margin-bottom: 5px;
+  background-color: #193e6b;
+  width: 46px;
+  height: 46px;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 15px 19px 26px 16px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.team-img:hover .social-media {
+  opacity: 1;
+  transition: 2s ease;
+}
+
+.team-block.active .social-media {
+  opacity: 1;
+  transition: 2s ease;
+}
+
+/** /CONTACT **/
+
+/** FOOTER **/
+.app__footer{
+  width: 100%;
+  margin: 0;
+  padding: 2em;
+  background-color: #161616;
+  color: white;
+}
+/** /FOOTER **/
+
+
+
+@media screen and (min-width: 576px) and (max-width: 767px)
+{
+
+  /** GENERAL **/
+
+  .container-fluid{
+    padding-right: 3em;
+    padding-left: 3em;
+  }
+  /** /GENERAL **/
+
+}
+
+@media screen and (min-width: 768px)
+{
+
+  /** HOMEPAGE **/
+
+  .deepshd {
+    font-size: 2.5em;
+  }
+
+  .deepshd--small {
+    font-size: 1em;
+  }
+  /** /HOMEPAGE **/
+
+
+
+  /** REGISTRATION **/
+  
+  .homepage__main__div--brand, .homepage__main__div--influencer {
+    background-color: #F8F9FA;
+    margin: 0 auto;
+    font-weight: 100;
+    height: 40em;
+    padding: 1em;
+  }
+
+  .form__right {
+    margin-top: 0!important;
+    overflow-y: scroll;
+    height: 95%;
+  }
+  /** /REGISTRATION **/
+
+
+}
+
+@media screen and (min-width: 992px)
+{
+
+  /** GENERAL **/
+
+  .container-fluid{
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  /** /GENERAL **/
+
+
+
+  /** HOMEPAGE **/
+
+  .deepshd {
+    font-size: 4em;
+  }
+
+  .deepshd--small {
+    font-size: 2em;
+  }
+  /** /HOMEPAGE **/
+
+
+
+  /** REGISTRATION **/
+  .homepage__main__div--brand, .homepage__main__div--influencer {
+    max-width: 80%;
+  }
+  /** /REGISTRATION **/
+
 }

@@ -1,20 +1,7 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/dashboard.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ user.username }} - Tableau de bord{% endblock %}
-
-{% block stylesheets %}
-<link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">
-{% endblock %}
-
-{% block body %}
-<div class="container-md ">
-    <div class="row profile align-items-center">
-        <div class="col-md-3">
-            {% include 'partials/_profile_sidebar.html.twig' %}
-        </div>
-
-        <div class="col-md-9 {{ (favorites | length >= 3 ) ? 'overflow_dashboard' : '' }}">
-            <div class="profile-content bg-light">
+{% block content %}
+            <div class="profile-content bg-light overflow-rounded {{ (favorites | length >= 3 ) ? 'overflow_dashboard' : '' }}">
             {% if 'default' in user.picture or user.description is empty or user.userSocials | length == 0 %}
                 {% include 'user/influencer/empty_dashboard.html.twig' %}
             {% endif %} 
@@ -26,7 +13,7 @@
                 <div>
                 {% for favorite in favorites %}
                     <div class="favAnnouncement mb-2" data-id="{{favorite.id}}">
-                        <div class="list-group-item list-group-item-action my-1">
+                        <div class="list-group-item  my-1">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">{{ favorite.announcement.title }}</h5>
                                 <div class="d-flex flex-row-reverse" >
@@ -44,7 +31,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="mb-1">{{ favorite.announcement.content |slice(0,100)}}...</p>
+                            <p class="mb-1">{{ favorite.announcement.content |slice(0,180)}}...</p>
                             <div class="d-flex row justify-content-between">
                                 <div class="ml-3">
                                     {% for category in favorite.announcement.categories %}
@@ -58,9 +45,7 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
 {% endblock %}
 
 {% block javascripts %}

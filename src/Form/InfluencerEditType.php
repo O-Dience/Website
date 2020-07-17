@@ -39,7 +39,20 @@ class InfluencerEditType extends AbstractType
                 ])
             ->add('description', TextareaType::class, [
                 'label' => 'Présente toi en quelques mots:',
-                'required' => false,])
+                'required' => false,
+                'attr'=>([ 
+                    'rows'=> 5 , 
+                    'cols'=> 40,
+                ]),
+                'constraints'=> [
+                    new Length([
+                        // max length allowed by Symfony for security reasons
+                        'max' => 300,
+                        'maxMessage' => 'Votre description est trop longue, elle ne doit pas dépasser {{ limit }} caractères',
+                    ]),
+                    ]
+                    ,
+            ])
             ->add('pictureFile', FileType::class, [
                 'label' => 'Photo de profil',
                 'mapped' => false,
@@ -53,7 +66,9 @@ class InfluencerEditType extends AbstractType
                     ])
                 ],
             ])
-            ->add('email', EmailType::class, ['label'=>'Votre e-mail'])
+            ->add('email', EmailType::class, [
+                'label'=>'Votre e-mail'
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux mots de passe doivent être identiques.',

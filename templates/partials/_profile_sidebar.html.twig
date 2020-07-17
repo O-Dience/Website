@@ -2,61 +2,82 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
 {% endblock %}
 
-<div
-	class="profile-sidebar bg-light">
-	<!-- SIDEBAR USERPIC -->
-	<div class="profile-userpic">
-		<img src="{{asset('/assets/images/avatar_user/') ~ user.picture}}" class="img-fluid" alt="">
-	</div>
-	<!-- END SIDEBAR USERPIC -->
-	<!-- SIDEBAR USER TITLE -->
-	<div class="profile-usertitle">
-		<div class="profile-usertitle-name">
-			{{user.username}}
+<div class="col-lg-3 px-0 px-md-2">
+	<div class="profile-sidebar bg-light rounded d-flex flex-column mb-4 mb-lg-0">
+		<!-- SIDEBAR USERPIC -->
+		<div class="profile-userpic">
+			<img src="{{asset('/assets/images/avatar_user/') ~ app.user.picture}}" class="resized__img" alt="">
 		</div>
-		<div class="profile-usertitle-job">
-		<p>Domaine: {% for category in user.categories %}
-			<span class="label label-info">{{category.label}}</span></p>
-		{% endfor %}
+		<!-- END SIDEBAR USERPIC -->
+		<!-- SIDEBAR USER TITLE -->
+		<div class="profile-usertitle">
+			<div class="profile-usertitle-name">
+				{{app.user.username}}
+			</div>
+			<div class="profile-usertitle-job d-flex justify-content-center">			
+				{% for category in app.user.categories %}
+				<div class="category__container--{{ ("ROLE_INFLUENCER" in app.user.roles) ? "influencer" : "brand" }} d-flex flex-column mx-1">
+					<img src="{{ asset('assets/images/category_picto/' ~ category.picto) }}" alt="{{ category.label }}" class="category__picto picto__{{ ("ROLE_INFLUENCER" in app.user.roles) ? "influencer" : "brand" }}">
+					<small>{{ category.label }}</small>
+				</div>
+				{% endfor %}
+			</div>
 		</div>
-	</div>
-	<!-- END SIDEBAR USER TITLE -->
-	<!-- SIDEBAR BUTTONS -->
-	<div class="profile-userbuttons">
-		{% if user.userFavorites is not empty %}
-			<p>Vous avez {{ user.userFavorites | length }} coups de coeur !</p>
-		{% endif %}
-	</div>
-
-	<!-- END SIDEBAR BUTTONS -->
-	<!-- SIDEBAR MENU -->
-	<div class="profile-usermenu">
-		<ul class="list-group">
-			{% if ( 'ROLE_BRAND' in user.roles) %}
-			<a href="{{path('user_dashboard', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : '' }}">
-				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
-				Mes annonces en ligne
-			</a>
-			<a href="{{path('announcement_new', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'announcement_new') ? 'active' : '' }}">
-				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
-				Créer une annonce
-			</a>
-			{% elseif ( 'ROLE_INFLUENCER' in user.roles) %}
-			<a href="{{path('user_dashboard', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : '' }}">
-				<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
-				Mes annonces favorites
-			</a>
+		<!-- END SIDEBAR USER TITLE -->
+		<!-- SIDEBAR BUTTONS -->
+		<div class="profile-userbuttons">
+			{% if app.user.userFavorites is not empty %}
+				<p>Vous avez
+					{{ app.user.userFavorites | length }}
+					coups de coeur !</p>
 			{% endif %}
-			<a href="{{path('user_edit', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'user_edit') ? 'active' : '' }}">
-				<i class="fa fa-cog ml-1 mr-1" aria-hidden="true"></i>
-				Editer mon profil
-			</a>
-			<a href="{{path('social_profile', {id: user.id})}}" class="btn  list-group-item {{ ( app.request.get('_route') == 'social_profile') ? 'active' : '' }}">
-				<i class="fa fa-mobile ml-1 mr-1" aria-hidden="true"></i>
-				Gérer mes réseaux sociaux
-			</a>
-		</ul>
-	</div>
-	<!-- END MENU -->
-</div>
+		</div>
 
+		<!-- END SIDEBAR BUTTONS -->
+
+		
+		<!-- SIDEBAR MENU -->
+
+
+
+		<button class="btn btn-primary  mb-2 mx-5 d-lg-none" type="button" data-toggle="collapse" data-target="#collapseSideMenu" aria-expanded="false" aria-controls="collapseExample">
+			Ouvrir le menu
+		</button>
+
+		<div class="collapse d-lg-block" id="collapseSideMenu">
+			<div class="profile-usermenu">
+				<ul class="list-group">
+					{% if ( 'ROLE_BRAND' in app.user.roles) %}
+						<a href="{{path('user_dashboard', {id: app.user.id})}}" class="btn btn-primary list-group-item p-1  {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : 'text-dark' }}">
+							<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
+							Mes annonces en ligne
+						</a>
+						<a href="{{path('announcement_new', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1  {{ ( app.request.get('_route') == 'announcement_new') ? 'active' : 'text-dark' }}">
+							<i class="fa fa-edit ml-1 mr-1" aria-hidden="true"></i>
+							Créer une annonce
+						</a>
+					{% elseif ( 'ROLE_INFLUENCER' in app.user.roles) %}
+						<a href="{{path('user_dashboard', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1 {{ ( app.request.get('_route') == 'user_dashboard') ? 'active' : 'text-dark' }}">
+							<i class="fa fa-home ml-1 mr-1" aria-hidden="true"></i>
+							Mes annonces favorites
+						</a>
+
+					{% endif %}
+					<a href="{{path('user_show', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1  {{ ( app.request.get('_route') == 'user_show') ? 'active' : 'text-dark' }}">
+						<i class="fa fa-user ml-1 mr-1" aria-hidden="true"></i>
+							Voir mon profil
+					</a>
+					<a href="{{path('user_edit', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1  {{ ( app.request.get('_route') == 'user_edit') ? 'active' : 'text-dark' }}">
+						<i class="fa fa-cog ml-1 mr-1" aria-hidden="true"></i>
+							Editer mon profil
+					</a>
+					<a href="{{path('social_profile', {id: app.user.id})}}" class="btn btn-primary  list-group-item p-1  {{ ( app.request.get('_route') == 'social_profile') ? 'active' : 'text-dark' }}">
+						<i class="fa fa-mobile ml-1 mr-1" aria-hidden="true"></i>
+							Gérer mes réseaux sociaux
+					</a>
+				</ul>
+			</div>
+		</div>
+			<!-- END MENU -->
+	</div>
+</div>

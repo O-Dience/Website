@@ -9,7 +9,7 @@
 
 {% block body %}
 
-
+<div class="container-fluid reset__main__div">
 <div class="container">
 {% for flashError in app.flashes('reset_password_error') %}
     <div class="alert alert-danger" role="alert">{{ flashError }}</div>
@@ -30,6 +30,7 @@
         Envoyer l'e-mail
     </button>
     {{ form_end(requestForm) }}
+</div>
 </div>
 {% endblock %}
 

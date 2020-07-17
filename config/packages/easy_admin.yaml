@@ -150,6 +150,10 @@ easy_admin:
                             property: 'announcements', 
                             label: 'Annonces liés' 
                         },
+                        { 
+                            property: 'userSocials', 
+                            label: 'Utilisateurs liés' 
+                        },
                     ]
                 actions:
                     [
@@ -236,6 +240,21 @@ easy_admin:
                     [
                         { 
                             property: 'username',
+                        },
+                        { 
+                            property: 'email',
+                        },
+                        { 
+                            property: 'password',
+                        },
+                        { 
+                            property: 'birthdate',
+                            type_options: {
+                                'widget': 'single_text', 
+                                'attr': {
+                                    'class': 'datepicker'
+                                    }
+                            }
                         },
                         {
                             property: 'roles',

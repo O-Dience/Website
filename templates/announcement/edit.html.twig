@@ -1,13 +1,48 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/dashboard.html.twig' %}
+{% block content %}
+<div class="">
+    <div class="container-md mt-5">
+        <div class="row profile align-items-center">
+            <div class="card bg-light col-md-12">
+            <article class="card-body">
+            <h4 class="card-title mt-3 text-center mb-5">Modifier l'annonce </h4>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}	
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Titre</label>
+                        {{form_widget(form.title)}}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Image<em>(optionnel)</em></label>
+                        {{form_widget(form.pictureFile)}}	
+                    </div>
+                </div>  
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label>Détail</label>
+                        {{form_widget(form.content)}}	
+                    </div>
+                </div>     
 
-{% block title %} {{parent()}} - Editer une annonce {% endblock %}
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Réseaux requis <em>(optionnel)</em></label>
+                        {{form_widget(form.socialNetworks)}}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Catégories</label>
+                        {{form_widget(form.categories)}}	
+                    </div>
+                </div>
 
-{% block body %}
-    <h1>Editer l'annonce: {{ announcement.title }}</h1>
-
-    {{ include('announcement/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('announcement_list') }}">Liste des annonces</a>
-
-    {{ include('announcement/_delete_form.html.twig') }}
+                <div class="d-flex justify-content-between">
+                    <div class="form-group col-md-4">
+                        <button type="submit" class="btn btn-primary btn-block"> Valider les modifications </button>
+                    </div>             
+                </div>                                                   
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

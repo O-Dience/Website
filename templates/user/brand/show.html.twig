@@ -9,8 +9,8 @@
 	<link rel="stylesheet" href="{{asset('assets/css/brand_detail.css')}}">
 {% endblock %}
 {% block body %}
-	<div class="row py-5 px-4 bg-danger">
-		<div class="col-xl-8 col-md-8 col-sm-12 mx-auto">
+	<div class="row mt-5 py-5 px-lg-4 bg-danger">
+		<div class="col-xl-8 col-md-10 col-sm-12 mx-auto">
 			<!-- Profile widget -->
 			<div class="bg-white shadow rounded overflow-hidden">
 				<div class="px-3 bg-dark">
@@ -30,38 +30,24 @@
 				</div>
 				<div class="d-flex flex-column align-items-center justify-content-between mb-3 mx-auto">
 					<h2 class="my-5"> Profil</h2>
-					<p class="mb-0 text-center mx-5">{{ user.description }}</p>
+					<p class="mb-0 text-center mx-5">{{ user.description | nl2br }}</p>
 				</div>
-				<div class="bg-light p-4 d-flex justify-content-end text-center">
-					<ul class="list-inline mb-0">
-						<li class="list-inline-item">
-							<h5 class="font-weight-bold mb-0 d-block">
-								{{ user.announcements|length }}
-							</h5>
-							<small class="text-muted">
-								<i class="fa fa-user-circle-o mr-1"></i>
-								Annonces actuellement en ligne
-							</small>
+				<div class="bg-light p-4 text-center">
+					<ul class="list-inline mb-0 d-flex flex-column flex-sm-row justify-content-around">
+						<li class="">
+							<h5 class="font-weight-bold my-2 d-block">{{ user.announcements|length }}</h5>
+							<small class="text-muted"><i class="fa fa-user-circle-o mr-1"></i>Annonces actuellement en ligne</small>
 						</li>
-						<li class="list-inline-item">
-							<h5 class="font-weight-bold mb-0 d-block">{{ user.announcements|length }}</h5>
-							<small class="text-muted">
-								<i class="fa fa-picture-o mr-1"></i>
-								Annonces postées
-							</small>
+						<li class="">
+							<h5 class="font-weight-bold my-2 d-block">{{ user.announcements|length }}</h5>
+							<small class="text-muted"><i class="fa fa-picture-o mr-1"></i>Annonces postées</small>
 						</li>
-						<li class="list-inline-item">
-							<h5 class="font-weight-bold mb-0 d-block">
-								{{ likes }}
-							</h5>
-							<small class="text-muted">
-								<i class="fa fa-user-circle-o mr-1"></i>
-								Total de mise en favoris
-							</small>
+						<li class="">
+							<h5 class="font-weight-bold my-2 d-block">{{ likes }}</h5>
+							<small class="text-muted"><i class="fa fa-user-circle-o mr-1"></i>Total de mise en favoris</small>
 						</li>
 					</ul>
 				</div>
-
 				<div class="py-4 px-4">
 					{% if user.announcements|length > 0 %}
 						<div class="d-flex align-items-center justify-content-between mb-3">
@@ -70,15 +56,13 @@
 						</div>
 						<div class="row">
 							{% for announcement in user.announcements %}
-								<div class="col-lg-6 mb-2 pr-lg-1 mx-auto">
-									{% if announcement.image is null %}
-										<img src="https://image.shutterstock.com/image-photo/pink-pineapple-concept-600w-1019030506.jpg" alt="" class="img-fluid rounded shadow-sm h-auto w-100">
-									{% else %}
-										<img src="{{asset('assets/images/image_announcement/')}}{{ announcement.image }}" alt="" class="img-fluid rounded shadow-sm">
+								<div class="col-lg-6 mb-2 pr-lg-1 mx-auto text-center border p-1">
+									{% if announcement.image %}
+										<img src="{{asset('assets/images/image_announcement/')}}{{ announcement.image }}" alt="" class="img-fluid rounded shadow-sm img__announcement">
 									{% endif %}
 									<div class="ml-2 mr-2  announcement__details">
-										<h5>{{ announcement.title}}</h5>
-										<a class="btn btn-info text-white">Détail</a>
+										<p>{{ announcement.title}}</p>
+										<a href="{{path('announcement_show', {'id' : announcement.id})}}" class="btn btn-info text-white">Détail</a>
 									</div>
 								</div>
 							{% endfor %}

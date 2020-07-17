@@ -31,7 +31,7 @@ class AnnouncementType extends AbstractType
                 'constraints'=>[ new NotBlank([
                 'message'=> 'Précisez ce que vous recherchez']),
                 new Length([
-                    'min' => 200,
+                    'min' => 50,
                     'minMessage' => 'La description de l\'annonce nécessite au moins {{ limit }} caractères',
                     // max length allowed by Symfony for security reasons
                     'max' => 4096,
@@ -41,7 +41,8 @@ class AnnouncementType extends AbstractType
                     'rows'=> 10 , 
                     'cols'=> 40,
                     'placeholder'=>'Décrivez le profil idéal pour votre projet, en quoi il consistera, la durée, le nombre de personne dont vous avez besoin et ce que vous pouvez leur apporter en retour ! ']),
-                'label'=>'Description du projet'])
+                'label'=>'Description du projet'
+                ])
             ->add('pictureFile', FileType::class, [
                 'label' => 'Image d\'illustration',
                 'mapped' => false,

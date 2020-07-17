@@ -17,7 +17,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @Route("/annonce", name="announcement_")
@@ -52,7 +55,7 @@ class AnnouncementController extends AbstractController
      */
     public function new(Request $request, ImageUploader $imageUploader): Response
     {
-           
+
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
@@ -80,13 +83,34 @@ class AnnouncementController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET", "POST"})
      */
-    public function show(Announcement $announcement): Response
+    public function show(Announcement $announcement, CategoryRepository $catRepo, Request $request, MailerInterface $mailer): Response
     {
+
+        $similarAnnouncements = $catRepo->findAnnouncementByCategory($announcement);
         $this->denyAccessUnlessGranted('show', $announcement);
 
+        // Contact form handling
+        $senderMessage = $request->request->get('txtMsg');
+        if ($senderMessage) {
+
+            $email = (new Email())
+            ->from($request->request->get('txtEmail'))
+            ->to($announcement->getUser()->getEmail())
+            ->subject('O\'Dience - ' . $request->request->get('txtName') . ' veut en savoir plus sur votre annonce !')
+            ->html('
+                <p><b>Annonce: ' . $announcement->getTitle() . '</b></p>
+                <p>' .$senderMessage. '</p>
+            
+            ');
+            $mailer->send($email);
+        }
+
+
+
         return $this->render('announcement/show.html.twig', [
+            'similarAnnouncements'=> $similarAnnouncements,
             'announcement' => $announcement
         ]);
     }
