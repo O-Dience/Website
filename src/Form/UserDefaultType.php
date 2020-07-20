@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class InfluencerType extends AbstractType
+class UserDefaultType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -40,7 +40,8 @@ class InfluencerType extends AbstractType
                             'allowEmptyString' => false,
                         ])
                     ],
-                    'label' => 'Nom d\'utilisateur'
+                    'label' => 'Nom d\'utilisateur',
+                    'help' => 'Entre 4 et 12 caractères'
                 ]
             )
             ->add(
@@ -85,7 +86,8 @@ class InfluencerType extends AbstractType
                             'max' => 4096,
                         ]),
                     ],
-                    'label' => 'Mot de passe'
+                    'label' => 'Mot de passe',
+                    'help' => 'Au moins 8 caractères'
                 ]
             )
             ->add('pictureFile', FileType::class, [
@@ -100,11 +102,13 @@ class InfluencerType extends AbstractType
                         ],
                     ])
                 ],
+                'help' => 'Maximum 1024k'
             ])
             ->add('categories', EntityType::class, [
                 'multiple' => true,
                 'class' => Category::class,
-                'choice_label' => 'label'
+                'choice_label' => 'label',
+                'help' => 'Vous pouvez choisir jusqu\'à 3 catégories'
             ]);;
     }
 
