@@ -33,6 +33,4 @@ class UserSocialController extends AbstractController
         $entityManager->flush();
         return new JsonResponse(['status' => 'Réseau supprimé'], Response::HTTP_NO_CONTENT);
     }
-
-
 }

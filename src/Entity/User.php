@@ -84,12 +84,6 @@ class User implements UserInterface
 
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
-     * 
-     */
-    private $categories;
-
-    /**
      * @ORM\OneToMany(targetEntity=Announcement::class, mappedBy="user", orphanRemoval=true)
      */
     private $announcements;
@@ -129,13 +123,17 @@ class User implements UserInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserCategory::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     */
+    private $categories;
   
 
     public function __construct(array $data = [])
     {
 
         $this->userSocials = new ArrayCollection();
-        $this->categories = new ArrayCollection();
         $this->announcements = new ArrayCollection();
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
@@ -143,6 +141,7 @@ class User implements UserInterface
         $this->reportedAnnouncements = new ArrayCollection();
         $this->reportedUsers = new ArrayCollection();
         $this->reportedBy = new ArrayCollection();
+        $this->categories = new ArrayCollection();
        }
 
     public function __toString()
@@ -353,31 +352,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Category[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Announcement[]
@@ -462,7 +436,6 @@ class User implements UserInterface
 
         return $this;
     }
-
 
 
     public function isFavByUser(User $user): bool {
@@ -609,6 +582,37 @@ class User implements UserInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserCategory[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(UserCategory $userCategory): self
+    {
+        if (!$this->categories->contains($userCategory)) {
+            $this->categories[] = $userCategory;
+            $userCategory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(UserCategory $userCategory): self
+    {
+        if ($this->categories->contains($userCategory)) {
+            $this->categories->removeElement($userCategory);
+            // set the owning side to null (unless already changed)
+            if ($userCategory->getUser() === $this) {
+                $userCategory->setUser(null);
+            }
+        }
 
         return $this;
     }
