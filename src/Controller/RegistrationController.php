@@ -3,23 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\InfluencerType;
 use App\Form\BrandType;
+use App\Form\UserDefaultType;
 use App\Service\ImageUploader;
-use DateTime;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
-* @Route("/inscription/", name="app_register_")
-*/
+ * @Route("/inscription/", name="app_register_")
+ */
 class RegistrationController extends AbstractController
 {
     /**
@@ -27,20 +25,20 @@ class RegistrationController extends AbstractController
      */
     public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
     {
- 
+
         $user = new User();
-        $form = $this->createForm(InfluencerType::class, $user);
+        $form = $this->createForm(UserDefaultType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
-            if($imageName){
+            if ($imageName) {
                 $user->setPicture($imageName);
-            }else{
+            } else {
                 //Let's attribute a random pic to our new user
-                $picture = 'default/default'. rand(1,13).'.png';
+                $picture = 'default/default' . rand(1, 13) . '.png';
                 $user->setPicture($picture);
             };
 
@@ -58,18 +56,20 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            $email = (new TemplatedEmail ())
-            ->from('contact.odience@gmail.com')
-            ->to($user->getEmail())
-            ->subject('Inscription confirmée')
-            ->htmlTemplate('registration/influencer_email.html.twig');
+            $email = (new TemplatedEmail())
+                ->from('contact.odience@gmail.com')
+                ->to($user->getEmail())
+                ->subject('Inscription confirmée')
+                ->htmlTemplate('registration/influencer_email.html.twig');
             $mailer->send($email);
 
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('registration/register_influencer.html.twig', [
-            'influencerForm' => $form->createView(),
+        return $this->render('registration/register_user.html.twig', [
+            'form' => $form->createView(),
+            // pass formVar variable to help rendering right form variation
+            'formVar' => 'influencer'
         ]);
     }
 
@@ -80,19 +80,19 @@ class RegistrationController extends AbstractController
     {
 
         if ($this->getUser()) {
-            return $this->redirectToRoute('user_dashboard', ['id'=>$this->getUser()->getId()]);
+            return $this->redirectToRoute('user_dashboard', ['id' => $this->getUser()->getId()]);
         }
         $user = new User();
-        $form = $this->createForm(BrandType::class, $user);
+        $form = $this->createForm(UserDefaultType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
-            if($imageName){
+            if ($imageName) {
                 $user->setPicture($imageName);
-            }else{
+            } else {
                 //Let's attribute a random pic to our new user
                 $picture = 'default/default-brand.png';
                 $user->setPicture($picture);
@@ -113,21 +113,23 @@ class RegistrationController extends AbstractController
             // do anything else you need here, like send an email
 
             $email = (new TemplatedEmail())
-            ->from('contact.odience@gmail.com')
-            ->to($user->getEmail())
-            ->subject('Inscription confirmée')
-            ->htmlTemplate('registration/brand_email.html.twig');
+                ->from('contact.odience@gmail.com')
+                ->to($user->getEmail())
+                ->subject('Inscription confirmée')
+                ->htmlTemplate('registration/brand_email.html.twig');
             $mailer->send($email);
 
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('registration/register_brand.html.twig', [
-            'brandForm' => $form->createView(),
+        return $this->render('registration/register_user.html.twig', [
+            'form' => $form->createView(),
+            // pass formVar variable to help rendering right form variation
+            'formVar' => 'brand'
         ]);
     }
 
-        /**
+    /**
      * @Route("question", name="oauthUser", methods={"GET", "POST"})
      */
     public function registerOauthUser()
