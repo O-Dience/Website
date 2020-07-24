@@ -88,7 +88,7 @@ class User implements UserInterface
      */
     private $announcements;
 
-     /**
+    /**
      * @ORM\OneToMany(targetEntity=AnnouncementFav::class, mappedBy="user", orphanRemoval=true)
      */
     private $favorites;
@@ -98,7 +98,7 @@ class User implements UserInterface
      */
     private $userFavs;
 
-      /**
+    /**
      * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLike", orphanRemoval=true)
      */
     private $userFavorites;
@@ -128,7 +128,7 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=UserCategory::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     private $categories;
-  
+
 
     public function __construct(array $data = [])
     {
@@ -142,7 +142,7 @@ class User implements UserInterface
         $this->reportedUsers = new ArrayCollection();
         $this->reportedBy = new ArrayCollection();
         $this->categories = new ArrayCollection();
-       }
+    }
 
     public function __toString()
     {
@@ -189,22 +189,21 @@ class User implements UserInterface
     public function getFrenchRole()
     {
         //Set path for easyadmin
-        if (in_array('ROLE_BRAND', $this->roles)){
+        if (in_array('ROLE_BRAND', $this->roles)) {
             return 'Marque';
         }
-        if (in_array('ROLE_INFLUENCER', $this->roles)){
+        if (in_array('ROLE_INFLUENCER', $this->roles)) {
             return 'Influenceur';
         }
-        if (in_array('ROLE_MODERATOR', $this->roles)){
+        if (in_array('ROLE_MODERATOR', $this->roles)) {
             return 'Modérateur';
         }
-        if (in_array('ROLE_MODERATOR', $this->roles)){
+        if (in_array('ROLE_MODERATOR', $this->roles)) {
             return 'Modérateur';
         }
-        if (in_array('ROLE_ADMIN', $this->roles)){
+        if (in_array('ROLE_ADMIN', $this->roles)) {
             return 'Administrateur';
         }
-        
     }
     /**
      * @see UserInterface
@@ -238,7 +237,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-        /**
+    /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
@@ -247,7 +246,7 @@ class User implements UserInterface
     {
         return (string) $this->username;
     }
-    
+
     public function setUsername(?string $username): self
     {
         $this->username = $username;
@@ -282,7 +281,7 @@ class User implements UserInterface
     public function getPictureWithPath()
     {
         //Set path for easyadmin
-        return 'assets/images/avatar_user/'.$this->picture;
+        return 'assets/images/avatar_user/' . $this->picture;
     }
 
     public function getStatus(): ?bool
@@ -384,11 +383,11 @@ class User implements UserInterface
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of favorites
-     */ 
+     */
     public function getFavorites()
     {
         return $this->favorites;
@@ -398,7 +397,7 @@ class User implements UserInterface
      * Set the value of favorites
      *
      * @return  self
-     */ 
+     */
     public function setFavorites($favorites)
     {
         $this->favorites = $favorites;
@@ -438,22 +437,22 @@ class User implements UserInterface
     }
 
 
-    public function isFavByUser(User $user): bool {
-        foreach($this->userFavs as $fav){
-            if($fav->getUserLike() === $user){
+    public function isFavByUser(User $user): bool
+    {
+        foreach ($this->userFavs as $fav) {
+            if ($fav->getUserLike() === $user) {
                 return true;
             }
-           
         }
         return false;
     }
-    
-    
-   
+
+
+
 
     /**
      * Get the value of userFavorites
-     */ 
+     */
     public function getUserFavorites()
     {
         return $this->userFavorites;
@@ -463,7 +462,7 @@ class User implements UserInterface
      * Set the value of userFavorites
      *
      * @return  self
-     */ 
+     */
     public function setUserFavorites($userFavorites)
     {
         $this->userFavorites = $userFavorites;
@@ -565,9 +564,9 @@ class User implements UserInterface
     }
 
     //function to check if another user was reported by this user
-    public function isReportedByUser(User $user) : bool
+    public function isReportedByUser(User $user): bool
     {
-        foreach($this->reportedBy as $report){
+        foreach ($this->reportedBy as $report) {
             if ($report->getReporter() === $user) return true;
         }
 
@@ -616,5 +615,4 @@ class User implements UserInterface
 
         return $this;
     }
-
 }

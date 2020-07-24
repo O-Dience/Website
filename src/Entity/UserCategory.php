@@ -18,13 +18,13 @@ class UserCategory
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="categories")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="categories", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="user")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="user", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
@@ -40,7 +40,8 @@ class UserCategory
         $this->notification = false;
     }
 
-    public function __toString(){
+    public function __toString()
+    {
 
         return (string) $this->category->getLabel();
     }

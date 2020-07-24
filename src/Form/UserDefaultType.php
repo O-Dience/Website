@@ -4,9 +4,11 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\User;
+use App\Entity\UserCategory;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -106,10 +108,11 @@ class UserDefaultType extends AbstractType
             ])
             ->add('categories', EntityType::class, [
                 'multiple' => true,
+                'mapped' => false,
                 'class' => Category::class,
                 'choice_label' => 'label',
                 'help' => 'Vous pouvez choisir jusqu\'à 3 catégories'
-            ]);;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

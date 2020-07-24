@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\BrandType;
 use App\Form\UserDefaultType;
 use App\Service\ImageUploader;
+use App\Service\UserCategoryUploader;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("influenceur", name="influencer", methods={"GET", "POST"})
      */
-    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
+    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, MailerInterface $mailer): Response
     {
 
         $user = new User();
@@ -54,8 +54,11 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
+            // Set Usercategories without notification settings
+            $categoryUploader->registerUserCategories($form->get('categories')->getData(), $user);
+
+            // TODO: Transfer the email sending into a service
             $email = (new TemplatedEmail())
                 ->from('contact.odience@gmail.com')
                 ->to($user->getEmail())

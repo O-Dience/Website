@@ -18,31 +18,25 @@ class UserCategoryType extends AbstractType
     {
 
         $builder
-            ->add('category',  EntityType::class, 
+            ->add(
+                'category',
+                EntityType::class,
                 [
-                    'placeholder'=>"Séléctionnez une catégorie",
+                    'multiple' => true,
+                    'placeholder' => "Séléctionnez une catégorie",
                     "label" => "Centre d'intérêt",
                     "class" => Category::class,
                     "choice_label" => "label"
-                ])
-                // add hidden field for javascript
-            ->add('hiddenValue', HiddenType::class,
-                [
-                    'mapped' => false,
-                    'required' => false,
-                    'attr' => [
-                        'class' => 'lastOptionValue'
-                    ]
                 ]
             )
-            ->add('notification',  CheckboxType::class, 
+            /*             ->add(
+                'notification',
+                CheckboxType::class,
                 [
-                "label" => "Souhaitez-vous recevoir les alertes?",
-                "required"=>false
+                    "label" => "Souhaitez-vous recevoir les alertes?",
+                    "required" => false
                 ]
-            );
-       
-        
+            ) */;
     }
 
     public function configureOptions(OptionsResolver $resolver)
