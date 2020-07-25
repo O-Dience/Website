@@ -79,7 +79,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("marque", name="brand", methods={"GET", "POST"})
      */
-    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
+    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, MailerInterface $mailer): Response
     {
 
         if ($this->getUser()) {
@@ -114,6 +114,10 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
+
+
+            // Set Usercategories without notification settings
+            $categoryUploader->registerUserCategories($form->get('categories')->getData(), $user);
 
             $email = (new TemplatedEmail())
                 ->from('contact.odience@gmail.com')
