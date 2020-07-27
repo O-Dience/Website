@@ -75,7 +75,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("marque", name="brand", methods={"GET", "POST"})
      */
-    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, MailerInterface $mailer): Response
+    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, EmailProvider $email): Response
     {
 
         if ($this->getUser()) {
@@ -115,12 +115,7 @@ class RegistrationController extends AbstractController
             // Set Usercategories without notification settings
             $categoryUploader->registerUserCategories($form->get('categories')->getData(), $user);
 
-            $email = (new TemplatedEmail())
-                ->from('contact.odience@gmail.com')
-                ->to($user->getEmail())
-                ->subject('Inscription confirmée')
-                ->htmlTemplate('registration/brand_email.html.twig');
-            $mailer->send($email);
+            $email->subscribtionEmail($user);
 
             return $this->redirectToRoute('app_login');
         }
