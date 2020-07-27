@@ -84,17 +84,11 @@ class User implements UserInterface
 
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
-     * 
-     */
-    private $categories;
-
-    /**
      * @ORM\OneToMany(targetEntity=Announcement::class, mappedBy="user", orphanRemoval=true)
      */
     private $announcements;
 
-     /**
+    /**
      * @ORM\OneToMany(targetEntity=AnnouncementFav::class, mappedBy="user", orphanRemoval=true)
      */
     private $favorites;
@@ -104,7 +98,7 @@ class User implements UserInterface
      */
     private $userFavs;
 
-      /**
+    /**
      * @ORM\OneToMany(targetEntity=UserFav::class, mappedBy="userLike", orphanRemoval=true)
      */
     private $userFavorites;
@@ -129,13 +123,17 @@ class User implements UserInterface
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-  
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserCategory::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     */
+    private $categories;
+
 
     public function __construct(array $data = [])
     {
 
         $this->userSocials = new ArrayCollection();
-        $this->categories = new ArrayCollection();
         $this->announcements = new ArrayCollection();
         $this->created_at = new \DateTime;
         $this->status = 1; // 1 = active
@@ -143,7 +141,8 @@ class User implements UserInterface
         $this->reportedAnnouncements = new ArrayCollection();
         $this->reportedUsers = new ArrayCollection();
         $this->reportedBy = new ArrayCollection();
-       }
+        $this->categories = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -190,22 +189,21 @@ class User implements UserInterface
     public function getFrenchRole()
     {
         //Set path for easyadmin
-        if (in_array('ROLE_BRAND', $this->roles)){
+        if (in_array('ROLE_BRAND', $this->roles)) {
             return 'Marque';
         }
-        if (in_array('ROLE_INFLUENCER', $this->roles)){
+        if (in_array('ROLE_INFLUENCER', $this->roles)) {
             return 'Influenceur';
         }
-        if (in_array('ROLE_MODERATOR', $this->roles)){
+        if (in_array('ROLE_MODERATOR', $this->roles)) {
             return 'Modérateur';
         }
-        if (in_array('ROLE_MODERATOR', $this->roles)){
+        if (in_array('ROLE_MODERATOR', $this->roles)) {
             return 'Modérateur';
         }
-        if (in_array('ROLE_ADMIN', $this->roles)){
+        if (in_array('ROLE_ADMIN', $this->roles)) {
             return 'Administrateur';
         }
-        
     }
     /**
      * @see UserInterface
@@ -239,7 +237,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-        /**
+    /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
@@ -248,7 +246,7 @@ class User implements UserInterface
     {
         return (string) $this->username;
     }
-    
+
     public function setUsername(?string $username): self
     {
         $this->username = $username;
@@ -283,7 +281,7 @@ class User implements UserInterface
     public function getPictureWithPath()
     {
         //Set path for easyadmin
-        return 'assets/images/avatar_user/'.$this->picture;
+        return 'assets/images/avatar_user/' . $this->picture;
     }
 
     public function getStatus(): ?bool
@@ -353,31 +351,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Category[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Announcement[]
@@ -410,11 +383,11 @@ class User implements UserInterface
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of favorites
-     */ 
+     */
     public function getFavorites()
     {
         return $this->favorites;
@@ -424,7 +397,7 @@ class User implements UserInterface
      * Set the value of favorites
      *
      * @return  self
-     */ 
+     */
     public function setFavorites($favorites)
     {
         $this->favorites = $favorites;
@@ -464,23 +437,22 @@ class User implements UserInterface
     }
 
 
-
-    public function isFavByUser(User $user): bool {
-        foreach($this->userFavs as $fav){
-            if($fav->getUserLike() === $user){
+    public function isFavByUser(User $user): bool
+    {
+        foreach ($this->userFavs as $fav) {
+            if ($fav->getUserLike() === $user) {
                 return true;
             }
-           
         }
         return false;
     }
-    
-    
-   
+
+
+
 
     /**
      * Get the value of userFavorites
-     */ 
+     */
     public function getUserFavorites()
     {
         return $this->userFavorites;
@@ -490,7 +462,7 @@ class User implements UserInterface
      * Set the value of userFavorites
      *
      * @return  self
-     */ 
+     */
     public function setUserFavorites($userFavorites)
     {
         $this->userFavorites = $userFavorites;
@@ -592,9 +564,9 @@ class User implements UserInterface
     }
 
     //function to check if another user was reported by this user
-    public function isReportedByUser(User $user) : bool
+    public function isReportedByUser(User $user): bool
     {
-        foreach($this->reportedBy as $report){
+        foreach ($this->reportedBy as $report) {
             if ($report->getReporter() === $user) return true;
         }
 
@@ -613,4 +585,34 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Collection|UserCategory[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(UserCategory $userCategory): self
+    {
+        if (!$this->categories->contains($userCategory)) {
+            $this->categories[] = $userCategory;
+            $userCategory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(UserCategory $userCategory): self
+    {
+        if ($this->categories->contains($userCategory)) {
+            $this->categories->removeElement($userCategory);
+            // set the owning side to null (unless already changed)
+            if ($userCategory->getUser() === $this) {
+                $userCategory->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

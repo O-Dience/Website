@@ -129,6 +129,9 @@
     "fig/link-util": {
         "version": "1.1.1"
     },
+    "lorenzo/pinky": {
+        "version": "1.0.5"
+    },
     "monolog/monolog": {
         "version": "2.1.0"
     },
@@ -388,18 +391,6 @@
             "config/packages/test/monolog.yaml"
         ]
     },
-    "symfony/notifier": {
-        "version": "5.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.0",
-            "ref": "c31585e252b32fe0e1f30b1f256af553f4a06eb9"
-        },
-        "files": [
-            "config/packages/notifier.yaml"
-        ]
-    },
     "symfony/options-resolver": {
         "version": "v5.1.1"
     },
@@ -597,8 +588,17 @@
             "config/packages/reset_password.yaml"
         ]
     },
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.3"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.0.4"
+    },
     "twig/extra-bundle": {
         "version": "v3.0.3"
+    },
+    "twig/inky-extra": {
+        "version": "v3.0.4"
     },
     "twig/twig": {
         "version": "v3.0.3"

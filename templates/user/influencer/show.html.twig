@@ -53,8 +53,8 @@
 								{% if user.categories %}
 									{% for category in user.categories %}
 									<div class="row mt-1 d-flex flex-column justify-content-center align-items-center mx-3">
-										<img class="rounded-circle img-fluid social__logo" alt="50x50" src="{{asset('assets/images/category_picto/')}}{{ category.picto }}" data-holder-rendered="true">
-										<small>{{ category.label }}</small>
+										<img class="rounded-circle img-fluid social__logo" alt="50x50" src="{{asset('assets/images/category_picto/')}}{{ category.category.picto }}" data-holder-rendered="true">
+										<small>{{ category.category.label }}</small>
 									</div>
 									{% endfor %}
 								{% endif %}
