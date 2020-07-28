@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\SocialNetwork;
 use App\Entity\User;
-use App\Form\UserType;
 use App\Entity\UserFav;
 use App\Entity\UserReport;
 use App\Entity\UserSocial;

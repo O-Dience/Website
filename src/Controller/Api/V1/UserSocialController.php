@@ -2,9 +2,7 @@
 
 namespace App\Controller\Api\V1;
 
-use App\Entity\UserSocial;
 use App\Repository\UserSocialRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

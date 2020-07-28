@@ -5,10 +5,8 @@ namespace App\Controller;
 use App\Entity\Announcement;
 use App\Entity\AnnouncementFav;
 use App\Entity\AnnouncementReport;
-use App\Entity\User;
 use App\Form\AnnouncementType;
 use App\Repository\AnnouncementFavRepository;
-use App\Repository\AnnouncementReportRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SocialNetworkRepository;
@@ -20,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @Route("/annonce", name="announcement_")
