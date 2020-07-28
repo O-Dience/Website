@@ -17,8 +17,8 @@
 			<div class="profile-usertitle-job d-flex justify-content-center">			
 				{% for category in app.user.categories %}
 				<div class="category__container--{{ ("ROLE_INFLUENCER" in app.user.roles) ? "influencer" : "brand" }} d-flex flex-column mx-1">
-					<img src="{{ asset('assets/images/category_picto/' ~ category.picto) }}" alt="{{ category.label }}" class="category__picto picto__{{ ("ROLE_INFLUENCER" in app.user.roles) ? "influencer" : "brand" }}">
-					<small>{{ category.label }}</small>
+					<img src="{{ asset('assets/images/category_picto/' ~ category.category.picto) }}" alt="{{ category.category.label }}" class="category__picto picto__{{ ("ROLE_INFLUENCER" in app.user.roles) ? "influencer" : "brand" }}">
+					<small>{{ category.category.label }}</small>
 				</div>
 				{% endfor %}
 			</div>

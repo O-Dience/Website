@@ -22,7 +22,7 @@
 							<h2 class="d-block my-auto">{{ user.username }}</h2>
 							<p class="small d-block d-flex flex-column">
 								{% for category in user.categories %}
-								<i class="fa fa-map-marker mr-2">{{ category.label }}</i>
+								<i class="fa fa-map-marker mr-2">{{ category.category.label }}</i>
 								{% endfor %}
 							</p>
 						</div>
