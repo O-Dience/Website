@@ -8,6 +8,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -32,10 +33,17 @@ class InfluencerEditType extends AbstractType
                 'birthdate', 
                 BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de naissance"],)
             
-            ->add('categories', EntityType::class, [
-                'multiple'=>true,
-                'class' => Category::class,
-                'choice_label' => 'label'
+                ->add('categories', CollectionType::class, 
+                [
+                    'entry_type' => UserCategoryType::class,
+                    'entry_options' => 
+                        [
+                            'label' => false,
+                        ],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    "by_reference" => false,
+                    'label' => false
                 ])
             ->add('description', TextareaType::class, [
                 'label' => 'Présente toi en quelques mots:',

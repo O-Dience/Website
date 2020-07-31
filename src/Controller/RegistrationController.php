@@ -3,44 +3,41 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\InfluencerType;
-use App\Form\BrandType;
+use App\Form\UserDefaultType;
+use App\Service\EmailProvider;
 use App\Service\ImageUploader;
-use DateTime;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Service\UserCategoryUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
-* @Route("/inscription/", name="app_register_")
-*/
+ * @Route("/inscription/", name="app_register_")
+ */
 class RegistrationController extends AbstractController
 {
     /**
      * @Route("influenceur", name="influencer", methods={"GET", "POST"})
      */
-    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
+    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, EmailProvider  $subscribeEmail): Response
     {
- 
+
         $user = new User();
-        $form = $this->createForm(InfluencerType::class, $user);
+        $form = $this->createForm(UserDefaultType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
-            if($imageName){
+            if ($imageName) {
                 $user->setPicture($imageName);
-            }else{
+            } else {
                 //Let's attribute a random pic to our new user
-                $picture = 'default/default'. rand(1,13).'.png';
+                $picture = 'default/default' . rand(1, 13) . '.png';
                 $user->setPicture($picture);
             };
 
@@ -56,43 +53,43 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
-            $email = (new TemplatedEmail ())
-            ->from('contact.odience@gmail.com')
-            ->to($user->getEmail())
-            ->subject('Inscription confirmée')
-            ->htmlTemplate('registration/influencer_email.html.twig');
-            $mailer->send($email);
+            // Set Usercategories without notification settings
+            $categoryUploader->registerUserCategories($form->get('categories')->getData(), $user);
 
+            $subscribeEmail->subscribtionEmail($user);
+            
+            
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('registration/register_influencer.html.twig', [
-            'influencerForm' => $form->createView(),
+        return $this->render('registration/register_user.html.twig', [
+            'form' => $form->createView(),
+            // pass formVar variable to help rendering right form variation
+            'formVar' => 'influencer'
         ]);
     }
 
     /**
      * @Route("marque", name="brand", methods={"GET", "POST"})
      */
-    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, MailerInterface $mailer): Response
+    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, EmailProvider $email): Response
     {
 
         if ($this->getUser()) {
-            return $this->redirectToRoute('user_dashboard', ['id'=>$this->getUser()->getId()]);
+            return $this->redirectToRoute('user_dashboard', ['id' => $this->getUser()->getId()]);
         }
         $user = new User();
-        $form = $this->createForm(BrandType::class, $user);
+        $form = $this->createForm(UserDefaultType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             // If an image is uploaded, Image Uploader service is called to create a random unique file name and move image to the right folder
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
-            if($imageName){
+            if ($imageName) {
                 $user->setPicture($imageName);
-            }else{
+            } else {
                 //Let's attribute a random pic to our new user
                 $picture = 'default/default-brand.png';
                 $user->setPicture($picture);
@@ -112,22 +109,23 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            $email = (new TemplatedEmail())
-            ->from('contact.odience@gmail.com')
-            ->to($user->getEmail())
-            ->subject('Inscription confirmée')
-            ->htmlTemplate('registration/brand_email.html.twig');
-            $mailer->send($email);
+
+            // Set Usercategories without notification settings
+            $categoryUploader->registerUserCategories($form->get('categories')->getData(), $user);
+
+            $email->subscribtionEmail($user);
 
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('registration/register_brand.html.twig', [
-            'brandForm' => $form->createView(),
+        return $this->render('registration/register_user.html.twig', [
+            'form' => $form->createView(),
+            // pass formVar variable to help rendering right form variation
+            'formVar' => 'brand'
         ]);
     }
 
-        /**
+    /**
      * @Route("question", name="oauthUser", methods={"GET", "POST"})
      */
     public function registerOauthUser()

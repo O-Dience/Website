@@ -2,9 +2,7 @@
 
 namespace App\Controller\Api\V1;
 
-use App\Entity\UserSocial;
 use App\Repository\UserSocialRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +31,4 @@ class UserSocialController extends AbstractController
         $entityManager->flush();
         return new JsonResponse(['status' => 'Réseau supprimé'], Response::HTTP_NO_CONTENT);
     }
-
-
 }

@@ -129,6 +129,7 @@
 {% endblock %}
 
 {% block javascripts %}
+<<<<<<< HEAD
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script>
 
@@ -218,4 +219,94 @@ link.addEventListener('click', onClickBtnReport);
 document.getElementById('category_label').addEventListener('change', filterByCategory);
 document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
 	</script>
+=======
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+    let categoryFilter = '';
+    let networkFilter = '';
+		    // Filters announcements by category
+    function filterByCategory(evt) {
+        categoryFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Filters announcements by social network
+    function filterByNetwork(evt) {
+        networkFilter = evt.target.value;
+        updateDisplay();
+    }
+
+    // Updates display of announcements according to the filters
+    function updateDisplay() {
+        document.querySelectorAll('.panel').forEach(function(announcement){
+            let foundCategory = false;
+            let foundNetwork = false;
+            
+            if (categoryFilter == '') {
+                foundCategory = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-category-id]').forEach(function(categoryTag){
+                    if (categoryTag.dataset.categoryId == categoryFilter) {
+                        foundCategory = true;
+                    }
+                })
+            }
+
+            if (networkFilter == '') {
+                foundNetwork = true;
+            }
+            else {
+                announcement.querySelectorAll('span[data-network-id]').forEach(function(network){
+                    if (network.dataset.networkId == networkFilter) {
+                        foundNetwork = true;
+                    }
+                })
+            }
+            
+            if (foundCategory && foundNetwork) {
+
+							announcement.classList.remove("d-none")
+							announcement.nextElementSibling.classList.remove("d-none")
+            }
+            else {
+							announcement.classList.add("d-none")
+							announcement.nextElementSibling.classList.add("d-none")
+            }
+        })
+    }
+
+        function onClickBtnFav(evt){
+        evt.preventDefault()
+        const url = this.href
+        const icone = this.querySelector('i');
+        let favlink = evt.currentTarget;
+        let favtext = this.querySelector('.favtext');
+        
+
+        axios.get(url).then(function(response){
+            if(icone.classList.contains('fa-heart-o')){
+                icone.classList.replace('fa-heart-o', 'fa-heart')
+                favtext.innerHTML = "Retirer des favoris";
+                
+            } else{
+                icone.classList.replace('fa-heart', 'fa-heart-o')
+                favtext.innerHTML = "Ajouter aux favoris";
+                
+            }
+        });
+    }
+
+        document.querySelectorAll('a.js-fav').forEach(function(link){
+        link.addEventListener('click', onClickBtnFav)
+    })
+    document.querySelectorAll('a.js-report').forEach(function(link){
+        link.addEventListener('click', onClickBtnReport);
+    })
+
+		document.getElementById('category_label').addEventListener('change', filterByCategory);
+    document.getElementById('socialNetwork_name').addEventListener('change', filterByNetwork);
+		</script>
+>>>>>>> 91066b5ffa1e62aa49ccebf6ee2388fec7bf07ea
 {% endblock %}

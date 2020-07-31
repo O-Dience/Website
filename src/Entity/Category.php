@@ -48,15 +48,17 @@ class Category
     private $announcements;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="categories")
+     * @ORM\OneToMany(targetEntity=UserCategory::class, mappedBy="category", orphanRemoval=true, cascade={"persist"})
      */
-    private $users;
+    private $user;
+
+   
 
     public function __construct()
     {
         $this->announcements = new ArrayCollection();
-        $this->users = new ArrayCollection();
         $this->created_at = new \DateTime;
+        $this->user = new ArrayCollection();
     }
 
     public function __toString()
@@ -154,31 +156,36 @@ class Category
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|UserCategory[]
      */
-    public function getUsers(): Collection
+    public function getUser(): Collection
     {
-        return $this->users;
+        return $this->user;
     }
 
-    public function addUsers(User $user): self
+    public function addUser(UserCategory $userCategory): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addCategory($this);
+        if (!$this->user->contains($userCategory)) {
+            $this->user[] = $userCategory;
+            $userCategory->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeUsers(User $user): self
+    public function removeUser(UserCategory $userCategory): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            $user->removeCategory($this);
+        if ($this->user->contains($userCategory)) {
+            $this->user->removeElement($userCategory);
+            // set the owning side to null (unless already changed)
+            if ($userCategory->getCategory() === $this) {
+                $userCategory->setCategory(null);
+            }
         }
 
         return $this;
     }
+
+   
   
 }
