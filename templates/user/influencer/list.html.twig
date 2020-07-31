@@ -27,16 +27,7 @@
                                     <p class=""><img class="img-fluid profile-img" src="{{asset('assets/images/avatar_user/' ~ influencer.picture ) }}" alt="card image"></p>
                                     <div>
                                     <h4 class="card-title">{{influencer.username}}</h4>
-                                      {# <a href="{{path('user_favorite', {'id': influencer.id}) }}" class="col-md-6 col-xs-4 well js-fav">
-                                             {% if app.user and influencer.isFavByUser(app.user) %}
-                                                <i class="fa fa-heart fa-lg "></i> 
-                                            {% else %}
-                                            <i class="fa fa-heart-o fa-lg "></i>
-                                            {% endif %}
-                                        </a> #}
                                     </div>
-
-
                                     <p class="card-text">
                                     <div class="profile-usertitle-job d-flex justify-content-center">	
                                         {% for category in influencer.categories %}
@@ -147,14 +138,10 @@
 
 							announcement.classList.remove("d-none")
 							announcement.nextElementSibling.classList.remove("d-none")
-              //announcement.style.display = 'flex';
-              //announcement.nextElementSibling.style.display = 'flex';
             }
             else {
 							announcement.classList.add("d-none")
 							announcement.nextElementSibling.classList.add("d-none")
-                // announcement.style.display = 'none';
-                // announcement.nextElementSibling.style.display = 'none';
             }
         })
     }
