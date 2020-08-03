@@ -33,18 +33,13 @@ class InfluencerEditType extends AbstractType
                 'birthdate', 
                 BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de naissance"],)
             
-                ->add('categories', CollectionType::class, 
-                [
-                    'entry_type' => UserCategoryType::class,
-                    'entry_options' => 
-                        [
-                            'label' => false,
-                        ],
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    "by_reference" => false,
-                    'label' => false
-                ])
+            ->add('categories', EntityType::class, [
+                'multiple' => true,
+                'mapped' => false,
+                'class' => Category::class,
+                'choice_label' => 'label',
+                'help' => 'Vous pouvez choisir jusqu\'à 3 catégories'
+            ])
             ->add('description', TextareaType::class, [
                 'label' => 'Présente toi en quelques mots:',
                 'required' => false,

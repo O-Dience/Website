@@ -32,9 +32,11 @@ class BrandEditType extends AbstractType
                 BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de création"
             ])
             ->add('categories', EntityType::class, [
-                'multiple'=>true,
+                'multiple' => true,
+                'mapped' => false,
                 'class' => Category::class,
-                'choice_label' => 'label'
+                'choice_label' => 'label',
+                'help' => 'Vous pouvez choisir jusqu\'à 3 catégories'
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Présentation de votre entreprise/marque:',

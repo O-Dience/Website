@@ -41,6 +41,7 @@ body{
   height: auto;
   margin: 0 auto;
   border-radius: 50%;
+  padding-top: 10px;
 }
 
 .profile-usertitle {
