@@ -266,6 +266,7 @@ class UserController extends AbstractController
 
         return $this->render('social/add_social.html.twig', [
             "form" => $form->createView(),
+
         ]);
 
     }
