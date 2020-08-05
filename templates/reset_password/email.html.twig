@@ -2,7 +2,7 @@
 
 <p>
     Nous avons reçu une demande de modification du mot de passe. Si vous êtes à l'origine de cette demande, vous pouvez cliquez
-    <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">ici</a>.
+    <a href="{{ url('app_reset_password', {token: Token.token}) }}">ici</a>.
     Ce lien expirera dans {{ tokenLifetime|date('g') }} heures. Passé ce délai, vous devrez envoyer une nouvelle demande pour réinitialiser votre mot de passe. Si vous ne souhaitez pas réinitialiser votre mot de passe, vous pouvez ignorer cet e-mail. 
 </p>
 

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,7 +39,7 @@ class UserDefaultType extends AbstractType
                             'min' => 4,
                             'max' => 12,
                             'minMessage' => 'Votre nom d\'utilisateur doit comporter au moins {{ limit }} caratères',
-                            'maxMessage' => 'Votre nom d\utilisateur ne peut pas comporter plus de {{ limit }} caratères',
+                            'maxMessage' => 'Votre nom d\'utilisateur ne peut pas comporter plus de {{ limit }} caratères',
                             'allowEmptyString' => false,
                         ])
                     ],
@@ -112,6 +113,22 @@ class UserDefaultType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'label',
                 'help' => 'Vous pouvez choisir jusqu\'à 3 catégories'
+            ])
+            ->add('description', TextareaType::class, [
+                'required' => false,
+                'attr' => ([
+                    'rows' => 5,
+                    'cols' => 40,
+                ]),
+                'constraints' => [
+                    new Length([
+                        // max length allowed by Symfony for security reasons
+                        'max' => 300,
+                        'min' => 50,
+                        'maxMessage' => 'Votre description est trop longue, elle ne doit pas dépasser {{ limit }} caractères',
+                        'minMessage' => 'Votre description est trop courte, elle doit au moins contenir {{ limit }} caractères',
+                    ]),
+                ],
             ]);
     }
 

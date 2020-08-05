@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
+use App\Service\EmailProvider;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -132,6 +133,9 @@ class ResetPasswordController extends AbstractController
 
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
     {
+
+       $emailProvider = new EmailProvider($mailer);
+
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy([
             'email' => $emailFormData,
         ]);
@@ -155,18 +159,13 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
-        $email = (new TemplatedEmail())
-            ->from(new Address('contact.odience@gmail.com', 'Team O\'dience'))
-            ->to($user->getEmail())
-            ->subject('Réinitialisation de votre mot de passe')
-            ->htmlTemplate('reset_password/email.html.twig')
-            ->context([
-                'resetToken' => $resetToken,
-                'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
-            ])
-        ;
 
-        $mailer->send($email);
+        $email = $user->getEmail();
+        $username = $user->getUsername();
+        $tokenLifeTime = $this->resetPasswordHelper->getTokenLifetime();
+        //$tokenLifeTimeInHour = ($tokenLifeTime / 3600);
+
+        $emailProvider->sendMail($resetToken, $email, $username, $tokenLifeTime, 'Réinitialisation de votre mot de passe', 'reset_password/email.html.twig');
 
         return $this->redirectToRoute('app_check_email');
     }

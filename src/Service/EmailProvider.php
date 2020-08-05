@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 class EmailProvider
 {
@@ -11,16 +12,38 @@ class EmailProvider
     public function __construct(MailerInterface $mailer){
         $this->mailer= $mailer;
     }
-    public function subscribtionEmail( $user)
-    {
-        $email = (new TemplatedEmail())
-                ->from('contact.odience@gmail.com')
-                ->to($user->getEmail())
-                ->subject('Inscription confirmée')
-                ->htmlTemplate('registration/influencer_email.html.twig');
-            $this->mailer->send($email);
-            
 
+        /**
+     * Undocumented function
+     *
+     * @param [type] $token
+     * @param [type] $to
+     * @param [type] $username
+     * @param [type] $tokenLifeTime
+     * @param [type] $subject
+     * @param [type] $template
+     * @return void
+     */
+    public function sendMail($token, $to, $username,$tokenLifeTime, $subject, $template)
+    {
+        //dd($token, $to, $username,$tokenLifeTime,$subject,$template);
+        $email = (new TemplatedEmail())
+        ->from(new Address('contact.odience@gmail.com'))
+        ->to($to)
+        ->subject($subject)
+        ->htmlTemplate($template)
+        ->context([
+            'Token' => $token,
+            'username' => $username,
+            'tokenLifetime' => $tokenLifeTime,
+        ]);
+
+        $this->mailer->send($email);
     }
 
 }
+
+
+  
+
+

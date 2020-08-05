@@ -1,6 +1,6 @@
 /** GENERAL **/
 
-body{
+body {
   background-image: url("../images/dashboard.jpg");
   height: 100vh;
   font-family: 'Roboto', sans-serif;
@@ -10,7 +10,7 @@ body{
   background-repeat: no-repeat;
 }
 
-.dashboard__container{
+.dashboard__container {
   margin-top: 5em;
   margin-bottom: 2em;
   min-height: 90vh;
@@ -37,10 +37,11 @@ body{
 }
 
 .profile-userpic img {
-  max-width: 150px;
+  width: 150px;
   height: auto;
   margin: 0 auto;
   border-radius: 50%;
+  margin-top: 1em;
 }
 
 .profile-usertitle {
@@ -79,7 +80,7 @@ body{
 .profile-userbuttons .btn:last-child {
   margin-right: 0px;
 }
-    
+
 .profile-usermenu {
   margin-top: 30px;
 }
@@ -133,18 +134,18 @@ body{
 }
 
 /* Announcement list, overflow */
-.overflow-rounded{
+.overflow-rounded {
   border-radius: 50px;
 }
 
 .border_profil {
   background-color: rgba(86, 231, 86, 0.57);
   padding: 8px 2px 1px 2px;
-  border: 1px solid rgba(215, 235, 215, 0,57);
+  border: 1px solid rgba(215, 235, 215, 0, 57);
   border-radius: 5px;
 }
 
-.missing_info{
+.missing_info {
   width: 98%;
   padding: 5px 5px;
   margin: auto;
@@ -155,25 +156,25 @@ body{
 }
 
 
-.category__picto{
+.category__picto {
   border-radius: 50%;
   width: 40px;
   height: 40px;
 }
 
-.picto__influencer{
+.picto__influencer {
   border: solid #2A9D8F;
 }
 
-.picto__brand{
+.picto__brand {
   border: solid #424242;
 }
 
-.category__container--influencer small{
+.category__container--influencer small {
   color: #2A9D8F;
 }
 
-.category__container--brand small{
+.category__container--brand small {
   color: #424242;
 }
 
@@ -189,36 +190,37 @@ body{
 
 /* SOCIAL NETWORK EDITION */
 
-.social__div{
+.social__div {
   border: solid #2A9D8F 1px;
   padding: 2em
 }
 
-.img_resize--socials{
+.img_resize--socials {
   height: 5em;
   width: 5em;
 }
+
 /* /SOCIAL NETWORK EDITION */
 
 @media screen and (min-width: 992px) {
 
-.profile-usermenu ul{
-  flex-direction: column;
-}
+  .profile-usermenu ul {
+    flex-direction: column;
+  }
 
-.profile-usermenu .list-group .list-group-item {
-  text-align: left;
-}
+  .profile-usermenu .list-group .list-group-item {
+    text-align: left;
+  }
 
-.overflow_dashboard{
-  overflow: hidden;
-  height: 80vh;
-  overflow-y: scroll;
-}
+  .overflow_dashboard {
+    overflow: hidden;
+    height: 80vh;
+    overflow-y: scroll;
+  }
 
-.profile-content {
-  min-height: 90vh;
-  min-width: 40vw;
-}
+  .profile-content {
+    min-height: 90vh;
+    min-width: 40vw;
+  }
 
 }

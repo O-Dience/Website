@@ -10,6 +10,7 @@ use App\Service\UserCategoryUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -22,9 +23,8 @@ class RegistrationController extends AbstractController
     /**
      * @Route("influenceur", name="influencer", methods={"GET", "POST"})
      */
-    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, EmailProvider  $subscribeEmail): Response
+    public function registerInfluencer(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader,MailerInterface $mailer): Response
     {
-
         $user = new User();
         $form = $this->createForm(UserDefaultType::class, $user);
         $form->handleRequest($request);
@@ -57,11 +57,14 @@ class RegistrationController extends AbstractController
             // Set Usercategories without notification settings
             $categoryUploader->registerUserCategories($form->get('categories')->getData(), $user);
 
-            $subscribeEmail->subscribtionEmail($user);
-            
-            
+           $email = $user->getEmail();
+           $username = $user->getUsername();
+           $emailProvider = new EmailProvider($mailer); 
+           $emailProvider->sendMail(null , $email, $username, null, 'Inscription confirmée', 'registration/influencer_email.html.twig');
             return $this->redirectToRoute('app_login');
+
         }
+        
 
         return $this->render('registration/register_user.html.twig', [
             'form' => $form->createView(),
@@ -73,7 +76,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("marque", name="brand", methods={"GET", "POST"})
      */
-    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, EmailProvider $email): Response
+    public function registerBrand(Request $request, UserPasswordEncoderInterface $passwordEncoder, ImageUploader $imageUploader, UserCategoryUploader $categoryUploader, MailerInterface $mailer): Response
     {
 
         if ($this->getUser()) {
@@ -113,7 +116,12 @@ class RegistrationController extends AbstractController
             // Set Usercategories without notification settings
             $categoryUploader->registerUserCategories($form->get('categories')->getData(), $user);
 
-            $email->subscribtionEmail($user);
+            $email = $user->getEmail();
+            $username = $user->getUsername();
+            $emailProvider = new EmailProvider($mailer); 
+            $emailProvider->sendMail(null , $email, $username, null, 'Inscription confirmée', 'registration/influencer_email.html.twig');
+            return $this->redirectToRoute('app_login');
+
 
             return $this->redirectToRoute('app_login');
         }
