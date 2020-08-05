@@ -7,7 +7,7 @@ use App\Entity\UserFav;
 use App\Entity\UserReport;
 use App\Entity\UserSocial;
 use App\Form\BrandEditType;
-use App\Form\InfluencerEditType;
+use App\Form\UserDefaultType;
 use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
@@ -72,57 +72,33 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $user);
 
+        $form = $this->createForm(UserDefaultType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
+            if ($imageName) {
+                $user->setPicture($imageName);
+            };
+            $password = $form->get('password')->getData();
+            if ($password != null) {
+                $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+                $user->setPassword($encodedPassword);
+            }
+            $user->setUpdatedAt(new \DateTime());
+
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+        }
 
         if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
-            $form = $this->createForm(InfluencerEditType::class, $user);
-
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
-                if ($imageName) {
-                    $user->setPicture($imageName);
-                };
-                $password = $form->get('password')->getData();
-                if ($password != null) {
-                    $encodedPassword = $passwordEncoder->encodePassword($user, $password);
-                    $user->setPassword($encodedPassword);
-                }
-                $user->setUpdatedAt(new \DateTime());
-
-                $this->getDoctrine()->getManager()->flush();
-
-                return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
-            }
-
-
             return $this->render('user/influencer/edit.html.twig', [
                 'form' => $form->createView(),
                 'user' => $user
             ]);
         } elseif (in_array("ROLE_BRAND", $user->getRoles())) {
-            $form = $this->createForm(BrandEditType::class, $user);
-
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
-                if ($imageName) {
-                    $user->setPicture($imageName);
-                };
-                $password = $form->get('password')->getData();
-                if ($password != null) {
-                    $encodedPassword = $passwordEncoder->encodePassword($user, $password);
-                    $user->setPassword($encodedPassword);
-                }
-                $user->setUpdatedAt(new \DateTime());
-
-                $this->getDoctrine()->getManager()->flush();
-
-                return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
-            }
-
-
             return $this->render('user/brand/edit.html.twig', [
                 'form' => $form->createView(),
                 'user' => $user
