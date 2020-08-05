@@ -1,0 +1,28 @@
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block content %}
+
+    <div class="profile-content">
+        <article class="card-body mx-auto bg-light rounded" style="max-width: 400px;">
+	    <h4 class="card-title mt-3 text-center">Ajouter un centre d'intérêts</h4>
+	    {{ form_start(form) }}
+            <div class="form-group input-group">
+    	        <div class="input-group-prepend">
+		            <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+		        </div>
+		        {{ form_widget(form.category) }}
+	        </div> 
+            <div class="form-group input-group">
+		        <div class="input-group-prepend">
+		            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                </div>
+                {{ form_widget(form.notification) }}
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Valider</button>
+            </div>   
+            {{ form_end(form) }}
+        </article>
+    </div>
+
+{% endblock %}

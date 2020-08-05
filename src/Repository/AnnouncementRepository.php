@@ -102,6 +102,29 @@ class AnnouncementRepository extends ServiceEntityRepository
         
     }
 
+    public function searchByUsername($username){
+
+        $builder = $this->createQueryBuilder('announcement');
+
+        $builder->leftJoin('announcement.user', "user");
+
+        $builder->addSelect('user');
+
+        $builder->where(
+            $builder->expr()->like('user.username', ':username')
+        );
+
+        $builder->setParameter('username', "%$username%");
+
+        $builder->orderBy('announcement.title', 'asc');
+
+        $query = $builder->getQuery();
+
+        $result = $query->execute();
+        
+        return $result;
+        
+    }
 
     // /**
     //  * @return Announcement[] Finds all announcements posted by the user represented by this id

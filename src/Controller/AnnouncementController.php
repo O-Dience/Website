@@ -38,6 +38,9 @@ class AnnouncementController extends AbstractController
             if (!$announcements) {
                 $announcements = $announcementRepository->searchByContent($search);
             }
+            if (!$announcements){
+                $announcements = $announcementRepository->searchByUsername($search);
+            }
         }
 
         $categories = $categoryRepository->findAll();
