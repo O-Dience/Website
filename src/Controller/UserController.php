@@ -31,7 +31,7 @@ class UserController extends AbstractController
     public function list($role, CategoryRepository $categoryRepository, SocialNetworkRepository $socialNetworkRepository, Request $request, UserRepository $userRepo): Response
     {
 
-        if($role === "influenceur"){
+        if ($role === "influenceur") {
             $role = "influencer";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_INFLUENCER"]');
             // If search is done, we try to find a match by username
@@ -40,10 +40,8 @@ class UserController extends AbstractController
             if ($search) {
                 $users = $userRepo->searchInfluencerByUsername($search);
             }
-        }
+        } elseif ($role === "marque") {
 
-        elseif($role === "marque"){
-            
             $role = "brand";
             $users = $this->getDoctrine()->getRepository(User::class)->findByRole('["ROLE_BRAND"]');
             // If search is done, we try to find a match by title, then if no match, find by content
@@ -51,16 +49,15 @@ class UserController extends AbstractController
 
             if ($search) {
                 $users = $userRepo->searchBrandByUsername($search);
-            }        
-        }
-        elseif($role === "user"){
+            }
+        } elseif ($role === "user") {
             $role = "user";
             $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         }
         $categories = $categoryRepository->findAll();
         $socialNetworks = $socialNetworkRepository->findAll();
 
-        return $this->render('user/'.$role.'/list.html.twig', [
+        return $this->render('user/' . $role . '/list.html.twig', [
             "users" => $users,
             'categories' => $categories,
             'socialNetworks' => $socialNetworks
@@ -76,73 +73,64 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted('edit', $user);
 
 
-        if ( in_array( "ROLE_INFLUENCER", $user->getRoles() ) ){
+        if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             $form = $this->createForm(InfluencerEditType::class, $user);
 
             $form->handleRequest($request);
-  
-            if ($form->isSubmitted() && $form->isValid())
-            {   
+
+            if ($form->isSubmitted() && $form->isValid()) {
                 $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
-                if($imageName){
+                if ($imageName) {
                     $user->setPicture($imageName);
                 };
                 $password = $form->get('password')->getData();
-                if ($password != null)
-                {
+                if ($password != null) {
                     $encodedPassword = $passwordEncoder->encodePassword($user, $password);
                     $user->setPassword($encodedPassword);
                 }
                 $user->setUpdatedAt(new \DateTime());
-    
+
                 $this->getDoctrine()->getManager()->flush();
-    
-                return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
+
+                return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
             }
-    
-    
+
+
             return $this->render('user/influencer/edit.html.twig', [
                 'form' => $form->createView(),
                 'user' => $user
             ]);
-        }
-
-
-
-        elseif ( in_array( "ROLE_BRAND", $user->getRoles() ) ){
+        } elseif (in_array("ROLE_BRAND", $user->getRoles())) {
             $form = $this->createForm(BrandEditType::class, $user);
 
             $form->handleRequest($request);
-  
-        if ($form->isSubmitted() && $form->isValid())
-        {   
-            $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
-            if($imageName){
-                $user->setPicture($imageName);
-            };
-            $password = $form->get('password')->getData();
-            if ($password != null)
-            {
-                $encodedPassword = $passwordEncoder->encodePassword($user, $password);
-                $user->setPassword($encodedPassword);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
+                if ($imageName) {
+                    $user->setPicture($imageName);
+                };
+                $password = $form->get('password')->getData();
+                if ($password != null) {
+                    $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+                    $user->setPassword($encodedPassword);
+                }
+                $user->setUpdatedAt(new \DateTime());
+
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
             }
-            $user->setUpdatedAt(new \DateTime());
 
-            $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_show', ['id'=>$user->getId()]);
+            return $this->render('user/brand/edit.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user
+            ]);
         }
-
-
-        return $this->render('user/brand/edit.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user
-        ]);
-        }
-
     }
 
-    
+
     /**
      * @Route("/profil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
      */
@@ -166,15 +154,13 @@ class UserController extends AbstractController
                 $likes += $announcementLikes;
             };
             return $this->render('user/brand/show.html.twig', [
-                        'user' => $user,
-                        'likes' => $likes
-                    ]);
-        }
-            else
-        {
+                'user' => $user,
+                'likes' => $likes
+            ]);
+        } else {
             throw $this->createNotFoundException('Utilisateur introuvable');
         }
-    }   
+    }
 
     /**
      * @Route("/dashboard/{id}", name="user_dashboard", methods={"GET"}, requirements={"id": "\d+"})
@@ -186,24 +172,21 @@ class UserController extends AbstractController
             $influencer = $user;
             $favorites = $announcementFavRepo->findByInfluencerId($influencer->getId());
             return $this->render('user/influencer/dashboard.html.twig', [
-                'favorites'=>$favorites,
+                'favorites' => $favorites,
                 'user' => $user
             ]);
         }
-        
+
         if (in_array("ROLE_BRAND", $user->getRoles())) {
             $brand = $user;
             $announcements = $annoucementRepo->findByBrandId($brand->getId());
-            return $this->render('user/brand/dashboard.html.twig', ['announcements'=>$announcements, 'user'=>$user]);
-        }
-
-        else
-        {
+            return $this->render('user/brand/dashboard.html.twig', ['announcements' => $announcements, 'user' => $user]);
+        } else {
             throw $this->createNotFoundException('Utilisateur introuvable');
         }
     }
 
-/**
+    /**
      * 
      * add or remove an announcement to the favorites
      * 
@@ -216,23 +199,22 @@ class UserController extends AbstractController
      */
     public function favorites(User $userLiked, EntityManagerInterface $manager, UserFavRepository $favRepo): Response
     {
-        $user =$this->getUser();
+        $user = $this->getUser();
 
-        if(!$user){
+        if (!$user) {
 
-        return $this->json(['code'=>403, 'message'=>'Unauthorizer'], 403);
-
+            return $this->json(['code' => 403, 'message' => 'Unauthorizer'], 403);
         }
-        if ($userLiked->isFavByUser($user)){
+        if ($userLiked->isFavByUser($user)) {
             $favorite = $favRepo->findOneBy([
-                'userLiked'=>$userLiked,
-                'userLike'=>$user
+                'userLiked' => $userLiked,
+                'userLike' => $user
             ]);
-           
+
             $manager->remove($favorite);
             $manager->flush();
 
-            return $this->json(['code'=>200, 'message'=> 'L\'utilisateur '.  $userLiked->getUsername() . ' a été retirée de vos favoris !'], 200);
+            return $this->json(['code' => 200, 'message' => 'L\'utilisateur ' .  $userLiked->getUsername() . ' a été retirée de vos favoris !'], 200);
         }
 
         $favorite = new UserFav();
@@ -241,13 +223,14 @@ class UserController extends AbstractController
 
         $manager->persist($favorite);
         $manager->flush();
-        return $this->json(['code'=>200, 'message'=> 'L\'utilisateur '. $userLiked->getUsername() . ' a été ajoutée à vos favoris !'], 200);
+        return $this->json(['code' => 200, 'message' => 'L\'utilisateur ' . $userLiked->getUsername() . ' a été ajoutée à vos favoris !'], 200);
     }
 
-        /**
+    /**
      * @Route("/user/{id}/social/add", name="social_add", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
      */
-    public function addUserSocial(User $user, Request $request){
+    public function addUserSocial(User $user, Request $request)
+    {
 
         $this->denyAccessUnlessGranted('add_social', $user);
 
@@ -257,24 +240,24 @@ class UserController extends AbstractController
         $form = $this->createForm(UserSocialType::class, $userSocial);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($userSocial);
             $manager->flush();
-            return $this->redirectToRoute('social_profile', ['id'=>$user->getId()]);
+            return $this->redirectToRoute('social_profile', ['id' => $user->getId()]);
         }
 
         return $this->render('social/add_social.html.twig', [
             "form" => $form->createView(),
 
         ]);
-
     }
 
-     /**
+    /**
      * @Route("/user/{id}/social/edit", name="social_edit", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
      */
-    public function editUserSocial( UserSocial $userSocial,Request $request){
+    public function editUserSocial(UserSocial $userSocial, Request $request)
+    {
 
         $this->denyAccessUnlessGranted('edit', $userSocial);
 
@@ -282,34 +265,33 @@ class UserController extends AbstractController
         $form = $this->createForm(UserSocialType::class, $userSocial);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($userSocial);
             $manager->flush();
-            return $this->redirectToRoute('social_profile', ['id'=>$userSocial->getUser()->getId()]);
+            return $this->redirectToRoute('social_profile', ['id' => $userSocial->getUser()->getId()]);
         }
 
         return $this->render('social/edit_social.html.twig', [
-            "userSocial"=>$userSocial,
+            "userSocial" => $userSocial,
             "form" => $form->createView(),
         ]);
-
     }
 
 
     /** 
-    * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
-    */
-    public function showUserSocial(User $user){
+     * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
+     */
+    public function showUserSocial(User $user)
+    {
 
         $this->denyAccessUnlessGranted('show_social', $user);
 
         return $this->render('social/social_profile.html.twig', [
             "user" => $user
         ]);
-        
     }
-  
+
     /**
      * Report an user
      * 
@@ -328,7 +310,7 @@ class UserController extends AbstractController
         }
 
         if ($reportee->isReportedByUser($user)) {
-            return $this->json(['code' => 200, 'message '=> 'Vous avez déjà signalé cet utilisateur !'], 200);
+            return $this->json(['code' => 200, 'message ' => 'Vous avez déjà signalé cet utilisateur !'], 200);
         }
 
         $report = new UserReport();
@@ -337,7 +319,6 @@ class UserController extends AbstractController
 
         $manager->persist($report);
         $manager->flush();
-        return $this->json(['code' => 200, 'message' => 'L\'utilisateur '. $reportee->getUsername() . ' a été signalé par '. $user->getUsername() . '.'], 200);
+        return $this->json(['code' => 200, 'message' => 'L\'utilisateur ' . $reportee->getUsername() . ' a été signalé par ' . $user->getUsername() . '.'], 200);
     }
-
 }

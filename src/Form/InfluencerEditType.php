@@ -26,13 +26,15 @@ class InfluencerEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class, ['constraints'=>[ new NotBlank([
-                'message'=> 'Veuillez saisir un nom d\'utilisateur'
-            ])],'label'=>'Nom d\'utilisateur'])
+            ->add('username', TextType::class, ['constraints' => [new NotBlank([
+                'message' => 'Veuillez saisir un nom d\'utilisateur'
+            ])], 'label' => 'Nom d\'utilisateur'])
             ->add(
-                'birthdate', 
-                BirthdayType::class, ["widget"=>"single_text", "label"=>"Date de naissance"],)
-            
+                'birthdate',
+                BirthdayType::class,
+                ["widget" => "single_text", "label" => "Date de naissance"],
+            )
+
             ->add('categories', EntityType::class, [
                 'multiple' => true,
                 'mapped' => false,
@@ -43,18 +45,19 @@ class InfluencerEditType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Présente toi en quelques mots:',
                 'required' => false,
-                'attr'=>([ 
-                    'rows'=> 5 , 
-                    'cols'=> 40,
+                'attr' => ([
+                    'rows' => 5,
+                    'cols' => 40,
                 ]),
-                'constraints'=> [
+                'constraints' => [
                     new Length([
                         // max length allowed by Symfony for security reasons
                         'max' => 300,
+                        'min' => 50,
                         'maxMessage' => 'Votre description est trop longue, elle ne doit pas dépasser {{ limit }} caractères',
+                        'minMessage' => 'Votre description est trop courte, elle doit au moins contenir {{ limit }} caractères',
                     ]),
-                    ]
-                    ,
+                ],
             ])
             ->add('pictureFile', FileType::class, [
                 'label' => 'Photo de profil',
@@ -64,32 +67,30 @@ class InfluencerEditType extends AbstractType
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
-                        'image/*',
+                            'image/*',
                         ],
                     ])
                 ],
             ])
             ->add('email', EmailType::class, [
-                'label'=>'Votre e-mail'
+                'label' => 'Votre e-mail'
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux mots de passe doivent être identiques.',
-                'first_options'  => ['constraints'=> [
-                new Length([
-                    'min' => 6,
-                    'minMessage' => 'Votre mot de passe nécessite au moins {{ limit }} caractères',
-                    // max length allowed by Symfony for security reasons
-                    'max' => 4096,
-                ]),
-            ],'label' => 'Mot de passe'],
+                'first_options'  => ['constraints' => [
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Votre mot de passe nécessite au moins {{ limit }} caractères',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                ], 'label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Retapez votre mot de passe'],
                 'mapped' => false,
                 'required' => false,
-            ])
-            
-        ;
-    }  
+            ]);
+    }
 
     public function configureOptions(OptionsResolver $resolver)
     {
