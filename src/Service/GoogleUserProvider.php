@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -71,12 +72,13 @@ class GoogleUserProvider
                 }
                 // Otherwise, create partial user and redirect to adapted form to register fully the new user
                 else {
-
                     $user = new User;
                     $user
                         ->setUsername($jsonResponse->given_name)
-                        ->setEmail($jsonResponse->email);
-                        // TODO: SET PICTURE TO ADD
+                        ->setEmail($jsonResponse->email)
+                        ->setPicture($this->imageUploader->getAvatarFromUrl($jsonResponse->picture));
+                    dd($user);
+                    //TODO: Create form to assign a role and continue with registration
                     return $user;
                 }
 

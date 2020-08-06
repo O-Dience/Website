@@ -24,4 +24,13 @@ class ImageUploader
             return null;
         }
     }
+
+    public function getAvatarFromUrl(string $url)
+    {
+        $currentImage = $this->getRandomFileName('jpg');
+        $path = 'assets/images/avatar_user/'.$currentImage;
+        file_put_contents($path, file_get_contents($url));
+        return $currentImage;
+
+    }
 }
