@@ -36,7 +36,7 @@
 			</div>
 			<div class="d-flex flex-justify-around text-center flex-wrap col-12">
 				{% for category in user.categories %}
-				<div class="col-xl-12 social__div my-2 mx-auto d-flex justify-content-between align-items-center">
+				<div class="col-xl-12 category__div my-2 mx-auto d-flex justify-content-between align-items-center">
 					<img src="{{asset('/assets/images/category_picto/') ~ category.category.picto}}"
 						class="img-fluid img_resize--socials" alt="">
 					<div>
@@ -62,5 +62,6 @@
 
 {% block javascripts %}
 <script src="{{asset('assets/js/api.js')}}"></script>
+<script src="{{asset('assets/js/category.js')}}"></script>
 <script src="{{asset('assets/js/social.js')}}"></script>
 {% endblock %}

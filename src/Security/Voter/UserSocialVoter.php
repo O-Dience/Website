@@ -26,20 +26,20 @@ class UserSocialVoter extends Voter
             return false;
         }
 
-    // ... (check conditions and return true to grant permission) ...
- switch ($attribute) {
-    case 'edit':
-        if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userSocial->getUser()) {
-            return true;
+        // ... (check conditions and return true to grant permission) ...
+        switch ($attribute) {
+            case 'edit':
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userSocial->getUser()) {
+                    return true;
+                }
+                break;
+            case 'delete':
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userSocial->getUser()) {
+                    return true;
+                }
+            break;
         }
-        break;
-    case 'delete':
-        if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userSocial->getUser()) {
-            return true;
-        }
-        break;
-}
 
-return false;
-}
+        return false;
+    }
 }

@@ -155,10 +155,8 @@ class ResetPasswordController extends AbstractController
                 'There was a problem handling your password reset request - %s',
                 $e->getReason()
             ));
-
             return $this->redirectToRoute('app_forgot_password_request');
         }
-
 
         $email = $user->getEmail();
         $username = $user->getUsername();
@@ -166,7 +164,6 @@ class ResetPasswordController extends AbstractController
         //$tokenLifeTimeInHour = ($tokenLifeTime / 3600);
 
         $emailProvider->sendMail($resetToken, $email, $username, $tokenLifeTime, 'Réinitialisation du mot de passe', 'reset_password/email.html.twig');
-
         return $this->redirectToRoute('app_check_email');
     }
 }

@@ -190,7 +190,7 @@ body{
 
 /* SOCIAL NETWORK EDITION */
 
-.social__div{
+.social__div, .category__div{
   border: solid #2A9D8F 1px;
   padding: 2em
 }
