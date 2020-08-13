@@ -15,9 +15,7 @@ class MainController extends AbstractController
         if ($this->getUser()) {
             return $this->redirectToRoute('user_dashboard', ['id'=>$this->getUser()->getId()]);
         }
-        return $this->render('main/homepage.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        return $this->render('main/homepage.html.twig', [] );
     }
 
     /**
@@ -25,7 +23,6 @@ class MainController extends AbstractController
      */
     public function contact()
     {
-        return $this->render('main/contact.html.twig', [
-        ]);
+        return $this->render('main/contact.html.twig', [] );
     }
 }

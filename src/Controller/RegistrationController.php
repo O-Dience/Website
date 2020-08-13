@@ -132,13 +132,4 @@ class RegistrationController extends AbstractController
             'formVar' => 'brand'
         ]);
     }
-
-    /**
-     * @Route("question", name="oauthUser", methods={"GET", "POST"})
-     */
-    public function registerOauthUser()
-    {
-
-        // TODO: CREATE FORM TO HANDLE COMPLETION OF OAUTH USERS REGISTRATION
-    }
 }

@@ -7,6 +7,9 @@
 
 {% block body %}
 	<div class="container-fluid d-flex flex-column justify-content-center  homepage__main__div">
+		{% for flashError in app.flashes('danger') %}
+		<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+		{% endfor %}
 		<h2 class="deepshd">Bienvenue sur O'dience !</h2>
 		<p class="deepshd--small">
 			Votre app de mise en relation entre marques et micro-influenceurs</p>
