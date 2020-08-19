@@ -11,6 +11,7 @@ use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SocialNetworkRepository;
 use App\Repository\UserCategoryRepository;
+use App\Repository\UserSocialRepository;
 use App\Service\EmailProvider;
 use App\Service\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +56,7 @@ class AnnouncementController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request, ImageUploader $imageUploader, UserCategoryRepository $userCategoryRepo, MailerInterface $mailer): Response
+    public function new(Request $request, ImageUploader $imageUploader, UserCategoryRepository $userCategoryRepo, UserSocialRepository $userSocialRepo, MailerInterface $mailer): Response
     {
         $userCategories = $userCategoryRepo->findAll();
         $announcement = new Announcement();
@@ -76,32 +77,56 @@ class AnnouncementController extends AbstractController
             $entityManager->flush();
 
             $announcementCat = $announcement->getCategories();
-
+            $annoucementSocial = $announcement->getSocialNetworks();
 
             $users = [];
             foreach ($announcementCat as $annCat) {
-
                 $catId = $annCat->getId();
-                foreach ($userCategories as $userCategory) {
+                if (!$annoucementSocial->isEmpty()) {
 
-                    $relation = $userCategoryRepo->getRelation($userCategory->getUser()->getId(), $catId);
+                    foreach ($annoucementSocial as $annSoc) {
+                        $socId = $annSoc->getId();
 
-                    if ($relation && in_array("ROLE_INFLUENCER", $userCategory->getUser()->getRoles())) {
-                        $users[] = $userCategory->getUser();
-                        $uniqueUser = array_unique($users);
+
+                        foreach ($userCategories as $userCategory) {
+
+                            $userId = $userCategory->getUser()->getId();
+                            $relationCat = $userCategoryRepo->getRelation($userId, $catId);
+                            $relationSocial = $userSocialRepo->getRelation($userId, $socId);
+
+
+                            if (($relationCat && $relationSocial) && in_array("ROLE_INFLUENCER", $userCategory->getUser()->getRoles())) {
+                                $users[] = $userCategory->getUser();
+                                $uniqueUser = array_unique($users);
+                            }
+                        }
+                    }
+                } else {
+
+                    foreach ($userCategories as $userCategory) {
+
+                        $userId = $userCategory->getUser()->getId();
+                        $relationCat = $userCategoryRepo->getRelation($userId, $catId);
+
+                        if ($relationCat && in_array("ROLE_INFLUENCER", $userCategory->getUser()->getRoles())) {
+                            $users[] = $userCategory->getUser();
+                            $uniqueUser = array_unique($users);
+                        }
                     }
                 }
             }
-
-            foreach ($uniqueUser as $user) {
-
-                $email = $user->getEmail();
-                $username = $user->getUsername();
-                $announcementId = $announcement->getId();
-                $emailProvider = new EmailProvider($mailer);
-                $emailProvider->sendMail($announcementId, $email, $username, null, 'Voici une annonce qui pourrait te plaire !', 'announcement/notification_email.html.twig');
+            if (!empty($uniqueUser)) {
+                foreach ($uniqueUser as $user) {
+                    $templates = ['announcement/notification_email.html.twig', 'announcement/notification_email_1.html.twig', 'announcement/notification_email_2.html.twig', 'announcement/notification_email_3.html.twig'];
+                    $randomTemplates = $templates[array_rand($templates)];
+                    //dd($user->getUserSocials()->id);
+                    $email = $user->getEmail();
+                    $username = $user->getUsername();
+                    $announcementId = $announcement->getId();
+                    $emailProvider = new EmailProvider($mailer);
+                    $emailProvider->sendMail($announcementId, $email, $username, null, 'Voici une annonce qui pourrait te plaire !', $randomTemplates);
+                }
             }
-
             return $this->redirectToRoute('user_dashboard', ['id' => $this->getUser()->getId()]);
         }
 
@@ -130,13 +155,15 @@ class AnnouncementController extends AbstractController
                 ->subject('O\'Dience - ' . $request->request->get('txtName') . ' veut en savoir plus sur votre annonce !')
                 ->html('
                 <p><b>Annonce: ' . $announcement->getTitle() . '</b></p>
-                <p>' . $senderMessage . '</p>
-            
-            ');
+                <p>' . $senderMessage . '</p>');
             $mailer->send($email);
+            // $announcementId = $announcement->getId();
+            // $email = $request->request->get('txtEmail');
+            // $username = $announcement->getUser()->getUsername();
+
+            //  $emailProvider = new EmailProvider($mailer);
+            //  $emailProvider->sendMail($announcementId, $email, $username, null, 'Voici une annonce qui pourrait te plaire !', 'announcement/response_email.html.twig');
         }
-
-
 
         return $this->render('announcement/show.html.twig', [
             'similarAnnouncements' => $similarAnnouncements,

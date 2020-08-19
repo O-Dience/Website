@@ -30,10 +30,9 @@ class UserCategoryRepository extends ServiceEntityRepository
      
         $builder->where("UserCategory.user = :user");
         $builder->andWhere("UserCategory.category = :category");
-        $builder->andWhere('UserCategory.notification = :notification');
+        $builder->andWhere('UserCategory.notification = 1'); // if notification = true
         $builder->setParameter('user', $user);
         $builder->setParameter('category', $category);
-        $builder->setParameter('notification', true);
         $query = $builder->getQuery();
       
         $result = $query->getResult();
