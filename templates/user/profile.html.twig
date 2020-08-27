@@ -1,0 +1,14 @@
+{% extends 'layouts/dashboard.html.twig' %}
+
+{% block content %}
+<div class ="card bg-light profile-content">
+{% include 'user/social/social_profile.html.twig' %}
+{% include 'user/category/category_profile.html.twig' %}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset('assets/js/api.js')}}"></script>
+<script src="{{asset('assets/js/category.js')}}"></script>
+<script src="{{asset('assets/js/social.js')}}"></script>
+{% endblock %}

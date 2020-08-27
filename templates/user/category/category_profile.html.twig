@@ -1,0 +1,26 @@
+		<div class="social-content bg-light">
+			<h3 class="mb-5 text-center">Mes centres d'intérêt:</h3>
+			<div class="text-center mb-3">
+				<a href="{{ path('category_add', {id:user.id }) }}" class="link_category btn btn-primary">Ajouter un centre d'intérêt</a> 
+			</div>
+			<div class="d-flex flex-justify-around text-center flex-wrap col-12">
+				{% for category in user.categories %}
+				<div class="col-xl-12 category__div my-2 mx-auto d-flex justify-content-between align-items-center">
+					<img src="{{asset('/assets/images/category_picto/') ~ category.category.picto}}"
+						class="img-fluid img_resize--socials" alt="">
+					<div>
+						{% if (category.notification == true) %}
+						<p> Notifications: Activées </p>
+						{% else %}
+						<p>Notifications: Désactivées</p>
+						{% endif %}
+					</div>
+					<div data-id={{category.id}}>
+						<button class="delete_category btn btn-danger"> Supprimer </button>
+						<a href="{{path('category_edit', {id: category.id}) }}" class="btn btn-primary">Modifier</a>
+						</button>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>

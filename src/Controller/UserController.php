@@ -224,10 +224,10 @@ class UserController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($userSocial);
             $manager->flush();
-            return $this->redirectToRoute('social_profile', ['id' => $user->getId()]);
+            return $this->redirectToRoute('profile', ['id' => $user->getId()]);
         }
 
-        return $this->render('social/add_social.html.twig', [
+        return $this->render('user/social/add_social.html.twig', [
             "form" => $form->createView(),
 
         ]);
@@ -248,10 +248,10 @@ class UserController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($userSocial);
             $manager->flush();
-            return $this->redirectToRoute('social_profile', ['id' => $userSocial->getUser()->getId()]);
+            return $this->redirectToRoute('profile', ['id' => $userSocial->getUser()->getId()]);
         }
 
-        return $this->render('social/edit_social.html.twig', [
+        return $this->render('user/social/edit_social.html.twig', [
             "userSocial" => $userSocial,
             "form" => $form->createView(),
         ]);
@@ -259,14 +259,13 @@ class UserController extends AbstractController
 
 
     /** 
-     * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
+     * @Route("/user/{id}/profil", name="profile", requirements ={"id" = "\d+"}, methods={"GET"})
      */
-    public function showUserSocial(User $user)
+    public function showProfile(User $user)
     {
 
         $this->denyAccessUnlessGranted('show_social', $user);
-
-        return $this->render('social/social_profile.html.twig', [
+        return $this->render('user/profile.html.twig', [
             "user" => $user
         ]);
     }
@@ -292,7 +291,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('social_profile', ['id' => $user->getId()]);
         }
 
-        return $this->render('social/add_category.html.twig', [
+        return $this->render('user/category/add_category.html.twig', [
             "form" => $form->createView(),
 
         ]);
@@ -315,10 +314,10 @@ class UserController extends AbstractController
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($userCategory);
             $manager->flush();
-            return $this->redirectToRoute('social_profile', ['id' => $userCategory->getUser()->getId()]);
+            return $this->redirectToRoute('profile', ['id' => $userCategory->getUser()->getId()]);
         }
 
-        return $this->render('social/edit_category.html.twig', [
+        return $this->render('user/category/edit_category.html.twig', [
             "userCategory" => $userCategory,
             "form" => $form->createView(),
         ]);
@@ -333,7 +332,7 @@ class UserController extends AbstractController
 
         $this->denyAccessUnlessGranted('show_social', $user);
 
-        return $this->render('social/social_profile.html.twig', [
+        return $this->render('user/social/social_profile.html.twig', [
             "user" => $user
         ]);
     }
