@@ -34,14 +34,17 @@ body {
 .profile-userpic {
   display: flex;
   justify-content: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-top: 0.4em;
+  margin-left: calc(50% - 75px);
 }
 
 .profile-userpic img {
   width: 150px;
   height: auto;
-  margin: 0 auto;
   border-radius: 50%;
-  margin-top: 1em;
 }
 
 .profile-usertitle {
