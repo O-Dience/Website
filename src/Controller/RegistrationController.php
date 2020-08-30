@@ -61,6 +61,7 @@ class RegistrationController extends AbstractController
            $username = $user->getUsername();
            $emailProvider = new EmailProvider($mailer); 
            $emailProvider->sendMail(null , $email, $username, null, 'Inscription confirmée', 'registration/influencer_email.html.twig');
+           $this->addFlash('success', 'Votre compte a bien été créé, vous pouvez maintenant vous connecter');
             return $this->redirectToRoute('app_login');
 
         }
@@ -120,9 +121,7 @@ class RegistrationController extends AbstractController
             $username = $user->getUsername();
             $emailProvider = new EmailProvider($mailer); 
             $emailProvider->sendMail(null , $email, $username, null, 'Inscription confirmée', 'registration/influencer_email.html.twig');
-            return $this->redirectToRoute('app_login');
-
-
+            $this->addFlash('success', 'Votre compte a bien été créé, vous pouvez maintenant vous connecter');
             return $this->redirectToRoute('app_login');
         }
 

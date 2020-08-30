@@ -49,11 +49,10 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         // TODO: Manage registering
-        if($user->getRoles() == ["ROLE_USER"]){
+        if($user->getRoles() === ["ROLE_USER"]){
           dd('continue registration process');
         }
         else {
-            dd($user->getRoles());
             return true;
         }
 

@@ -12,13 +12,31 @@
 		<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="{{ asset('assets/css/style.css')}}"> {% block stylesheets %}{% endblock %}
 		</head>
-
 		<body>
-
+			<div class="dark__effect"></div>
 			{% include 'partials/_nav.html.twig' %}
+			<!-- ALERT MESSAGES -->
+				{% for message in app.flashes('success') %}
+					<div class="alert__messsage alert alert-success alert-dismissible fade show mt-1 text-center position-fixed" role="alert">
+						{{ message }}
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				{% endfor %}
+				{% for message in app.flashes('danger') %}
+					<div class="alert__message alert alert-danger alert-dismissible fade show mt-1 text-center position-fixed mx-auto" role="alert">
+						{{ message }}
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				{% endfor %}
+			<!-- / ALERT MESSAGES -->
+			
 
-			{% block body %}{% endblock %}
 
+				{% block body %}{% endblock %}
 			{% include 'partials/_footer.html.twig' %}
 
 

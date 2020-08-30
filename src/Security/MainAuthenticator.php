@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -30,13 +31,15 @@ class MainAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
     private $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
+    private $session;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(SessionInterface $session, EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->session = $session;
     }
 
     public function supports(Request $request)
@@ -71,7 +74,7 @@ class MainAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Votre email n\'existe pas');
+            throw new CustomUserMessageAuthenticationException('Adresse email inconnue');
         }
 
         return $user;
@@ -108,9 +111,6 @@ class MainAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
         elseif (in_array( "ROLE_INFLUENCER", $user->getRoles() )){
-            return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
-        }
-        elseif (in_array( "ROLE_ADMIN", $user->getRoles() )){
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
         else
