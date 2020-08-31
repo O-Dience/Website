@@ -118,11 +118,8 @@ class UserController extends AbstractController
 
             $this->denyAccessUnlessGranted('show_influencer', $user);
 
-            $youtubeInfos = $googleUserProvider->getYoutubeProfile($user);
-
             return $this->render('user/influencer/show.html.twig', [
                 'user' => $user,
-                'youtube' => $youtubeInfos,
             ]);
         }
 
@@ -212,7 +209,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/{id}/social/add", name="social_add", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
      */
-    public function addUserSocial(User $user, Request $request)
+    public function addUserSocial(User $user, Request $request, GoogleUserProvider $google)
     {
 
         $this->denyAccessUnlessGranted('add_social', $user);
@@ -224,6 +221,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            if($userSocial->getSocial()->getName() == 'Youtube'){
+                
+                $google->getYoutubeChannel();
+            }
+
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($userSocial);
             $manager->flush();

@@ -5,6 +5,8 @@ namespace App\Service;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Repository\UserSocialRepository;
+use Google_Client;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -21,10 +23,11 @@ class GoogleUserProvider
      * @param  $httpClient
      * @param  $generator
      */
-    public function __construct($googleClient, $googleId, HttpClientInterface $httpClient, UrlGeneratorInterface $generator, ImageUploader $imageUploader, UserRepository $userRepository, UserSocialRepository $userSocialRepository)
+    public function __construct($googleClient, $googleId, $googleJson, HttpClientInterface $httpClient, UrlGeneratorInterface $generator, ImageUploader $imageUploader, UserRepository $userRepository, UserSocialRepository $userSocialRepository)
     {
         $this->googleClient = $googleClient;
         $this->googleId = $googleId;
+        $this->googleJson = $googleJson;
         $this->httpClient = $httpClient;
         $this->generator = $generator;
         $this->imageUploader = $imageUploader;
@@ -35,7 +38,6 @@ class GoogleUserProvider
     // Get Google API Token and inject information in User entity
     public function loadUserFromGoogle(string $code)
     {
-
         $redirectUri = $this->generator->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         //get json config to use in the request
@@ -87,20 +89,46 @@ class GoogleUserProvider
     }
 
 
-        // Get All needed information from a Youtube user
-        public function getYoutubeProfile(User $user)
-        {
-            // Get corresponding userSocial object
-            $userSocial = $this->userSocialRepository->findOneBy([
-                'user' => $user,
-                'social' => 1 // 1 = Youtube Id
-                ]);
+    // Get All needed information from a Youtube user
+    public function getYoutubeChannel()
+    {
+        $client = new Google_Client();
+        $client->setApplicationName('O\'Dience');
+        $client->setScopes([
+            'https://www.googleapis.com/auth/youtube.readonly',
+        ]);
+        
+        // TODO: For this request to work, you must replace
+        //       "YOUR_CLIENT_SECRET_FILE.json" with a pointer to your
+        //       client_secret.json file. For more information, see
+        //       https://cloud.google.com/iam/docs/creating-managing-service-account-keys
+        $client->setAuthConfig($this->googleJson);
+        $client->setAccessType('offline');
+        
+        // Request authorization from the user.
+        $authUrl = $client->createAuthUrl();
 
-            if($userSocial){
-                $youtubeLink = $userSocial->getLink();
-            } else {
-                return null;
-            }
+        dd($authUrl);
 
-        }
+        /* 
+        printf("Open this link in your browser:\n%s\n", $authUrl);
+        print('Enter verification code: ');
+        
+        $authCode = trim(fgets(STDIN));
+        
+        // Exchange authorization code for an access token.
+        $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
+        $client->setAccessToken($accessToken);
+        
+        // Define service object for making API requests.
+        $service = new Google_Service_YouTube($client);
+        
+        $queryParams = [
+            'mine' => true
+        ];
+        
+        $response = $service->channelSections->listChannelSections('snippet,contentDetails', $queryParams);
+        dd($response); */
+
+    }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AnnouncementReportRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AnnouncementReportRepository::class)
+ * @ApiResource()
  */
 class AnnouncementReport
 {

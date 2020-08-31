@@ -2,8 +2,7 @@
 
 namespace App\Entity;
 
-
-use App\Repository\AnnouncementRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,7 +12,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AnnouncementRepository::class)
-
  */
 class Announcement
 {

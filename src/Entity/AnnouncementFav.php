@@ -15,11 +15,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      },
  *      normalizationContext={"groups"={"announcementFav:read"}},
  *      itemOperations={
- *      "delete"={
- *      "path"="/v1/announcement/favs/{id}",
- *      "security" = "is_granted('delete_announcementFav', object)",  
+ *          "delete"={
+ *              "path"="/v1/announcement/favs/{id}",
+ *              "security" = "is_granted('delete_announcementFav', object)",  
+ *          }
  *      }
- *    }     
  * )
  * 
  */

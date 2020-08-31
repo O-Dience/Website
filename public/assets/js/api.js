@@ -6,6 +6,19 @@ let api = {
     return myHeaders;
   },
 
+  getOne: function (entity, id){
+
+    let fetchOptions = {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: api.loadHeaders()
+    };
+    let url = window.location.origin;
+
+    fetch(url+'/api/'+ entity +'/'+ id, fetchOptions)
+  },
+
   deleteFav: function (id){
 
     let fetchOptions = {

@@ -16,6 +16,10 @@
 /public/assets/images/avatar_user/*
 ###< images ###
 
+###> configs ###
+/google-client.json
+###< configs ###
+
 ###> symfony/phpunit-bridge ###
 .phpunit
 .phpunit.result.cache

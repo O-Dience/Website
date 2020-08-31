@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\SocialNetworkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SocialNetworkRepository::class)
+ * @ApiResource(
+ *      collectionOperations={"get"},
+ *      itemOperations={
+ *      "get"={
+ *      "path"="/v1/social-network/{id}",
+ *      }
+ *    }     
+ * )
  */
 class SocialNetwork
 {
@@ -177,18 +186,6 @@ class SocialNetwork
             $this->announcements->removeElement($announcement);
             $announcement->removeSocialNetwork($this);
         }
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
