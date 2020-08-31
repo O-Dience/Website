@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Repository\UserSocialRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -20,7 +21,7 @@ class GoogleUserProvider
      * @param  $httpClient
      * @param  $generator
      */
-    public function __construct($googleClient, $googleId, HttpClientInterface $httpClient, UrlGeneratorInterface $generator, ImageUploader $imageUploader, UserRepository $userRepository)
+    public function __construct($googleClient, $googleId, HttpClientInterface $httpClient, UrlGeneratorInterface $generator, ImageUploader $imageUploader, UserRepository $userRepository, UserSocialRepository $userSocialRepository)
     {
         $this->googleClient = $googleClient;
         $this->googleId = $googleId;
@@ -28,6 +29,7 @@ class GoogleUserProvider
         $this->generator = $generator;
         $this->imageUploader = $imageUploader;
         $this->userRepository = $userRepository;
+        $this->userSocialRepository = $userSocialRepository;
     }
 
     // Get Google API Token and inject information in User entity
@@ -83,4 +85,22 @@ class GoogleUserProvider
             throw new NotFoundHttpException('404');
         }
     }
+
+
+        // Get All needed information from a Youtube user
+        public function getYoutubeProfile(User $user)
+        {
+            // Get corresponding userSocial object
+            $userSocial = $this->userSocialRepository->findOneBy([
+                'user' => $user,
+                'social' => 1 // 1 = Youtube Id
+                ]);
+
+            if($userSocial){
+                $youtubeLink = $userSocial->getLink();
+            } else {
+                return null;
+            }
+
+        }
 }

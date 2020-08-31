@@ -26,7 +26,6 @@ class EmailProvider
      */
     public function sendMail($token, $to, $username,$tokenLifeTime, $subject, $template)
     {
-        //dd($token, $to, $username,$tokenLifeTime,$subject,$template);
         $email = (new TemplatedEmail())
         ->from(new Address('contact.odience@gmail.com'))
         ->to($to)

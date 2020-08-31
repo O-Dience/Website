@@ -51,7 +51,6 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        // TODO: Manage registering
         if ($user->getRoles() === ["ROLE_USER"]) {
             return false;
         } else {
@@ -62,6 +61,7 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $this->session->getFlashBag()->add('danger', 'Veuillez vous inscrire avant de pouvoir vous connecter');
+        // TODO: Remove error message and replace it with filled registration form
         return new RedirectResponse($this->urlGenerator->generate('homepage'));
     }
 

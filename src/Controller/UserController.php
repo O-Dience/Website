@@ -15,6 +15,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\SocialNetworkRepository;
 use App\Repository\UserFavRepository;
 use App\Repository\UserRepository;
+use App\Service\GoogleUserProvider;
 use App\Service\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,25 +111,31 @@ class UserController extends AbstractController
     /**
      * @Route("/profil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
      */
-    public function showInfluencer(User $user): Response
+    public function showUser(User $user, GoogleUserProvider $googleUserProvider): Response
     {
-
+        // Influencer details
         if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
+
             $this->denyAccessUnlessGranted('show_influencer', $user);
 
+            $youtubeInfos = $googleUserProvider->getYoutubeProfile($user);
 
             return $this->render('user/influencer/show.html.twig', [
                 'user' => $user,
+                'youtube' => $youtubeInfos,
             ]);
         }
 
+        // Brand details
         if (in_array("ROLE_BRAND", $user->getRoles())) {
+
             $this->denyAccessUnlessGranted('show_brand', $user);
             $likes = 0;
             foreach ($user->getAnnouncements() as $announcement) {
                 $announcementLikes = count($announcement->getFavorites());
                 $likes += $announcementLikes;
             };
+
             return $this->render('user/brand/show.html.twig', [
                 'user' => $user,
                 'likes' => $likes
