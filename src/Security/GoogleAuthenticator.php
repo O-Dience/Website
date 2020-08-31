@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Service\GoogleUserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -18,15 +19,18 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 class GoogleAuthenticator extends AbstractGuardAuthenticator
 {
 
-    public function __construct(GoogleUserProvider $googleProvider, UrlGeneratorInterface $urlGenerator)
+    public function __construct(GoogleUserProvider $googleProvider, UrlGeneratorInterface $urlGenerator, SessionInterface $session)
     {
         $this->googleProvider = $googleProvider;
         $this->urlGenerator = $urlGenerator;
+        $this->session = $session;
     }
 
     public function supports(Request $request)
     {
-        return $request->query->get('code');
+        // if ($request->getPathInfo() == ' //TODO ') {
+            return $request->query->get('code');
+        // }
     }
 
     public function getCredentials(Request $request)
@@ -42,24 +46,22 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
         $token = new CsrfToken('authenticate', sha1(mt_rand(1, 90000) . 'SALT'));
 
         $user = $this->googleProvider->loadUserFromGoogle($credentials['code']);
-
         return $user;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
         // TODO: Manage registering
-        if($user->getRoles() === ["ROLE_USER"]){
-          dd('continue registration process');
-        }
-        else {
+        if ($user->getRoles() === ["ROLE_USER"]) {
+            return false;
+        } else {
             return true;
         }
-
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
+        $this->session->getFlashBag()->add('danger', 'Veuillez vous inscrire avant de pouvoir vous connecter');
         return new RedirectResponse($this->urlGenerator->generate('homepage'));
     }
 
@@ -67,13 +69,13 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
     {
         $user = $token->getUser();
 
-        if (in_array( "ROLE_BRAND", $user->getRoles() )){
+        if (in_array("ROLE_BRAND", $user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
-        if (in_array( "ROLE_INFLUENCER", $user->getRoles() )){
+        if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
-        if (in_array( "ROLE_ADMIN", $user->getRoles() )){
+        if (in_array("ROLE_ADMIN", $user->getRoles())) {
             return new RedirectResponse($this->urlGenerator->generate('easyadmin'));
         }
     }
