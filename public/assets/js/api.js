@@ -8,7 +8,7 @@ let api = {
     return myHeaders;
   },
 
-  getOne: async function (entity, id) {
+  getOne: function (entity, id) {
     let fetchOptions = {
       method: 'GET',
       mode: 'cors',
@@ -16,18 +16,12 @@ let api = {
       headers: api.loadHeaders()
     };
     let url = window.location.origin;
+    let fetchUrl = '';
+    fetchUrl = url + '/api/v1/' + entity + '/' + id, fetchOptions
 
-    fetch(url + '/api/v1/' + entity + '/' + id, fetchOptions)
-      .then(
-        function (response) {
-          return response.json();
-        }
-      ).then(
-        function (data) {
-          console.log(data)
-        }
-      );
+    return fetchUrl
   },
+
 
   deleteFav: function (id) {
 
