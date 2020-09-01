@@ -13,10 +13,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  * @ApiResource(
+ *      routePrefix="/v1",
  *      collectionOperations={"get"},
  *      itemOperations={
  *      "get"={
- *      "path"="/v1/category/{id}",
+ *      "path"="/category/{id}",
  *      }
  *    }     
  * )

@@ -8,7 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AnnouncementReportRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *      routePrefix="/v1",
+ * )
  */
 class AnnouncementReport
 {

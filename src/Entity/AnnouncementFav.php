@@ -10,13 +10,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=AnnouncementFavRepository::class)
  * @ApiResource(
+ *      routePrefix="/v1",
  *      attributes={
  *      "order"={"favAt": "DESC"}
  *      },
  *      normalizationContext={"groups"={"announcementFav:read"}},
+ *      collectionOperations= {
+ *          "post",
+ *      },
  *      itemOperations={
  *          "delete"={
- *              "path"="/v1/announcement/favs/{id}",
+ *              "path"="/announcement/favs/{id}",
  *              "security" = "is_granted('delete_announcementFav', object)",  
  *          }
  *      }

@@ -4,7 +4,7 @@
 
 	<div class="profile-content">
 		<article class="card-body mx-auto bg-light rounded" style="max-width: 400px;">
-			<h4 class="card-title mt-3 text-center">Sélectionner un réseau social à ajouter</h4>
+			<h4 class="card-title mt-3 text-center">Sélectionnez un réseau social à ajouter</h4>
 			{{ form_start(form) }}
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
@@ -14,7 +14,23 @@
 				</div>
 				{{ form_widget(form.social) }}
 			</div>
-			<div class="form-group input-group"></div>
+
+			<div class="form-group input-group">
+
+				<div class="Social__connection btn">
+					<a href="{{path('app_login_google')}}">
+						<div class="google-btn">
+							<div class="google-icon-wrapper">
+								<img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+							</div>
+							<p class="btn-text">
+								<b>Connexion via google</b>
+							</p>
+						</div>
+					</a>
+				</div>
+
+			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-primary btn-block">Valider</button>
 			</div>
@@ -25,6 +41,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{asset('assets/js/api.js')}}"></script>
+	<script src="{{asset('assets/js/api.js')}}"></script>
 	<script src="{{asset('assets/js/userSocial.js')}}"></script>
 {% endblock %}

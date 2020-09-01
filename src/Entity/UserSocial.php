@@ -12,13 +12,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=UserSocialRepository::class)
  * @ApiResource(
- * normalizationContext={"groups"={"userSocial:read"}},
+ *      routePrefix="/v1",
+ *      normalizationContext={"groups"={"userSocial:read"}},
  *      itemOperations={
- *      "delete"={
- *      "path"="/v1/user/social/{id}",
- *      "security" = "is_granted('delete_userSocial', object)",  
- *      }
- *    }     
+ *          "delete"={
+ *              "path"="/user/social/{id}",
+ *              "security" = "is_granted('delete_userSocial', object)",  
+ *          },
+ *          "get"={
+ *              "path"="/user_social/{id}",
+ *          }
+ *      }     
  * )
  */
 class UserSocial

@@ -11,10 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=SocialNetworkRepository::class)
  * @ApiResource(
+ *      routePrefix="/v1",
  *      collectionOperations={"get"},
  *      itemOperations={
  *      "get"={
- *      "path"="/v1/social-network/{id}",
+ *      "path"="/social_network/{id}",
  *      }
  *    }     
  * )
