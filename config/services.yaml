@@ -17,7 +17,10 @@ services:
         # Google auth IDs
         bind:
             $googleClient: '%env(resolve:GOOGLE_CLIENT)%'
-            $googleId: '%env(resolve:GOOGLE_ID)%'
+            $googleId: '%env(resolve:GOOGLE_ID)%'  
+            $InstagramClient: '%env(resolve:INSTA_CLIENT)%'
+            $InstagramId: '%env(resolve:INSTA_ID)%'
+           
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
