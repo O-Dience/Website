@@ -26,7 +26,9 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        return $request->query->get('code');
+            if($request->getPathinfo() === "/login/google"){
+                return $request->query->get('code');
+            }
     }
 
     public function getCredentials(Request $request)
@@ -48,7 +50,7 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        // TODO: Manage registering 
+        // TODO: Manage registering
 
         return true;
     }

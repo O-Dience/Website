@@ -19,10 +19,12 @@ use App\Repository\UserFavRepository;
 use App\Repository\UserRepository;
 use App\Service\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Instagram\Api;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
@@ -120,9 +122,17 @@ class UserController extends AbstractController
         if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             $this->denyAccessUnlessGranted('show_influencer', $user);
 
+            //https://github.com/pgrimaud/instagram-user-feed
+            $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
+            //dd($cachePool);
 
+            $api = new Api($cachePool);
+            $api->login('devop0503', '729Cbk192'); // mandatory
+            $profile = $api->getProfile('beyonce');
+                                                                
             return $this->render('user/influencer/show.html.twig', [
                 'user' => $user,
+                'userProfile' => $profile
             ]);
         }
 

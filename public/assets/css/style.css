@@ -29,6 +29,14 @@ body {
   max-width: 31.25rem;
 }
 
+.btn-info{
+  background-color: #10bbff;
+  border:0;
+}
+.btn-info:hover{
+  background-color:#1b9ccf
+}
+
 .homepage__main__div {
   background: rgba(0, 0, 0, 0.6);
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.10);

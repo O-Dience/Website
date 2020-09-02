@@ -8,10 +8,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class GoogleUserProvider
+class InstagramUserProvider
 {
-    private $googleClient;
-    private $googleId;
+    private $instaClient;
+    private $instaId;
+    
     private $httpClient;
 
     /**
@@ -82,7 +83,8 @@ class GoogleUserProvider
 
             }
         }
-         
+
+        
         else
         {
             throw new NotFoundHttpException('404');
