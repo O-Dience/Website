@@ -14,12 +14,14 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-        # Google auth IDs
+        # Oauth IDs
         bind:
+        # Google oauth IDs
             $googleClient: '%env(resolve:GOOGLE_CLIENT)%'
             $googleId: '%env(resolve:GOOGLE_ID)%'  
-            $InstagramClient: '%env(resolve:INSTA_CLIENT)%'
-            $InstagramId: '%env(resolve:INSTA_ID)%'
+        # Insta oauth IDs
+            $instagramClient: '%env(resolve:INSTA_CLIENT)%'
+            $instagramSecret: '%env(resolve:INSTA_SECRET)%'
            
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
