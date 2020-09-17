@@ -130,6 +130,14 @@ class User implements UserInterface
     private $categories;
 
 
+
+    /**
+     * @var string Twitter screen_name
+     * @ORM\Column(type="string",nullable=true)
+     */
+    private $twitterAccount;
+
+
     public function __construct(array $data = [])
     {
 
@@ -612,6 +620,30 @@ class User implements UserInterface
                 $userCategory->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get twitter screen_name
+     *
+     * @return  string
+     */ 
+    public function getTwitterAccount()
+    {
+        return $this->twitterAccount;
+    }
+
+    /**
+     * Set twitter screen_name
+     *
+     * @param  string  $twitterAccount  Twitter screen_name
+     *
+     * @return  self
+     */ 
+    public function setTwitterAccount(string $twitterAccount)
+    {
+        $this->twitterAccount = $twitterAccount;
 
         return $this;
     }

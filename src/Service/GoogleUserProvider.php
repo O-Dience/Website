@@ -4,9 +4,9 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GoogleUserProvider
 {
@@ -66,12 +66,10 @@ class GoogleUserProvider
                 $user = $this->userRepository->findOneByEmail($jsonResponse->email);
                 
                  if($user){
-
                     return $user;
                 }
                 // Otherwise, create partial user and redirect to adapted form to register fully the new user
                 else {
-
                     $user = new User;
                     $user
                         ->setUsername($jsonResponse->given_name)

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use App\Entity\User;
+use App\Service\TwitterUserProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +13,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SecurityController extends AbstractController
 {
@@ -21,10 +24,13 @@ class SecurityController extends AbstractController
      * @param $googleClient
      * @param $googleId
      */
-    public function __construct($googleClient, $googleId)
+    public function __construct($googleClient, $googleId, $twitterConsumerKey, $twitterSecretKey, $twitterCallback)
     {
         $this->googleClient = $googleClient;
         $this->googleId = $googleId;
+        $this->twitterConsumerKey = $twitterConsumerKey;
+        $this->twitterSecretKey = $twitterSecretKey;
+        $this->twitterCallback = $twitterCallback;
     }
 
     /**
@@ -37,6 +43,7 @@ class SecurityController extends AbstractController
         return new RedirectResponse('https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=online&response_type=code&redirect_uri='. $url .'&client_id='.$this->googleClient);
     }
 
+    
     /**
      * @Route("/login", name="app_login")
      */
@@ -54,6 +61,19 @@ class SecurityController extends AbstractController
        
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+
+
+      /**
+     * @Route("/login/twitter", name="app_login_twitter")
+     */
+    public function twitterAuth(TwitterUserProvider $twitterUserProvider)
+    {
+
+        $url = $twitterUserProvider->urlConstructor();
+
+        return new RedirectResponse($url);
+
     }
 
     /**

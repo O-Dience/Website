@@ -5,10 +5,14 @@ namespace App\Controller;
 use App\Entity\SocialNetwork;
 use App\Form\SocialNetworkType;
 use App\Repository\SocialNetworkRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+
 
 /**
  * @Route("/social/network")
@@ -91,4 +95,5 @@ class SocialNetworkController extends AbstractController
 
         return $this->redirectToRoute('social_network_index');
     }
+
 }

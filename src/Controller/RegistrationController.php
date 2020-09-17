@@ -6,11 +6,14 @@ use App\Entity\User;
 use App\Form\UserDefaultType;
 use App\Service\EmailProvider;
 use App\Service\ImageUploader;
+use App\Service\TwitterUserProvider;
 use App\Service\UserCategoryUploader;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -21,6 +24,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class RegistrationController extends AbstractController
 {
+
+    public function __construct( SessionInterface $session)
+    {
+        $this->session = $session;
+
+    }
+
     /**
      * @Route("influenceur", name="influencer", methods={"GET", "POST"})
      */
@@ -127,12 +137,23 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("question", name="oauthUser", methods={"GET", "POST"})
-     */
-    public function registerOauthUser()
-    {
+   
 
-        // TODO: CREATE FORM TO HANDLE COMPLETION OF OAUTH USERS REGISTRATION
+     /**
+     * @Route("oauth/marque", name="oauthBrand", methods={"GET", "POST"})
+     */
+    public function registerOauthBrand(TwitterUserProvider $twitterUserProvider, Request $request)
+    {
+       
+
+        if($request->getRequestUri()=== '/login/twitter'){
+        $url = $twitterUserProvider->urlConstructor();
+        
+        }
+        
+        return new RedirectResponse($url);
+
     }
+
+
 }

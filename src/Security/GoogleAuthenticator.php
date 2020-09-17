@@ -26,7 +26,11 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        return $request->query->get('code');
+       
+
+        if($request->getPathinfo() === "/login/google"){
+            return $request->query->get('code');
+        }
     }
 
     public function getCredentials(Request $request)
@@ -34,6 +38,7 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
         return [
             'code' => $request->query->get('code'),
         ];
+     
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -41,8 +46,10 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
         // create a random token to identify easily user later on
         $token = new CsrfToken('authenticate', sha1(mt_rand(1, 90000) . 'SALT'));
 
-        $user = $this->googleProvider->loadUserFromGoogle($credentials['code']);
 
+
+        $user = $this->googleProvider->loadUserFromGoogle($credentials['code']);
+      //  dd($user);
         return $user;
     }
 
@@ -55,6 +62,9 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
+ 
+
+       
         return new RedirectResponse($this->urlGenerator->generate('homepage'));
     }
 

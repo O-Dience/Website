@@ -22,6 +22,7 @@ security:
                 authenticators:
                     - App\Security\MainAuthenticator
                     - App\Security\GoogleAuthenticator
+                    - App\Security\TwitterAuthenticator
                 entry_point: App\Security\MainAuthenticator
             logout:
                 path: app_logout
