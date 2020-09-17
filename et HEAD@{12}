@@ -1,0 +1,38 @@
+[33m5a979d9[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mtwitter-API[m[33m)[m HEAD@{0}: checkout: moving from twitter-API to twitter-api
+[33m5a979d9[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mtwitter-API[m[33m)[m HEAD@{1}: checkout: moving from twitter-API to twitter-API
+[33m5a979d9[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mtwitter-API[m[33m)[m HEAD@{2}: checkout: moving from twitter-api to twitter-API
+[33m5a979d9[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mtwitter-API[m[33m)[m HEAD@{3}: checkout: moving from twitter-API to twitter-api
+[33m5a979d9[m[33m ([m[1;36mHEAD[m[33m, [m[1;32mtwitter-API[m[33m)[m HEAD@{4}: reset: moving to HEAD^
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{5}: reset: moving to HEAD^
+[33ma259eb2[m HEAD@{6}: reset: moving to HEAD^
+[33m7e296c4[m HEAD@{7}: checkout: moving from twitter-api to twitter-API
+[33m7e296c4[m HEAD@{8}: checkout: moving from twitter-API to twitter-api
+[33m7e296c4[m HEAD@{9}: revert: Reve "working on twitter-oauth"
+[33ma259eb2[m HEAD@{10}: commit (amend): working on twitter-oauth
+[33m8da471f[m[33m ([m[1;31morigin/twitter-api[m[33m, [m[1;32mtwitter-api[m[33m)[m HEAD@{11}: checkout: moving from twitter-api to twitter-API
+[33m8da471f[m[33m ([m[1;31morigin/twitter-api[m[33m, [m[1;32mtwitter-api[m[33m)[m HEAD@{12}: commit: working on twitter-oauth
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{13}: checkout: moving from dev to twitter-api
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{14}: checkout: moving from twitter-api to dev
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{15}: checkout: moving from dev to twitter-api
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{16}: checkout: moving from twitter_api to dev
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{17}: checkout: moving from dev to twitter_api
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{18}: checkout: moving from twitter-api to dev
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{19}: checkout: moving from dev to twitter-api
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{20}: checkout: moving from twitter-api to dev
+[33mccb0ecf[m[33m ([m[1;31morigin/social-profile[m[33m, [m[1;32msocial-profile[m[33m)[m HEAD@{21}: checkout: moving from social-profile to twitter-api
+[33mccb0ecf[m[33m ([m[1;31morigin/social-profile[m[33m, [m[1;32msocial-profile[m[33m)[m HEAD@{22}: commit: notification ok profile (category + social) ok
+[33mb834899[m HEAD@{23}: commit: email when new notification. ok but slow
+[33mfaa279c[m HEAD@{24}: commit: add an alert system when a new announcement is published
+[33md0e9b7b[m HEAD@{25}: merge dev: Merge made by the 'recursive' strategy.
+[33m87bf502[m HEAD@{26}: checkout: moving from quick-fix to social-profile
+[33mf8582ed[m[33m ([m[1;32mquick-fix[m[33m)[m HEAD@{27}: commit: correct a word
+[33m57e0384[m HEAD@{28}: commit: delete an image directory
+[33m3be97d6[m HEAD@{29}: checkout: moving from social-profile to quick-fix
+[33m87bf502[m HEAD@{30}: commit: first change for social profil. add user_category
+[33m3be97d6[m HEAD@{31}: checkout: moving from quick-fix to social-profile
+[33m3be97d6[m HEAD@{32}: commit: change a little bit email provider
+[33mff29413[m HEAD@{33}: pull: Merge made by the 'recursive' strategy.
+[33m076eee2[m HEAD@{34}: commit: change email provider
+[33mafcfc93[m HEAD@{35}: commit: change email provider
+[33m91066b5[m HEAD@{36}: checkout: moving from dev to quick-fix
+[33me4f16a8[m[33m ([m[1;32mdev[m[33m)[m HEAD@{37}: clone: from https://github.com/O-Dience/Website.git
