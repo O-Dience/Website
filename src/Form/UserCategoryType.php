@@ -22,21 +22,21 @@ class UserCategoryType extends AbstractType
                 'category',
                 EntityType::class,
                 [
-                    'multiple' => true,
+                    'multiple' => false,
                     'placeholder' => "Séléctionnez une catégorie",
                     "label" => "Centre d'intérêt",
                     "class" => Category::class,
                     "choice_label" => "label"
                 ]
             )
-            /*             ->add(
+            ->add(
                 'notification',
                 CheckboxType::class,
                 [
-                    "label" => "Souhaitez-vous recevoir les alertes?",
+                    "label" => "Recevoir les alertes",
                     "required" => false
                 ]
-            ) */;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

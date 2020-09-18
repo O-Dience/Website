@@ -23,10 +23,10 @@
                                         </a>                                
                                     </div>
                                     <div>
-                                    {% if  announcement.updatedAt is empty %}
-                                        <small class="text-muted">Annonce publiée le {{ announcement.createdAt|date('d/m/Y') }} </small>
-                                    {% else %}
+                                    {% if announcement.updatedAt is not empty and announcement.updatedAt != announcement.createdAt %}
                                         <small class="text-muted">Annonce modifiée le {{ announcement.updatedAt|date('d/m/Y') }} </small>
+                                    {% else %}
+                                        <small class="text-muted">Annonce publiée le {{ announcement.createdAt|date('d/m/Y') }} </small>
                                     {% endif %}
                                     </div>
                                 </div>

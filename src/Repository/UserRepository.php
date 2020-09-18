@@ -90,6 +90,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
+    public function findOneByInstagramAccount($account){
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.instagramAccount = :insta')
+            ->setParameter('insta', $account)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
   
 /*     public function findUserFavoriteAnnouncements($id)
     {
