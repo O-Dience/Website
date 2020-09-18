@@ -50,7 +50,7 @@ class GoogleUserProvider
                 'grant_type' => 'authorization_code'
             ]
         ]);
-       ;
+        
         $accessToken = json_decode($response->getContent())->access_token;
         
         if($accessToken){ 
@@ -66,11 +66,11 @@ class GoogleUserProvider
                 $user = $this->userRepository->findOneByEmail($jsonResponse->email);
                 
                  if($user){
+
                     return $user;
                 }
                 // Otherwise, create partial user and redirect to adapted form to register fully the new user
                 else {
-
 
                     $user = new User;
                     $user
@@ -82,13 +82,11 @@ class GoogleUserProvider
 
             }
         }
-         
         else
         {
             throw new NotFoundHttpException('404');
         }
-      
-        
+
 
         dd($response->toArray());
         

@@ -53,7 +53,7 @@
 													(<a href="{{path('user_show', {'id' : announcement.user.id})}}">{{announcement.user}}</a>)
 												</em>
 											</h3>
-											{% if announcement.updatedAt is not empty and announcement.updatedAt != announcement.createdAt %}
+											{% if announcement.updatedAt is not empty %}
 												<p class="font-italic text-black-50 d-flex flex-md-row-reverse text-left text-md-right announcement__date">
 													Modifié le
 													{{ announcement.updatedAt ? announcement.updatedAt|date('d-m-Y à H:i') : '' }}

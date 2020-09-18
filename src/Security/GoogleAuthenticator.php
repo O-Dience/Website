@@ -26,10 +26,7 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-            if($request->getPathinfo() === "/login/google"){
-                return $request->query->get('code');
-            }
-            
+        return $request->query->get('code');
     }
 
     public function getCredentials(Request $request)
@@ -51,7 +48,7 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        // TODO: Manage registering
+        // TODO: Manage registering 
 
         return true;
     }
@@ -64,7 +61,7 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $user = $token->getUser();
-        
+
         if (in_array( "ROLE_BRAND", $user->getRoles() )){
             return new RedirectResponse($this->urlGenerator->generate('user_dashboard', ['id' => $user->getId()]));
         }
