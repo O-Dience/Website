@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserCategory;
 use App\Entity\UserFav;
 use App\Entity\UserReport;
 use App\Entity\UserSocial;
 use App\Form\BrandEditType;
+use App\Form\InfluencerEditType;
+use App\Form\UserCategoryType;
 use App\Form\UserDefaultType;
 use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
@@ -17,10 +20,12 @@ use App\Repository\UserFavRepository;
 use App\Repository\UserRepository;
 use App\Service\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Instagram\Api;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
@@ -74,6 +79,16 @@ class UserController extends AbstractController
 
         $form = $this->createForm(UserDefaultType::class, $user);
 
+
+        $formName = BrandEditType::class;
+        $tplName = "user/brand/edit.html.twig";
+        if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
+            $formName = InfluencerEditType::class;
+            $tplName = "user/influencer/edit.html.twig";
+        }
+
+        $form = $this->createForm($formName, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -93,6 +108,12 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
         }
 
+
+        //return $this->render($tplName, [
+        //    'form' => $form->createView(),
+       //     'user' => $user
+       // ]);
+
         if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             return $this->render('user/influencer/edit.html.twig', [
                 'form' => $form->createView(),
@@ -108,7 +129,8 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/profil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
+     * @Route("/
+     rofil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
      */
     public function showInfluencer(User $user): Response
     {
@@ -116,9 +138,17 @@ class UserController extends AbstractController
         if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             $this->denyAccessUnlessGranted('show_influencer', $user);
 
+            //https://github.com/pgrimaud/instagram-user-feed
+            $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
+            //dd($cachePool);
 
+            $api = new Api($cachePool);
+            $api->login('devop0503', '729Cbk192'); // mandatory
+            $profile = $api->getProfile('beyonce');
+                                                                
             return $this->render('user/influencer/show.html.twig', [
                 'user' => $user,
+                'userProfile' => $profile
             ]);
         }
 
@@ -237,7 +267,6 @@ class UserController extends AbstractController
 
         $this->denyAccessUnlessGranted('edit', $userSocial);
 
-
         $form = $this->createForm(UserSocialType::class, $userSocial);
         $form->handleRequest($request);
 
@@ -250,11 +279,82 @@ class UserController extends AbstractController
 
         return $this->render('social/edit_social.html.twig', [
             "userSocial" => $userSocial,
+
             "form" => $form->createView(),
         ]);
     }
 
 
+    /** 
+     * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
+     */
+    public function showUserSocial(User $user)
+    {
+
+        $this->denyAccessUnlessGranted('show_social', $user);
+
+        return $this->render('social/social_profile.html.twig', [
+            "user" => $user
+        ]);
+    }
+
+    /**
+     * @Route("/user/{id}/category/add", name="category_add", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
+     */
+    public function addUserCategory(User $user, Request $request)
+    {
+
+        $this->denyAccessUnlessGranted('add_social', $user);
+
+        $userCategory = new UserCategory();
+        $userCategory->setUser($user);
+
+        $form = $this->createForm(userCategoryType::class, $userCategory);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($userCategory);
+            $manager->flush();
+            return $this->redirectToRoute('social_profile', ['id' => $user->getId()]);
+        }
+
+        return $this->render('social/add_category.html.twig', [
+          
+            "form" => $form->createView(),
+
+        ]);
+
+    }
+
+
+    /**
+     * @Route("/user/{id}/category/edit", name="category_edit", requirements ={"id" = "\d+"}, methods={"GET", "POST"})
+     */
+    public function editUserCategory(userCategory $userCategory, Request $request)
+    {
+
+        $this->denyAccessUnlessGranted('edit', $userCategory);
+
+
+        $form = $this->createForm(UserCategoryType::class, $userCategory);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($userCategory);
+            $manager->flush();
+            return $this->redirectToRoute('social_profile', ['id' => $userCategory->getUser()->getId()]);
+        }
+
+        return $this->render('social/edit_category.html.twig', [
+            "userCategory" => $userCategory,
+            "form" => $form->createView(),
+        ]);
+
+    }
+
+ // public function showUserCategory(User $user)
     /** 
      * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
      */

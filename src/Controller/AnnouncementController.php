@@ -10,6 +10,9 @@ use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SocialNetworkRepository;
+use App\Repository\UserCategoryRepository;
+use App\Repository\UserSocialRepository;
+use App\Service\EmailProvider;
 use App\Service\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,6 +41,9 @@ class AnnouncementController extends AbstractController
             if (!$announcements) {
                 $announcements = $announcementRepository->searchByContent($search);
             }
+            if (!$announcements) {
+                $announcements = $announcementRepository->searchByUsername($search);
+            }
         }
 
         $categories = $categoryRepository->findAll();
@@ -50,9 +56,9 @@ class AnnouncementController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request, ImageUploader $imageUploader): Response
+    public function new(Request $request, ImageUploader $imageUploader, UserCategoryRepository $userCategoryRepo, UserSocialRepository $userSocialRepo, MailerInterface $mailer): Response
     {
-
+        $userCategories = $userCategoryRepo->findAll();
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
         $form->handleRequest($request);
@@ -70,6 +76,57 @@ class AnnouncementController extends AbstractController
             $entityManager->persist($announcement);
             $entityManager->flush();
 
+            $announcementCat = $announcement->getCategories();
+            $annoucementSocial = $announcement->getSocialNetworks();
+
+            $users = [];
+            foreach ($announcementCat as $annCat) {
+                $catId = $annCat->getId();
+                if (!$annoucementSocial->isEmpty()) {
+
+                    foreach ($annoucementSocial as $annSoc) {
+                        $socId = $annSoc->getId();
+
+
+                        foreach ($userCategories as $userCategory) {
+
+                            $userId = $userCategory->getUser()->getId();
+                            $relationCat = $userCategoryRepo->getRelation($userId, $catId);
+                            $relationSocial = $userSocialRepo->getRelation($userId, $socId);
+
+
+                            if (($relationCat && $relationSocial) && in_array("ROLE_INFLUENCER", $userCategory->getUser()->getRoles())) {
+                                $users[] = $userCategory->getUser();
+                                $uniqueUser = array_unique($users);
+                            }
+                        }
+                    }
+                } else {
+
+                    foreach ($userCategories as $userCategory) {
+
+                        $userId = $userCategory->getUser()->getId();
+                        $relationCat = $userCategoryRepo->getRelation($userId, $catId);
+
+                        if ($relationCat && in_array("ROLE_INFLUENCER", $userCategory->getUser()->getRoles())) {
+                            $users[] = $userCategory->getUser();
+                            $uniqueUser = array_unique($users);
+                        }
+                    }
+                }
+            }
+            if (!empty($uniqueUser)) {
+                foreach ($uniqueUser as $user) {
+                    $templates = ['announcement/notification_email.html.twig', 'announcement/notification_email_1.html.twig', 'announcement/notification_email_2.html.twig', 'announcement/notification_email_3.html.twig'];
+                    $randomTemplates = $templates[array_rand($templates)];
+                    //dd($user->getUserSocials()->id);
+                    $email = $user->getEmail();
+                    $username = $user->getUsername();
+                    $announcementId = $announcement->getId();
+                    $emailProvider = new EmailProvider($mailer);
+                    $emailProvider->sendMail($announcementId, $email, $username, null, 'Voici une annonce qui pourrait te plaire !', $randomTemplates);
+                }
+            }
             return $this->redirectToRoute('user_dashboard', ['id' => $this->getUser()->getId()]);
         }
 
@@ -93,21 +150,23 @@ class AnnouncementController extends AbstractController
         if ($senderMessage) {
 
             $email = (new Email())
-            ->from($request->request->get('txtEmail'))
-            ->to($announcement->getUser()->getEmail())
-            ->subject('O\'Dience - ' . $request->request->get('txtName') . ' veut en savoir plus sur votre annonce !')
-            ->html('
+                ->from($request->request->get('txtEmail'))
+                ->to($announcement->getUser()->getEmail())
+                ->subject('O\'Dience - ' . $request->request->get('txtName') . ' veut en savoir plus sur votre annonce !')
+                ->html('
                 <p><b>Annonce: ' . $announcement->getTitle() . '</b></p>
-                <p>' .$senderMessage. '</p>
-            
-            ');
+                <p>' . $senderMessage . '</p>');
             $mailer->send($email);
+            // $announcementId = $announcement->getId();
+            // $email = $request->request->get('txtEmail');
+            // $username = $announcement->getUser()->getUsername();
+
+            //  $emailProvider = new EmailProvider($mailer);
+            //  $emailProvider->sendMail($announcementId, $email, $username, null, 'Voici une annonce qui pourrait te plaire !', 'announcement/response_email.html.twig');
         }
 
-
-
         return $this->render('announcement/show.html.twig', [
-            'similarAnnouncements'=> $similarAnnouncements,
+            'similarAnnouncements' => $similarAnnouncements,
             'announcement' => $announcement
         ]);
     }
@@ -154,7 +213,7 @@ class AnnouncementController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('user_dashboard', ['id'=> $this->getUser()->getId()]);
+        return $this->redirectToRoute('user_dashboard', ['id' => $this->getUser()->getId()]);
     }
 
     /**
@@ -170,23 +229,22 @@ class AnnouncementController extends AbstractController
      */
     public function favorites(Announcement $announcement, EntityManagerInterface $manager, AnnouncementFavRepository $favRepo): Response
     {
-        $user =$this->getUser();
+        $user = $this->getUser();
 
-        if(!$user){
+        if (!$user) {
 
-        return $this->json(['code'=>403, 'message'=>'Unauthorizer'], 403);
-
+            return $this->json(['code' => 403, 'message' => 'Unauthorizer'], 403);
         }
-        if ($announcement->isFavByUser($user)){
+        if ($announcement->isFavByUser($user)) {
             $favorite = $favRepo->findOneBy([
-                'announcement'=>$announcement,
-                'user'=>$user
+                'announcement' => $announcement,
+                'user' => $user
             ]);
-            
+
             $manager->remove($favorite);
             $manager->flush();
 
-            return $this->json(['code'=>200, 'message'=> 'L\'annonce '.  $announcement->getTitle() . ' a été retirée de vos favoris !'], 200);
+            return $this->json(['code' => 200, 'message' => 'L\'annonce ' .  $announcement->getTitle() . ' a été retirée de vos favoris !'], 200);
         }
 
         $favorite = new AnnouncementFav();
@@ -195,7 +253,7 @@ class AnnouncementController extends AbstractController
 
         $manager->persist($favorite);
         $manager->flush();
-        return $this->json(['code'=>200, 'message'=> 'L\'annonce '.  $announcement->getTitle() . ' a été ajoutée à vos favoris !'], 200);
+        return $this->json(['code' => 200, 'message' => 'L\'annonce ' .  $announcement->getTitle() . ' a été ajoutée à vos favoris !'], 200);
     }
 
     /**
@@ -216,7 +274,7 @@ class AnnouncementController extends AbstractController
         }
 
         if ($announcement->isReportedByUser($user)) {
-            return $this->json(['code' => 200, 'message '=> 'Vous avez déjà signalé cette annonce !'], 200);
+            return $this->json(['code' => 200, 'message ' => 'Vous avez déjà signalé cette annonce !'], 200);
         }
 
         $report = new AnnouncementReport();
@@ -225,6 +283,6 @@ class AnnouncementController extends AbstractController
 
         $manager->persist($report);
         $manager->flush();
-        return $this->json(['code' => 200, 'message' => 'L\'annonce '. $announcement->getTitle() . ' a été signalée par ' . $user->getUsername() . '.'], 200);
+        return $this->json(['code' => 200, 'message' => 'L\'annonce ' . $announcement->getTitle() . ' a été signalée par ' . $user->getUsername() . '.'], 200);
     }
 }

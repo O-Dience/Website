@@ -155,10 +155,8 @@ class ResetPasswordController extends AbstractController
                 'There was a problem handling your password reset request - %s',
                 $e->getReason()
             ));
-
             return $this->redirectToRoute('app_forgot_password_request');
         }
-
 
         $email = $user->getEmail();
         $username = $user->getUsername();

@@ -29,6 +29,18 @@ let api = {
     };
     
     fetch('http://localhost:8000/api/v1/user/social/'+ id, fetchOptions)
+  },
+  
+  deleteCategory: function (id){
+
+    let fetchOptions = {
+      method: 'DELETE',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: api.loadHeaders()
+    };
+    
+    fetch('http://localhost:8000/api/v1/user/category/'+ id, fetchOptions)
   }
 
 }
