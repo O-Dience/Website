@@ -1,67 +1,36 @@
 {% extends 'layouts/dashboard.html.twig' %}
 
 {% block content %}
-
-<div class="rounded pb-3 pt-3 profile-content  bg-light">
-	<div class="container">
-		<div class="social-content bg-light">
-			<h3 class="mb-5 text-center">La gestion de tes réseaux, c'est ici que ça se passe !</h3>
-			<div class="text-center mb-3">
-				<a href="{{ path('social_add', {id:user.id }) }}" class="link_social btn btn-primary">Ajouter un nouveau
-					profil</a>
-			</div>
-			<div class="d-flex flex-justify-around text-center flex-wrap col-12">
-				{% for socialProfile in user.userSocials %}
-				<div class="col-xl-12 social__div my-2 mx-auto d-flex justify-content-between align-items-center">
-					<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}"
-						class="img-fluid img_resize--socials" alt="">
-					<div>
-						<a href="{{ socialProfile.link }}" target="_blank">Mon {{ socialProfile.social.name }} </a>
-					</div>
-					<div data-id={{socialProfile.id}}>
-						<button class="delete_social btn btn-danger"> Supprimer </button>
-						<a href="{{path('social_edit', {id: socialProfile.id}) }}" class="btn btn-primary">Modifier</a>
-						</button>
-					</div>
+		<div class="rounded pb-3 pt-3 profile-content  bg-light">
+			<div class="social-content bg-light">
+				<h3 class="mb-5 text-center">La gestion de tes réseaux, c'est ici que ça se passe !</h3>
+				<div class="text-center mb-3">
+					<a href="{{ path('social_add', {id:user.id }) }}" class="link_social btn btn-primary">Ajouter un nouveau profil</a>
 				</div>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
-	<div>
-		<div class="social-content bg-light">
-			<h3 class="mb-5 text-center">Mes centres d'intérêt:</h3>
-			<div class="text-center mb-3">
-				<a href="{{ path('category_add', {id:user.id }) }}" class="link_category btn btn-primary">Ajouter un centre d'intérêt</a> 
-			</div>
-			<div class="d-flex flex-justify-around text-center flex-wrap col-12">
-				{% for category in user.categories %}
-				<div class="col-xl-12 category__div my-2 mx-auto d-flex justify-content-between align-items-center">
-					<img src="{{asset('/assets/images/category_picto/') ~ category.category.picto}}"
-						class="img-fluid img_resize--socials" alt="">
-					<div>
-						{% if (category.notification == true) %}
-						<p> Notifications: Activées </p>
-						{% else %}
-						<p>Notifications: Désactivées</p>
-						{% endif %}
+				<div class="d-flex flex-justify-around text-center flex-wrap col-12">
+					{% for socialProfile in user.userSocials %}
+					<div class="col-xl-12 social__div my-2 mx-auto d-flex justify-content-between align-items-center">
+						<div>
+							<img src="{{asset('/assets/images/social_picto/') ~ socialProfile.social.picto}}" class="img-fluid img_resize--socials" alt="">
+						</div>
+						<div>
+							<a href="{{ socialProfile.link }}" target="_blank">Mon {{ socialProfile.social.name }} </a>
+						</div>
+						<div data-id={{socialProfile.id}} >
+							<button class="delete_social btn btn-danger"> Supprimer </button>
+								<a href="{{path('social_edit', {id: socialProfile.id}) }}" class="btn btn-primary">Modifier</a>
+							</button>
+						</div>
 					</div>
-					<div data-id={{category.id}}>
-						<button class="delete_category btn btn-danger"> Supprimer </button>
-						<a href="{{path('category_edit', {id: category.id}) }}" class="btn btn-primary">Modifier</a>
-						</button>
-					</div>
+					{% endfor %}
 				</div>
-				{% endfor %}
 			</div>
 		</div>
 	</div>
 </div>
-
 {% endblock %}
 
 {% block javascripts %}
 <script src="{{asset('assets/js/api.js')}}"></script>
-<script src="{{asset('assets/js/category.js')}}"></script>
 <script src="{{asset('assets/js/social.js')}}"></script>
 {% endblock %}

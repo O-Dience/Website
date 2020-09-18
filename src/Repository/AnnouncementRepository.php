@@ -37,14 +37,6 @@ class AnnouncementRepository extends ServiceEntityRepository
     */
 
     /**
-     * @return Announcement[] Finds all announcements
-     */
-    public function findAll(){
-
-        return $this->findBy([],['updated_at'=>'DESC']);
-    }
-
-    /**
      * @return Announcement[] Finds all announcements posted by the user represented by this id
      */
     public function findByBrandId($id)
@@ -90,7 +82,7 @@ class AnnouncementRepository extends ServiceEntityRepository
             $builder->expr()->like('announcement.title', ":title")
         );
         $builder->setParameter('title', "%$title%");
-        $builder->orderBy('announcement.updated_at', 'DESC');
+        $builder->orderBy('announcement.title', 'asc');
         $query = $builder->getQuery();
         $result = $query->execute();
         return $result;
@@ -103,37 +95,13 @@ class AnnouncementRepository extends ServiceEntityRepository
             $builder->expr()->like('announcement.content', ":content")
         );
         $builder->setParameter('content', "%$content%");
-        $builder->orderBy('announcement.updated_at', 'DESC');
+        $builder->orderBy('announcement.title', 'asc');
         $query = $builder->getQuery();
         $result = $query->execute();
         return $result;
         
     }
 
-
-    public function searchByUsername($username){
-
-        $builder = $this->createQueryBuilder('announcement');
-
-        $builder->leftJoin('announcement.user', "user");
-
-        $builder->addSelect('user');
-
-        $builder->where(
-            $builder->expr()->like('user.username', ':username')
-        );
-
-        $builder->setParameter('username', "$username%");
-
-        $builder->orderBy('announcement.updated_at', 'DESC');
-
-        $query = $builder->getQuery();
-
-        $result = $query->execute();
-        
-        return $result;
-        
-    }
 
     // /**
     //  * @return Announcement[] Finds all announcements posted by the user represented by this id

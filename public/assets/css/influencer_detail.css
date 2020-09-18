@@ -201,25 +201,3 @@ img.rounded {
     max-width: 35px!important;
 }
 
-.profile__insta{
-    display: flex;
-    background: rgba(231, 229, 229, 0.438);
-    justify-content: center;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
-
-.photo__insta{
-    height: 150px;
-    width: 150px;
-}
-
-.photo__insta img {
-    border-radius: 50%;
-    height: 100%;
-    width: 100%;
-  }
-
-.info_insta--data{
-    list-style: none;
-}

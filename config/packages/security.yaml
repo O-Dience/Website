@@ -22,7 +22,6 @@ security:
                 authenticators:
                     - App\Security\MainAuthenticator
                     - App\Security\GoogleAuthenticator
-                    - App\Security\InstagramAuthenticator
                 entry_point: App\Security\MainAuthenticator
             logout:
                 path: app_logout
