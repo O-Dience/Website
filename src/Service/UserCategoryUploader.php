@@ -22,6 +22,7 @@ class UserCategoryUploader
             $userCategory = new UserCategory();
             $userCategory->setCategory($category)->setUser($user);
 
+            
             $this->em->getRepository(UserCategory::class);
             $this->em->persist($userCategory);
             $this->em->flush();
