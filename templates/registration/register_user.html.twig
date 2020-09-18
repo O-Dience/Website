@@ -37,6 +37,8 @@
 				<h3 class="my-3">Inscription</h3>
 				<div class="pr-2 pt-5 register__right">
 					{{ form_start(form) }}
+					{{ form_row(form._token) }}
+					{{ form_errors(form) }}
 					<div class="form-row">
 						<div class="form-group col-xl-7 text-xl-center mx-xl-auto">
 							{% if(formVar == 'influencer') %}
@@ -130,10 +132,25 @@
 							</div>
 						</div>
 					</div>
-					{{ form_widget(form) }}
+					<div class="form-row">
+						<div class="form-group col-xl-9 text-xl-center mx-xl-auto">
+							{{form_label(form.categories)}}
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text text-white {{ (formVar == 'influencer') ? 'bg-info' : 'bg-danger' }}">
+										<i class="fa fa-filter" aria-hidden="true"></i>
+									</div>
+								</div>
+								{{form_widget(form.categories)}}
+							</div>
+							<div class="text-right">
+								{{form_help(form.categories)}}
+							</div>
+						</div>
+					</div>
 				</div>
 				<button type="submit" class="btn m-3 {{ (formVar == 'influencer') ? 'btn-info' : 'btn-danger' }}">Valider</button>
-				{{ form_end(form) }}
+				{{ form_end(form, {'render_rest': false}) }}
 			</div>
 		</div>
 	</div>

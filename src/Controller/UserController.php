@@ -10,6 +10,7 @@ use App\Entity\UserSocial;
 use App\Form\BrandEditType;
 use App\Form\InfluencerEditType;
 use App\Form\UserCategoryType;
+use App\Form\UserDefaultType;
 use App\Form\UserSocialType;
 use App\Repository\AnnouncementFavRepository;
 use App\Repository\AnnouncementRepository;
@@ -76,6 +77,8 @@ class UserController extends AbstractController
     {
         $this->denyAccessUnlessGranted('edit', $user);
 
+        $form = $this->createForm(UserDefaultType::class, $user);
+
 
         $formName = BrandEditType::class;
         $tplName = "user/brand/edit.html.twig";
@@ -106,15 +109,28 @@ class UserController extends AbstractController
         }
 
 
-        return $this->render($tplName, [
-            'form' => $form->createView(),
-            'user' => $user
-        ]);
+        //return $this->render($tplName, [
+        //    'form' => $form->createView(),
+       //     'user' => $user
+       // ]);
+
+        if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
+            return $this->render('user/influencer/edit.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user
+            ]);
+        } elseif (in_array("ROLE_BRAND", $user->getRoles())) {
+            return $this->render('user/brand/edit.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user
+            ]);
+        }
     }
 
 
     /**
-     * @Route("/profil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
+     * @Route("/
+     rofil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
      */
     public function showInfluencer(User $user): Response
     {
@@ -263,6 +279,7 @@ class UserController extends AbstractController
 
         return $this->render('social/edit_social.html.twig', [
             "userSocial" => $userSocial,
+
             "form" => $form->createView(),
         ]);
     }
@@ -303,9 +320,11 @@ class UserController extends AbstractController
         }
 
         return $this->render('social/add_category.html.twig', [
+          
             "form" => $form->createView(),
 
         ]);
+
     }
 
 
@@ -332,13 +351,14 @@ class UserController extends AbstractController
             "userCategory" => $userCategory,
             "form" => $form->createView(),
         ]);
+
     }
 
-
+ // public function showUserCategory(User $user)
     /** 
      * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
      */
-    public function showUserCategory(User $user)
+    public function showUserSocial(User $user)
     {
 
         $this->denyAccessUnlessGranted('show_social', $user);

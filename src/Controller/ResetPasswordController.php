@@ -163,7 +163,8 @@ class ResetPasswordController extends AbstractController
         $tokenLifeTime = $this->resetPasswordHelper->getTokenLifetime();
         //$tokenLifeTimeInHour = ($tokenLifeTime / 3600);
 
-        $emailProvider->sendMail($resetToken, $email, $username, $tokenLifeTime, 'Réinitialisation du mot de passe', 'reset_password/email.html.twig');
+        $emailProvider->sendMail($resetToken, $email, $username, $tokenLifeTime, 'Réinitialisation de votre mot de passe', 'reset_password/email.html.twig');
+
         return $this->redirectToRoute('app_check_email');
     }
 }

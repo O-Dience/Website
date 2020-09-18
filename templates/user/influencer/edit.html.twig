@@ -4,48 +4,99 @@
 	<div class="card bg-light profile-content">
 		<article class="card-body mx-auto">
 			<h4 class="card-title mt-3 text-center">Editer mon profil</h4>
-			{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}	
-			<div class="form-row">
-				<div class="form-group col-md-6">
-					<label>Nom d'utilisateur</label>
-					{{form_widget(form.username)}}
+			{{ form_start(form) }}
+			{{ form_row(form._token) }}
+			{{ form_errors(form) }}
+			<div class="form-row mt-xl-5">
+				<div class="form-group col-xl-6 text-xl-left mx-xl-auto">
+					{{ form_label(form.username) }}
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text text-white bg-info">
+								<i class="fa fa-user" aria-hidden="true"></i>
+							</div>
+						</div>
+						{{form_widget(form.username)}}
+					</div>
+					<div class="text-right">
+						{{form_help(form.username)}}
+					</div>
 				</div>
-				<div class="form-group col-md-6">
-					<label>Votre e-mail</label>
-					{{form_errors(form.email)}}
-					{{form_widget(form.email)}}   
+				<div class="form-group col-xl-6 text-xl-right mx-xl-auto">
+					{{form_label(form.email)}}
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text text-white bg-info">
+								<i class="fa fa-paper-plane" aria-hidden="true"></i>
+							</div>
+						</div>
+						{{form_widget(form.email)}}
+					</div>
 				</div>
-				{% for passwordField in form.password %}
-				<div class="form-group col-md-6">
-					{{form_label(passwordField)}} 
-					{{form_widget(passwordField)}}
-				</div>
-				{% endfor %}
 			</div>
-			<div class="form-row">
-				<div class="form-group col-md-6">
-					<div class="form-group col-row-12">
-						<label>Date de naissance</label>
-						{{form_widget(form.birthdate)}}	
+			<button class="btn btn-sm btn-info" type="button" data-toggle="collapse" data-target="#password-fields" aria-expanded="false" aria-controls="password-fields">Modifier mon mot de passe</button>
+			<div id="password-fields" class="form-row mt-xl-2 collapse">
+				<div class="col-xl-6 text-xl-left">
+					{{form_label(form.password.first)}}
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text text-white bg-info">
+								<i class="fa fa-lock" aria-hidden="true"></i>
+							</div>
+						</div>
+						{{form_widget(form.password.first)}}
 					</div>
-					<div class="form-group col-row-12">
-						<label>Avatar</label>
-						{{form_widget(form.pictureFile)}}	
+					<div class="text-right">
+						{{form_help(form.password)}}
 					</div>
-				</div>	
-				<div class="form-group col-md-6">
-					{{form_widget(form.categories)}}
+				</div>
+				<div class="col-xl-6 text-xl-right">
+					{{form_label(form.password.second)}}
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text text-white bg-info">
+								<i class="fa fa-lock" aria-hidden="true"></i>
+							</div>
+						</div>
+						{{form_widget(form.password.second)}}
+					</div>
+				</div>
+			</div>
+			<div class="form-row mt-xl-2">
+				<div class="form-group col-xl-6 text-xl-left">
+					{{ form_label(form.birthdate) }}
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text text-white bg-info">
+								<i class="fa fa-birthday-cake" aria-hidden="true"></i>
+							</div>
+						</div>
+						{{form_widget(form.birthdate)}}
+					</div>
+				</div>
+				<div class="form-group col-xl-6 text-xl-right">
+					{{form_label(form.pictureFile)}}
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text text-white bg-info">
+								<i class="fa fa-picture-o" aria-hidden="true"></i>
+							</div>
+						</div>
+						{{form_widget(form.pictureFile)}}
+					</div>
+					<div class="text-right">
+						{{form_help(form.pictureFile)}}
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
-				<label>Description</label>
+				<label>Présentez vous</label>
 				{{form_errors(form.description)}}
 				{{form_widget(form.description)}}
 			</div>
-			<div class="form-group col-md-4 mx-auto">
-				<button type="submit" class="btn btn-primary btn-block"> Enregistrer modification </button>
-			</div>                                                                       
-			{{ form_end(form) }}
-		</article>
-	</div>
-{% endblock %}
+
+			<button type="submit" class="btn btn-info m-2">Enregistrer les modifications</button>
+		</div>
+		{{ form_end(form, {'render_rest': false}) }}
+	</article>
+</div>{% endblock %}
