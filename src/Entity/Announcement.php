@@ -94,6 +94,7 @@ class Announcement
         $this->socialNetworks = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->created_at = new \DateTime;
+        $this->updated_at = new \DateTime;
         $this->status = true; // true = active
 
         $this->favorites = new ArrayCollection();

@@ -47,4 +47,24 @@ class UserSocialRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+     // Know if a relationship exists
+    public function getRelation($user, $social)
+    {
+        
+        // je crée un querybuilder sur l'objet User avec l'alias 'user'
+        $builder = $this->createQueryBuilder('UserSocial');
+     
+        $builder->where("UserSocial.user = :user");
+        $builder->andWhere("UserSocial.social = :social");
+        $builder->setParameter('user', $user);
+        $builder->setParameter('social', $social);
+        $query = $builder->getQuery();
+      
+        $result = $query->getResult();
+        return $result;
+    }
+
+
 }

@@ -129,6 +129,10 @@ class User implements UserInterface
      */
     private $categories;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $instagramAccount;
 
     public function __construct(array $data = [])
     {
@@ -612,6 +616,26 @@ class User implements UserInterface
                 $userCategory->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of instagramAccount
+     */ 
+    public function getInstagramAccount()
+    {
+        return $this->instagramAccount;
+    }
+
+    /**
+     * Set the value of instagramAccount
+     *
+     * @return  self
+     */ 
+    public function setInstagramAccount($instagramAccount)
+    {
+        $this->instagramAccount = $instagramAccount;
 
         return $this;
     }

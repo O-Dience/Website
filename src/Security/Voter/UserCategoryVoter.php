@@ -2,12 +2,12 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\UserSocial;
+use App\Entity\UserCategory;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserSocialVoter extends Voter
+class UserCategoryVoter extends Voter
 {
 
     protected function supports($attribute, $subject)
@@ -15,10 +15,10 @@ class UserSocialVoter extends Voter
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, ['edit', 'delete'])
-            && $subject instanceof UserSocial;
+            && $subject instanceof UserCategory;
     }
-    
-    protected function voteOnAttribute($attribute, $userSocial, TokenInterface $token)
+
+    protected function voteOnAttribute($attribute, $userCategory, TokenInterface $token)
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
@@ -29,15 +29,15 @@ class UserSocialVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'edit':
-                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userSocial->getUser()) {
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userCategory->getUser()) {
                     return true;
                 }
                 break;
             case 'delete':
-                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userSocial->getUser()) {
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $userCategory->getUser()) {
                     return true;
                 }
-            break;
+                break;
         }
 
         return false;
