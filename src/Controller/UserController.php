@@ -129,8 +129,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/
-     rofil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
+     * @Route("/profil/{id}", name="user_show", methods={"GET"}, requirements={"id": "\d+"})
      */
     public function showInfluencer(User $user): Response
     {
@@ -281,20 +280,6 @@ class UserController extends AbstractController
             "userSocial" => $userSocial,
 
             "form" => $form->createView(),
-        ]);
-    }
-
-
-    /** 
-     * @Route("/user/{id}/social", name="social_profile", requirements ={"id" = "\d+"}, methods={"GET"})
-     */
-    public function showUserSocial(User $user)
-    {
-
-        $this->denyAccessUnlessGranted('show_social', $user);
-
-        return $this->render('social/social_profile.html.twig', [
-            "user" => $user
         ]);
     }
 
