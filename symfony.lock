@@ -144,9 +144,6 @@
     "league/oauth2-client": {
         "version": "2.5.0"
     },
-    "league/oauth2-instagram": {
-        "version": "3.0.0"
-    },
     "lorenzo/pinky": {
         "version": "1.0.5"
     },
@@ -176,9 +173,6 @@
     },
     "pagerfanta/pagerfanta": {
         "version": "v2.3.0"
-    },
-    "pgrimaud/instagram-user-feed": {
-        "version": "6.4.1"
     },
     "php": {
         "version": "7.4"

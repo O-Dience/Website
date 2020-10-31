@@ -26,10 +26,7 @@ class GoogleAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-            if($request->getPathinfo() === "/login/google"){
-                return $request->query->get('code');
-            }
-            
+        return $request->query->get('code');
     }
 
     public function getCredentials(Request $request)

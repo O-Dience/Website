@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use League\OAuth2\Client\Provider\Instagram;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,18 +13,14 @@ class SecurityController extends AbstractController
 {
     private $googleClient;
     private $googleId;
-    private $instagramClient;
-    private  $instagramSecret;
 
     /**
      * @param $googleClient
      * @param $googleId
      */
-    public function __construct($googleClient,$instagramClient,$instagramSecret)
+    public function __construct($googleClient)
     {
         $this->googleClient = $googleClient;
-        $this->instagramClient = $instagramClient;
-        $this->instagramSecret =  $instagramSecret;
     }
 
     /**
@@ -36,23 +31,6 @@ class SecurityController extends AbstractController
         $url = $generator->generate('app_login', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new RedirectResponse('https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=online&response_type=code&redirect_uri='. $url .'&client_id='.$this->googleClient);
-    }
-
-
-     /**
-     * @Route("/insta", name="app_login_insta")
-     */
-    public function instaAuth(UrlGeneratorInterface $generator)
-    {
-        $provider = new Instagram([
-            'clientId'          => $this->instagramClient,
-            'clientSecret'      => $this->instagramSecret,
-            'redirectUri'       => 'https://localhost:8000/login/insta',
-            'host'              => 'https://api.instagram.com',  // Optional, defaults to https://api.instagram.com
-            'graphHost'         => 'https://graph.instagram.com' // Optional, defaults to https://graph.instagram.com
-        ]);
-
-        return new RedirectResponse($provider->getAuthorizationUrl());
     }
 
     /**
@@ -79,7 +57,6 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        dd('coucou');
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
