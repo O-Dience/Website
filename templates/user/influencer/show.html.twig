@@ -64,9 +64,6 @@
 							</div>
 								<!--Grid row-->
 						</div>
-						<p>
-							{{ user.description | nl2br }}
-						</p>
 					</div>
 					<div class="row">
 						<div class="col-md-6 ml-auto mr-auto">
@@ -106,44 +103,6 @@
 								<div class="col-md-3 mr-auto">
 									<img src="https://images.unsplash.com/photo-1521341057461-6eb5f40b07ab?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=72da2f550f8cbd0ec252ad6fb89c96b2&auto=format&fit=crop&w=334&q=80" class="rounded">
 									<img src="https://images.unsplash.com/photo-1506667527953-22eca67dd919?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6326214b7ce18d74dde5e88db4a12dd5&auto=format&fit=crop&w=750&q=80" class="rounded">
-								</div>
-							</div>
-						</div>
-						<div class="tab-pane text-center gallery" id="works">
-							{% dump(userProfile) %}
-							<div class="profile__insta">
-							<div class="photo__insta">
-								<img src="{{ userProfile.profilePicture }}" alt="profile picture">
-							</div>
-							<div class="info__insta">
-								<h5 class="info__insta-name">{{ userProfile.fullName }}</h5>
-								<ul class="row info_insta--data">
-									<li class="col-sm">{{ userProfile.mediaCount}} publications</li>
-									<li class="col-sm">{{ userProfile.followers}}  abonnés</li>
-									<li class="col-sm">{{ userProfile.following}} abonnements</li>
-									
-								</ul>
-							</div>
-
-						</div> 
-							<div class="row">
-								<div class="col-md-4 ml-auto">
-										{% if userProfile.medias %}
-									
-							
-									{% for i in 0..5 %}
-									<a href="{{ userProfile.medias[i].link }}" target="_blank" ><img  src="{{ userProfile.medias[i].displaySrc }}" alt="{{ userProfile.medias[i].accessibilityCaption }}" class="rounded"></a>
-									{% endfor %}
-									{% endif %}
-								</div>
-								<div class="col-md-4 mr-auto">
-									{% if userProfile.medias %}
-									{% dump(userProfile.medias) %}
-							
-									{% for i in 6..11 %}
-									<a href="{{ userProfile.medias[i].link }}" target="_blank" ><img  src="{{ userProfile.medias[i].thumbnailSrc }}" alt="{{ userProfile.medias[i].accessibilityCaption }}" class="rounded"></a>
-									{% endfor %}
-									{% endif %}
 								</div>
 							</div>
 						</div>

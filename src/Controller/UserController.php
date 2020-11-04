@@ -83,10 +83,9 @@ class UserController extends AbstractController
         $formName = UserDefaultType::class;
 
         $form = $this->createForm($formName, $user);
-
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             $imageName = $imageUploader->moveFile($form->get('pictureFile')->getData(), "avatar_user");
             if ($imageName) {
                 $user->setPicture($imageName);
@@ -102,12 +101,6 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
         }
-
-
-        //return $this->render($tplName, [
-        //    'form' => $form->createView(),
-       //     'user' => $user
-       // ]);
 
         if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             return $this->render('user/influencer/edit.html.twig', [
@@ -131,18 +124,9 @@ class UserController extends AbstractController
 
         if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
             $this->denyAccessUnlessGranted('show_influencer', $user);
-
-            //https://github.com/pgrimaud/instagram-user-feed
-            $cachePool = new FilesystemAdapter('Instagram', 0, __DIR__ . '/../cache');
-            //dd($cachePool);
-
-            $api = new Api($cachePool);
-            $api->login('devop0503', '729Cbk192'); // mandatory
-            $profile = $api->getProfile('beyonce');
                                                                 
             return $this->render('user/influencer/show.html.twig', [
-                'user' => $user,
-                'userProfile' => $profile
+                'user' => $user
             ]);
         }
 
