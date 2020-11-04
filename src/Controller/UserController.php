@@ -80,12 +80,7 @@ class UserController extends AbstractController
         $form = $this->createForm(UserDefaultType::class, $user);
 
 
-        $formName = BrandEditType::class;
-        $tplName = "user/brand/edit.html.twig";
-        if (in_array("ROLE_INFLUENCER", $user->getRoles())) {
-            $formName = InfluencerEditType::class;
-            $tplName = "user/influencer/edit.html.twig";
-        }
+        $formName = UserDefaultType::class;
 
         $form = $this->createForm($formName, $user);
 
